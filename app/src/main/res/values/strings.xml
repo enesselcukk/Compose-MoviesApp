@@ -1,0 +1,41 @@
+<resources>
+    <string name="app_name">MoviesUi</string>
+    <string name="recommended">Recommended</string>
+    <string name="marvel">Marvel</string>
+    <string name="see_all">See All ></string>
+
+    <string name="timeMovies">1.30</string>
+    <string name="pointMovies">8.9</string>
+
+    <string name="film1">Moonfall</string>
+    <string name="film2">Kuzeyli</string>
+    <string name="film3">Troll</string>
+    <string name="film4">İyilik ve Kötülük</string>
+    <string name="film5">Zamanda tutsak</string>
+    <string name="film6">Jaula</string>
+    <string name="film7">Morbius</string>
+    <string name="film8">X</string>
+    <string name="film9">Bergen</string>
+    <string name="film10">Dayı:Bir Adamın Hikeysi</string>
+    <string name="film11">Eternals</string>
+    <string name="film12">Dune:Çöl Gezegeni</string>
+    <string name="film13">Her Şey Her Yerde aynı Yerde</string>
+    <string name="film14">Yarının Savaşı</string>
+    <string name="film15">Red Notice</string>
+    <string name="film16">The Batman</string>
+    <string name="film17">Luka</string>
+    <string name="time">2.30</string>
+    <string name="point">9.4</string>
+
+    <string name="film18">Iron Man</string>
+    <string name="film19">The Incredible Hulk</string>
+    <string name="film20">X-Men Origins: Wolverine</string>
+    <string name="film21">Iron Man 2</string>
+    <string name="film22">Thor 1</string>
+    <string name="film23">X-Men: First Class</string>
+    <string name="film24">Captain America: The First Avenger</string>
+    <string name="film25">Deadpool 2</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+</resources>
