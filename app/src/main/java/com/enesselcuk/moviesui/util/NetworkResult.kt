@@ -5,3 +5,4 @@ sealed class NetworkResult<out T> {
     data class Error<T>(val message: String?) : NetworkResult<T>()
     data class Loading<T>(val isLoading: Boolean? = null) : NetworkResult<T>()
 }
+

@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+
+option java_package = "com.enesselcuk.moviesui";
+option java_multiple_files = true;
+
+
+message UserPrefer {
+  string username = 1;
+  string password = 2;
+}

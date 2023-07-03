@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">MoviesUi</string>
-    <string name="recommended">Recommended</string>
-    <string name="marvel">Marvel</string>
+    <string name="popular">Popular</string>
+    <string name="upcoming">UpComing</string>
     <string name="see_all">See All ></string>
 
     <string name="timeMovies">1.30</string>
@@ -37,5 +37,12 @@
     <string name="film25">Deadpool 2</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="search">Search</string>
+    <string name="movies">Movies</string>
+    <string name="actors">Popular Actors</string>
+    <string name="preview">Preview</string>
+    <string name="recommend">Recommendations</string>
+    <string name="actor_movies">Movies</string>
+    <string name="actor_Tv">Tv</string>
 
 </resources>
