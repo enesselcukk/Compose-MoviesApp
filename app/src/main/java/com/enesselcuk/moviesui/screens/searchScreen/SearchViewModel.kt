@@ -1,4 +1,4 @@
-package com.enesselcuk.moviesui.screens.movie.searchScreen
+package com.enesselcuk.moviesui.screens.searchScreen
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData

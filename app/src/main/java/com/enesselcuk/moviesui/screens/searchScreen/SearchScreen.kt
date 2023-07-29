@@ -1,4 +1,4 @@
-package com.enesselcuk.moviesui.screens.movie.searchScreen
+package com.enesselcuk.moviesui.screens.searchScreen
 
 
 import androidx.compose.foundation.layout.*
@@ -11,7 +11,11 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.enesselcuk.moviesui.R
-import com.enesselcuk.moviesui.screens.movie.searchScreen.views.*
+import com.enesselcuk.moviesui.screens.searchScreen.views.Movies
+import com.enesselcuk.moviesui.screens.searchScreen.views.MoviesViewRow
+import com.enesselcuk.moviesui.screens.searchScreen.views.PeopleRow
+import com.enesselcuk.moviesui.screens.searchScreen.views.Search
+import com.enesselcuk.moviesui.screens.searchScreen.views.SearchView
 
 
 @Composable

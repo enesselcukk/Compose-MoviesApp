@@ -1,4 +1,4 @@
-package com.enesselcuk.moviesui.screens.movie.searchScreen.views
+package com.enesselcuk.moviesui.screens.searchScreen.views
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
@@ -23,7 +23,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
-import com.enesselcuk.moviesui.screens.movie.searchScreen.SearchViewModel
+import com.enesselcuk.moviesui.screens.searchScreen.SearchViewModel
 import com.enesselcuk.moviesui.ui.theme.MoviesUiTheme
 import com.enesselcuk.moviesui.util.Constant
 import com.enesselcuk.moviesui.util.Constant.IMAGE_BASE

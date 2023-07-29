@@ -1,4 +1,4 @@
-package com.enesselcuk.moviesui.screens.movie.searchScreen.views
+package com.enesselcuk.moviesui.screens.searchScreen.views
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -9,6 +9,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
+import androidx.compose.material3.ButtonDefaults.buttonColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -18,7 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.enesselcuk.moviesui.R
-import com.enesselcuk.moviesui.screens.movie.searchScreen.SearchViewModel
+import com.enesselcuk.moviesui.screens.searchScreen.SearchViewModel
 
 @Composable
 fun SearchView(modifier: Modifier = Modifier, searchViewModel: SearchViewModel) {
@@ -46,7 +47,7 @@ fun SearchView(modifier: Modifier = Modifier, searchViewModel: SearchViewModel) 
                 )
             },
             placeholder = {
-                Text(text = "Search")
+                Text(text = "Search", color = MaterialTheme.colorScheme.onSurface)
             },
             trailingIcon = {
                 if (textValue.value.isNotEmpty()) {
@@ -58,12 +59,16 @@ fun SearchView(modifier: Modifier = Modifier, searchViewModel: SearchViewModel) 
                             textValue.value = ""
                         },
                         shape = RoundedCornerShape(12.dp),
-                        elevation = ButtonDefaults.elevatedButtonElevation(2.dp)
+                        elevation = ButtonDefaults.elevatedButtonElevation(2.dp),
+                        colors = buttonColors(MaterialTheme.colorScheme.surface)
+
+
 
                     ) {
                         Text(
                             text = stringResource(id = R.string.search),
-                            fontSize = 11.sp
+                            fontSize = 11.sp,
+                            color = MaterialTheme.colorScheme.onSurface
                         )
                     }
                 }
