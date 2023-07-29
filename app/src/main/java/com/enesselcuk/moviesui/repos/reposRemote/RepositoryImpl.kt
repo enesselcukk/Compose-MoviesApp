@@ -3,6 +3,7 @@ package com.enesselcuk.moviesui.repos.reposRemote
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import com.enesselcuk.moviesui.source.model.authresponse.CreateRequestToken
 import com.enesselcuk.moviesui.source.model.response.*
 import com.enesselcuk.moviesui.source.pagingData.PagingMovies
 import com.enesselcuk.moviesui.source.remote.MoviesService
@@ -12,6 +13,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.internal.NopCollector.emit
+import retrofit2.Response
 import javax.inject.Inject
 
 class RepositoryImpl @Inject constructor(
@@ -94,7 +97,8 @@ class RepositoryImpl @Inject constructor(
         language: String?
     ): Flow<NetworkResult<MoviesResponse>> = flow {
         emit(NetworkResult.Loading())
-        val response = remoteDataSource.getRecommended(movie_id = movies, page = page, language = language)
+        val response =
+            remoteDataSource.getRecommended(movie_id = movies, page = page, language = language)
         emit(NetworkResult.Success(response))
     }.catch { emit(NetworkResult.Error(it.message)) }.flowOn(Dispatchers.IO)
 
@@ -139,12 +143,23 @@ class RepositoryImpl @Inject constructor(
         language: String?,
         page: Int?
     ): Flow<NetworkResult<TvRecommendationsResponse>> = flow {
-            emit(NetworkResult.Loading())
-            val response = remoteDataSource.getTvRecommendations(id = id, language = language, page = page)
-            emit(NetworkResult.Success(response))
-        }.catch { emit(NetworkResult.Error(it.message)) }.flowOn(Dispatchers.IO)
+        emit(NetworkResult.Loading())
+        val response =
+            remoteDataSource.getTvRecommendations(id = id, language = language, page = page)
+        emit(NetworkResult.Success(response))
+    }.catch { emit(NetworkResult.Error(it.message)) }.flowOn(Dispatchers.IO)
 
+    override suspend fun getPlayerMovies(id: Int): Flow<NetworkResult<MoviesVideoResponse>> = flow {
+        emit(NetworkResult.Loading())
+        val response = remoteDataSource.getMoviesPlayer(id)
+        emit(NetworkResult.Success(response))
+    }.catch { emit(NetworkResult.Error(it.message)) }.flowOn(Dispatchers.IO)
 
+/*    override suspend fun createToken(): Flow<NetworkResult<NetworkResult<Response<CreateRequestToken>>>> = flow {
+        emit(NetworkResult.Loading())
+        val responseToken = remoteDataSource.createToken()
+        emit(NetworkResult.Success(responseToken))
+    }.catch { emit(NetworkResult.Error(it.message)) }.flowOn(Dispatchers.IO)*/
 
 
     companion object {

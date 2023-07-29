@@ -23,7 +23,7 @@ import com.enesselcuk.moviesui.screens.movie.homeSceen.HomeScreen
 import com.enesselcuk.moviesui.screens.movie.moviesdetailsScreen.DetailsScreen
 import com.enesselcuk.moviesui.screens.movie.profile.ProfileScreen
 import com.enesselcuk.moviesui.screens.movie.searchScreen.SearchScreen
-import com.enesselcuk.moviesui.screens.player.MoviesOrTvScreen
+import com.enesselcuk.moviesui.screens.player.MoviesOrTvScreenPlayer
 import com.enesselcuk.moviesui.screens.settings.SettingsScreen
 import com.enesselcuk.moviesui.screens.splash.SplashScreen
 import com.enesselcuk.moviesui.screens.tv.TvDetailScreen
@@ -33,8 +33,8 @@ import com.enesselcuk.moviesui.util.NavigationItem.HOME
 import com.enesselcuk.moviesui.util.NavigationItem.LIKED
 import com.enesselcuk.moviesui.util.NavigationItem.MOVIES_NAME
 import com.enesselcuk.moviesui.util.NavigationItem.MOVIE_ID
-import com.enesselcuk.moviesui.util.NavigationItem.MOVIE_OR_TV_ID
 import com.enesselcuk.moviesui.util.NavigationItem.PEOPLE_DETAIL
+import com.enesselcuk.moviesui.util.NavigationItem.PLAYER_ID
 import com.enesselcuk.moviesui.util.NavigationItem.PROFILE
 import com.enesselcuk.moviesui.util.NavigationItem.REGISTER
 import com.enesselcuk.moviesui.util.NavigationItem.SEARCH
@@ -206,9 +206,8 @@ fun NavHostContainer(
                     isVisibleTopBarBack = { sharedViewModel.isTopBackVisible.value = it },
                     screeName = { sharedViewModel.isScreenName.value = it },
                     isActionInTopBar = { sharedViewModel.isActionInTopBar.value = it },
-                    onClick = { id ->
-                        navController.navigate("playerId/${id}")
-                    }
+                    sharedViewModel = sharedViewModel,
+                    onClick = { navController.navigate(PLAYER_ID) }
                 )
             }
 
@@ -224,19 +223,23 @@ fun NavHostContainer(
                     isVisibleTopBar = { sharedViewModel.isTopVisible.value = it },
                     isVisibleTopBarBack = { sharedViewModel.isTopBackVisible.value = it },
                     screenName = { sharedViewModel.isScreenName.value = it },
-                    onClick = { id ->
-                        navController.navigate("playerId/${id}")
-                    }
+                    sharedViewModel = sharedViewModel,
+                    clickTvId = { navController.navigate(PLAYER_ID) }
                 )
             }
 
-            composable(
-                route = Screen.Play.route,
-                arguments = listOf(navArgument(MOVIE_OR_TV_ID) { type = NavType.IntType })
-            ) {
-                val getUrl = it.arguments?.getInt(MOVIE_OR_TV_ID) ?: 0
-                MoviesOrTvScreen(playerId = getUrl.toLong())
+            composable(PLAYER_ID) {
+                MoviesOrTvScreenPlayer(sharedViewModel)
             }
+
+/*
+            composable(
+                route = Screen.Player.route,
+                arguments = listOf(navArgument(PLAYER_ID) { type = NavType.IntType })
+            ) {
+                val getUrl = it.arguments?.getInt(PLAYER_ID) ?: 0
+                MoviesOrTvScreenPlayer(playerId = getUrl)
+            }*/
 
         })
 

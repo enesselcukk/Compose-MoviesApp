@@ -21,4 +21,6 @@ class SharedViewModel @Inject constructor() : ViewModel() {
 
     val isGoSettings = mutableStateOf(false)
 
+    val playerId = mutableStateOf(0)
+
 }

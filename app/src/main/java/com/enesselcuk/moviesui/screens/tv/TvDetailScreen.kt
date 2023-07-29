@@ -22,6 +22,7 @@ import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.enesselcuk.moviesui.R
+import com.enesselcuk.moviesui.screens.movie.SharedViewModel
 import com.enesselcuk.moviesui.screens.tv.views.LikedAndWatch
 import com.enesselcuk.moviesui.screens.tv.views.TvImagePoster
 import com.enesselcuk.moviesui.screens.tv.views.TvOverView
@@ -35,7 +36,8 @@ fun TvDetailScreen(
     isVisibleTopBar: (Boolean) -> Unit,
     isVisibleTopBarBack: (Boolean) -> Unit,
     screenName: (name: String) -> Unit,
-    onClick: (movieOrTvId: Int) -> Unit,
+    clickTvId: () -> Unit,
+    sharedViewModel: SharedViewModel,
     tvViewModel: TvDetailViewModel = hiltViewModel(),
 ) {
 
@@ -72,7 +74,8 @@ fun TvDetailScreen(
         LikedAndWatch(
             data.value, isLiked.value,
             onClick = {
-                onClick.invoke(it)
+                clickTvId.invoke()
+                sharedViewModel.playerId.value = it
             },
             tvViewModel
         )

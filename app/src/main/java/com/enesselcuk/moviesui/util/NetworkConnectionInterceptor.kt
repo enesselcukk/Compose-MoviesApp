@@ -1,28 +1,31 @@
 package com.enesselcuk.moviesui.util
 
-import android.content.Context
 import okhttp3.Interceptor
-import okhttp3.Request
 import okhttp3.Response
-import okio.IOException
-import kotlin.jvm.Throws
 
+class NetworkConnectionInterceptor : Interceptor {
 
-class NetworkConnectionInterceptor(
-    private val context: Context) : Interceptor {
+    var token : String = ""
 
-    @Throws(IOException::class)
+    fun token(token: String ) {
+        this.token = token
+    }
+
     override fun intercept(chain: Interceptor.Chain): Response {
-        if (!NetworkUtils.isNetworkAvailable(context)) {
-            throw NoConnectionException()
+        var request = chain.request()
+
+        if(request.header("No-Authentication")==null){
+            //val token = getTokenFromSharedPreference();
+            //or use Token Function
+            if(!token.isNullOrEmpty())
+            {
+                val finalToken = "Bearer $token"
+                request = request.newBuilder()
+                    .addHeader("Authorization",finalToken)
+                    .build()
+            }
         }
-
-        val builder: Request.Builder = chain.request().newBuilder()
-        return chain.proceed(builder.build())
+        return chain.proceed(request)
     }
 
-    inner class NoConnectionException : IOException() {
-        override val message: String
-            get() = super.message ?: "Internete bağlanamadı"
-    }
 }

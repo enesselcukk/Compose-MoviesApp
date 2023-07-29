@@ -5,8 +5,8 @@ import com.enesselcuk.moviesui.util.NavigationItem.HOME
 import com.enesselcuk.moviesui.util.NavigationItem.LIKED
 import com.enesselcuk.moviesui.util.NavigationItem.MOVIES_NAME
 import com.enesselcuk.moviesui.util.NavigationItem.MOVIE_ID
-import com.enesselcuk.moviesui.util.NavigationItem.MOVIE_OR_TV_ID
 import com.enesselcuk.moviesui.util.NavigationItem.PEOPLE_DETAIL
+import com.enesselcuk.moviesui.util.NavigationItem.PLAYER_ID
 import com.enesselcuk.moviesui.util.NavigationItem.PROFILE
 import com.enesselcuk.moviesui.util.NavigationItem.SEARCH
 import com.enesselcuk.moviesui.util.NavigationItem.TV_ID
@@ -41,7 +41,7 @@ object NavigationItem {
     const val SPLASH = "splash"
     const val SETTINGS = "settings"
     const val PLAYER = "player"
-    const val MOVIE_OR_TV_ID = "movieOrTvId"
+    const val PLAYER_ID = "playersId"
 }
 
 sealed class Screen(val route: String) {
@@ -49,7 +49,7 @@ sealed class Screen(val route: String) {
     object AllSee : Screen(route = "AllMovies/{$MOVIES_NAME}")
     object PEOPLE : Screen(route = "people_detail/{$PEOPLE_DETAIL}")
     object TvDetail : Screen("tvDetail/{$TV_ID}")
-    object Play :Screen("playerId/${MOVIE_OR_TV_ID}")
+    object Player : Screen(route = "player_Id/${PLAYER_ID}")
 
 
 }

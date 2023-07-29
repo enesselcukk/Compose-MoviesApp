@@ -22,6 +22,7 @@ import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.enesselcuk.moviesui.R
+import com.enesselcuk.moviesui.screens.movie.SharedViewModel
 import com.enesselcuk.moviesui.screens.movie.moviesdetailsScreen.views.DetailGeneral
 import com.enesselcuk.moviesui.screens.movie.moviesdetailsScreen.views.DetailImage
 import com.enesselcuk.moviesui.screens.movie.moviesdetailsScreen.views.DetailRecommendedRow
@@ -35,7 +36,8 @@ fun DetailsScreen(
     isVisibleTopBarBack: (visible: Boolean) -> Unit,
     isActionInTopBar: (isVisible: Boolean) -> Unit,
     screeName: (name: String) -> Unit,
-    onClick: (movieOrTvId: Int) -> Unit,
+    sharedViewModel: SharedViewModel,
+    onClick: () -> Unit,
     viewModel: DetailsViewModel = hiltViewModel()
 ) {
 
@@ -69,7 +71,10 @@ fun DetailsScreen(
     )
     {
         DetailImage(data.value?.backdrop_path)
-        DetailTop(data.value, isLiked.value, onClick = {onClick.invoke(it)}, viewModel)
+        DetailTop(data.value, isLiked.value, onClick = {
+            onClick.invoke()
+            sharedViewModel.playerId.value = it
+        }, viewModel)
         DetailGeneral(item = data.value)
         DetailRecommendedHome(stringResource(id = R.string.recommend), viewModel)
         {

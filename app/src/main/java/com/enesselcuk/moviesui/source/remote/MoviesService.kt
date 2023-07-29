@@ -1,9 +1,11 @@
 package com.enesselcuk.moviesui.source.remote
 
 import com.enesselcuk.moviesui.source.model.*
+import com.enesselcuk.moviesui.source.model.authresponse.CreateRequestToken
 import com.enesselcuk.moviesui.source.model.response.*
 import com.enesselcuk.moviesui.util.Constant.API_KEY
-import okhttp3.RequestBody
+import com.enesselcuk.moviesui.util.NetworkResult
+import retrofit2.Response
 import retrofit2.http.*
 
 interface MoviesService {
@@ -86,6 +88,11 @@ interface MoviesService {
         @Query("page") page: Int? = null,
         @Query("api_key") api_key: String = API_KEY,
     ): TvRecommendationsResponse
+
+
+    @Headers("accept : application/json")
+    @GET("3/authentication/token/new")
+    suspend fun createToken():NetworkResult<Response<CreateRequestToken>>
 
 
 }
