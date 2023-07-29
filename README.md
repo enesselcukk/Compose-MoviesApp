@@ -17,7 +17,7 @@
 
 Preview
 -------------------------
-https://user-images.githubusercontent.com/52752443/186473794-d4ab7ef4-f97b-4543-821f-8b36a391ea44.mp4
+https://github.com/enesselcuk25/MoviesUi/assets/52752443/72c55974-8d60-4671-9847-2df7d0484495
 
 Libraries Used
 --------------
