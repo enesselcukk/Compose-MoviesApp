@@ -10,3 +10,8 @@
   <a href="https://github.com/enesselcuk25"><img alt="androiddevnotes GitHub badge" src="https://badgen.net/badge/GitHub/androiddevnotes?icon=github&color=24292e"/></a>
 
 </p>
+
+<br>
+<p align="center">
+<img width="320px" src="assets/jetpack_compose_androiddevnotes.png" alt="jetpack compose androiddevnotes logo"></img>
+</p><br>
