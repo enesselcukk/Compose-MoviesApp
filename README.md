@@ -17,7 +17,7 @@
 
 Preview
 -------------------------
-https://github.com/enesselcuk25/MoviesUi/assets/52752443/0be8591e-0844-4eaa-8cdc-bd5df0abed3c
+https://github.com/enesselcuk25/WatchMoviesSampleApp/assets/52752443/62ac128d-5913-4f13-b324-62cf56158d84
 
 Libraries Used
 --------------
