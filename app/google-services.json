@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "527480572551",
+    "project_id": "moviescompose",
+    "storage_bucket": "moviescompose.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:527480572551:android:ed2b6aaefd0f4ced28c622",
+        "android_client_info": {
+          "package_name": "com.enesselcuk.moviesui"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "527480572551-d0j7mfjhsb0b12frfo1arkl6f3cchgu6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.enesselcuk.moviesui",
+            "certificate_hash": "8514bbd07d6362d7acd8e4ec3b52639723466437"
+          }
+        },
+        {
+          "client_id": "527480572551-amq94rjjgr94h953f6hs3sm4mi2i5tc9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAvkD7mDjrwaJ6xDTztcakB_aLcaqaDQhU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "527480572551-amq94rjjgr94h953f6hs3sm4mi2i5tc9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
