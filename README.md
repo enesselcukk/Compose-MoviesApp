@@ -23,7 +23,7 @@ Libraries Used
   * [DataStore][7] Jetpack DataStore is a data storage solution that allows you to store key-value pairs or typed objects with protocol buffers.
   * [Room][8] Access your app's SQLite database with in-app objects and compile-time checks.
   * [Retrofit][9] for turns your HTTP API into a Java interface
-  * [Retrofit][10] To flip through content in a left and right or up and down manner,  you can use the HorizontalPager and VerticalPager composables, 
+  * [Compose Pager][10] To flip through content in a left and right or up and down manner,  you can use the HorizontalPager and VerticalPager composables, 
   * [Hilt][11] for dependency injection
   * [ConstraintLayout][13]
   * [Compose Material 3][14]
