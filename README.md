@@ -14,6 +14,11 @@
 <img width="320px" src="asserts/jetpack_compose_androiddevnotes.png" alt="jetpack compose androiddevnotes logo"></img>
 </p><br>
 
+
+Preview
+-------------------------
+https://user-images.githubusercontent.com/52752443/186473794-d4ab7ef4-f97b-4543-821f-8b36a391ea44.mp4
+
 Libraries Used
 --------------
   * [Lifecycles][3] Lifecycle of composables
