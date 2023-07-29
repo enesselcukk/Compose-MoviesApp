@@ -13,5 +13,5 @@
 
 <br>
 <p align="center">
-<img width="320px" src="assets/jetpack_compose_androiddevnotes.png" alt="jetpack compose androiddevnotes logo"></img>
+<img width="320px" src="asserts/jetpack_compose_androiddevnotes.png" alt="jetpack compose androiddevnotes logo"></img>
 </p><br>
