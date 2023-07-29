@@ -76,5 +76,4 @@ fun SearchView(modifier: Modifier = Modifier, searchViewModel: SearchViewModel) 
         )
     }
 
-
 }

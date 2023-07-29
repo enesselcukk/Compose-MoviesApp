@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MoviesUi</string>
+    <string name="app_name">Base Movies</string>
     <string name="popular">Popular</string>
     <string name="upcoming">UpComing</string>
     <string name="see_all">See All ></string>
