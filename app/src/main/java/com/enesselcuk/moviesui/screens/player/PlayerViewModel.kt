@@ -15,24 +15,5 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PlayerViewModel @Inject constructor(private val repos: Repos) : ViewModel() {
-    val isPlaying = mutableStateOf(false)
 
-    private val _playerMovieFlow = MutableStateFlow<MoviesVideoResponse?>(null)
-    val playerMovieFlow = _playerMovieFlow.asStateFlow()
-
-    fun getPlayerMovie(id: Int) {
-        viewModelScope.launch {
-            repos.getPlayerMovies(id = id).collectLatest {
-                when (it) {
-                    is NetworkResult.Loading -> {}
-                    is NetworkResult.Success -> {
-                        _playerMovieFlow.emit(it.data)
-                    }
-                    is NetworkResult.Error -> {
-
-                    }
-                }
-            }
-        }
-    }
 }

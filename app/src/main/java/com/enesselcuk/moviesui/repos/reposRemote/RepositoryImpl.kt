@@ -13,8 +13,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.internal.NopCollector.emit
-import retrofit2.Response
 import javax.inject.Inject
 
 class RepositoryImpl @Inject constructor(
@@ -149,11 +147,6 @@ class RepositoryImpl @Inject constructor(
         emit(NetworkResult.Success(response))
     }.catch { emit(NetworkResult.Error(it.message)) }.flowOn(Dispatchers.IO)
 
-    override suspend fun getPlayerMovies(id: Int): Flow<NetworkResult<MoviesVideoResponse>> = flow {
-        emit(NetworkResult.Loading())
-        val response = remoteDataSource.getMoviesPlayer(id)
-        emit(NetworkResult.Success(response))
-    }.catch { emit(NetworkResult.Error(it.message)) }.flowOn(Dispatchers.IO)
 
 /*    override suspend fun createToken(): Flow<NetworkResult<NetworkResult<Response<CreateRequestToken>>>> = flow {
         emit(NetworkResult.Loading())

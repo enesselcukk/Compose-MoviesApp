@@ -45,24 +45,13 @@ fun MoviesOrTvScreenPlayer(
 ) {
     val playerId = sharedViewModel.playerId.value
 
-    playerViewModel.getPlayerMovie(playerId)
-
-
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxSize()
     ) {
 
-        val data = playerViewModel.playerMovieFlow.collectAsStateWithLifecycle().value
-        val playerUrl = data?.results?.get(0)?.key
 
-        if (playerUrl.isNullOrEmpty()) return
-        else {
-            val videoLink = "https://www.youtube.com/watch?v=$playerUrl"
-
-           
-        }
 
     }
 }

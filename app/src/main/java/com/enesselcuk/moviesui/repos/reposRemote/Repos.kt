@@ -31,7 +31,6 @@ interface Repos {
     suspend fun getActorTv(id:Int,language: String?):Flow<NetworkResult<ActorTvResponse>>
     suspend fun getTvDetail(id:Int,language: String?):Flow<NetworkResult<TvDetailResponse>>
     suspend fun getTvRecommendations(id: Int,language: String?,page: Int?):Flow<NetworkResult<TvRecommendationsResponse>>
-    suspend fun getPlayerMovies(id:Int):Flow<NetworkResult<MoviesVideoResponse>>
 
   //  suspend fun createToken():Flow<NetworkResult<Response<CreateRequestToken>>>
 
