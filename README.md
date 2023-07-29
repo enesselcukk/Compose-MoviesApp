@@ -14,6 +14,11 @@
 <img width="320px" src="asserts/jetpack_compose_androiddevnotes.png" alt="jetpack compose androiddevnotes logo"></img>
 </p><br>
 
+
+Preview
+-------------------------
+https://github.com/enesselcuk25/MoviesUi/assets/52752443/0be8591e-0844-4eaa-8cdc-bd5df0abed3c
+
 Libraries Used
 --------------
   * [Lifecycles][3] Lifecycle of composables
