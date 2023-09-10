@@ -1,7 +1,6 @@
 package com.enesselcuk.moviesui.screens.movie.allSee
 
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -128,8 +127,8 @@ fun AllScreenViewItems(items: LazyPagingItems<Result>, toDetail: (id: Int) -> Un
         items(items.itemCount) { index ->
             items[index].let {
                 AllScreenView(
-                    image = it?.posterPath,
-                    vote = it?.voteAverage,
+                    image = it?.poster_path,
+                    vote = it?.vote_average,
                     name = it?.title,
                     click = {
                         toDetail.invoke(it?.id ?: 0)

@@ -11,7 +11,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -89,12 +88,12 @@ fun UpComingItems(items: MoviesResponse?, click: (id:Int) -> Unit
     ) {
         items(items?.results ?: emptyList()) { item ->
             UpComingView(
-                movieImage = item.posterPath,
+                movieImage = item.poster_path,
                 movieName = item.title.let {
                     if (it.count() >= 13) it.substring(0, 13).plus("...")
                     else it
                 },
-                movieVoteAverage = item.voteAverage,
+                movieVoteAverage = item.vote_average,
                 onClick = {
                     click.invoke(item.id)
                 })

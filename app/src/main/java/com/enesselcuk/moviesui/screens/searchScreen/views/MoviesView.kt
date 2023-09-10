@@ -11,7 +11,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -149,9 +148,9 @@ fun MoviesViewRow(
             items(data.value?.results ?: emptyList()) {
                 ViewMovies(
                     modifier,
-                    it.posterPath,
+                    it.poster_path,
                     onCLick = { navController.navigate("detail/${it.id}") },
-                    vote = it.voteAverage,
+                    vote = it.vote_average,
                     name = it.title.let { movieName ->
                         if (movieName.count() >= 12) movieName.substring(0, 12).plus("...")
                         else movieName

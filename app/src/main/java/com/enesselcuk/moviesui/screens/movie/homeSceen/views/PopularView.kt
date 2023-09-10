@@ -1,9 +1,6 @@
 package com.enesselcuk.moviesui.screens.movie.homeSceen.views
 
-import android.annotation.SuppressLint
 import androidx.compose.animation.*
-import androidx.compose.animation.core.*
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -15,12 +12,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -98,12 +93,12 @@ fun PopularMoviesItems(items: MoviesResponse?, click: (id: Int) -> Unit) {
         items(items?.results ?: emptyList()) { recommended ->
             AnimatedVisibility(visible = true) {
                 PopularMovies(
-                    recommended.posterPath,
+                    recommended.poster_path,
                     recommended.title.let {
                         if (it.count() >= 13) it.substring(0, 13).plus("...")
                         else it
                     },
-                    recommended.voteAverage,
+                    recommended.vote_average,
                     onClick = { click.invoke(recommended.id) })
             }
         }

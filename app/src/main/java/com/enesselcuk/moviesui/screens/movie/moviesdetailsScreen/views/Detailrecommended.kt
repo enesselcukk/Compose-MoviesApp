@@ -94,12 +94,12 @@ fun DetailRecommendedRow(item: MoviesResponse? = null,onClick: (id:Int) -> Unit)
     ) {
         items(item?.results ?: emptyList()) { items ->
             DetailRecommendedView(
-                image = items.posterPath,
+                image = items.poster_path,
                 movieName = items.title.let {
                     if (it.count() >= 13) it.substring(0, 13).plus("...")
                     else it
                 },
-                vote = items.voteAverage,
+                vote = items.vote_average,
                 onClick = {onClick.invoke(items.id)}
             )
         }
