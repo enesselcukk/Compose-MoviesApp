@@ -19,6 +19,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
+import org.hamcrest.Matchers.instanceOf
 import org.hamcrest.Matchers.`is`
 import org.junit.Before
 import org.junit.Rule
@@ -63,7 +64,7 @@ class RepositoryImplTest {
             )
         } coAnswers {
             delay(1000)
-            createFakeGameItemList()[0]
+            createFakeGameItemList[0]
         }
 
         // When
@@ -74,11 +75,50 @@ class RepositoryImplTest {
         val loadingResult = result.first()
         assertThat(loadingResult, `is`(NetworkResult.Loading()))
         val successResult = result.drop(1).first()
-        assertThat(successResult, `is`(NetworkResult.Success(createFakeGameItemList()[0])))
+        assertThat(successResult, `is`(NetworkResult.Success(createFakeGameItemList[0])))
 
     }
 
-    private fun createFakeGameItemList() = listOf<MoviesResponse>(
+    @Test
+    fun testGetMoviesError() = runTest {
+        //Given
+        val title = "popular"
+        val language = "en-US"
+        val page = 1
+        coEvery {
+            mockRemoteDataSource.getMovies(
+                title = title,
+                language = language,
+                page = page
+            )
+        } coAnswers {
+            delay(1000)
+            throw IllegalArgumentException("This is my error message")
+        }
+
+        // When
+        val repos = RepositoryImpl(mockRemoteDataSource)
+        val result = repos.getMovies(title, language = language, page = page)
+
+
+        // Then
+        val loadingResult = result.first()
+        assertThat(loadingResult, `is`(NetworkResult.Loading()))
+
+
+        val resultError = result.drop(1).first()
+        assertThat(resultError, `is`(instanceOf(NetworkResult.Error::class.java)))
+
+        if (resultError is NetworkResult.Error) {
+            val errorMessage = resultError.message
+            assertThat(errorMessage, `is`("This is my error message"))
+        } else {
+            fail("Expected NetworkResult.Error but got: $resultError")
+        }
+    }
+
+
+    private val createFakeGameItemList = listOf<MoviesResponse>(
         MoviesResponse(
             1, 1, listOf(
                 Result(
