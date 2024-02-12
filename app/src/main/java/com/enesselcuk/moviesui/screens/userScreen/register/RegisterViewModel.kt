@@ -50,5 +50,4 @@ class RegisterViewModel @Inject constructor() : ViewModel() {
     }
 }
 
-const val SUCCESS = "Success"
 

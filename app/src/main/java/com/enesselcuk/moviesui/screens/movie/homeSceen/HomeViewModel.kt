@@ -6,6 +6,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.enesselcuk.moviesui.domain.home.HomeTrendUseCase
+import com.enesselcuk.moviesui.domain.home.HomeUseCase
 import com.enesselcuk.moviesui.repos.reposRemote.Repos
 import com.enesselcuk.moviesui.source.model.response.MoviesResponse
 import com.enesselcuk.moviesui.source.model.response.TrendingResponse
@@ -18,7 +20,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(private val repos: Repos) : ViewModel() {
+class HomeViewModel @Inject constructor(private val homeUseCase: HomeUseCase,
+    private val homeTrendUseCase: HomeTrendUseCase) : ViewModel() {
 
     private val _getMoviesFlow = MutableStateFlow<MoviesResponse?>(null)
     val getMoviesFlow = _getMoviesFlow.asStateFlow()
@@ -37,7 +40,7 @@ class HomeViewModel @Inject constructor(private val repos: Repos) : ViewModel() 
 
     fun getMovies(title: String, language: String, page: Int) {
         viewModelScope.launch {
-            repos.getMovies(title, language, page).collectLatest { moviesResponse ->
+            homeUseCase.invoke(title, language, page).collectLatest { moviesResponse ->
                 when (moviesResponse) {
                     is NetworkResult.Loading -> {
                         _loading.value = true
@@ -58,7 +61,7 @@ class HomeViewModel @Inject constructor(private val repos: Repos) : ViewModel() 
 
     fun getMoviesUpComing(title: String, language: String, page: Int) {
         viewModelScope.launch {
-            repos.getMovies(title, language, page).collectLatest { moviesResponse ->
+            homeUseCase.invoke(title, language, page).collectLatest { moviesResponse ->
                 when (moviesResponse) {
                     is NetworkResult.Loading -> {
                         _loading.value = true
@@ -81,7 +84,7 @@ class HomeViewModel @Inject constructor(private val repos: Repos) : ViewModel() 
     val getMoviesTrendingFlow = _getMoviesTrendingFlow.asStateFlow()
     fun getMoviesTrending() {
         viewModelScope.launch {
-            repos.getMoviesTrending().collectLatest { moviesResponse ->
+            homeTrendUseCase.invoke().collectLatest { moviesResponse ->
                 when (moviesResponse) {
                     is NetworkResult.Loading -> {
                         _loading.value = true

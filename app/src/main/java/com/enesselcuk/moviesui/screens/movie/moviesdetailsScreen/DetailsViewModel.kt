@@ -3,6 +3,10 @@ package com.enesselcuk.moviesui.screens.movie.moviesdetailsScreen
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.enesselcuk.moviesui.domain.detail.DetailFavoriteUseCase
+import com.enesselcuk.moviesui.domain.detail.DetailLikedUseCase
+import com.enesselcuk.moviesui.domain.detail.DetailRecommendUseCase
+import com.enesselcuk.moviesui.domain.detail.DetailUseCase
 import com.enesselcuk.moviesui.repos.reposLocal.ReposLocal
 import com.enesselcuk.moviesui.repos.reposRemote.Repos
 import com.enesselcuk.moviesui.source.model.response.DetailResponse
@@ -18,12 +22,23 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DetailsViewModel @Inject constructor(
-    private val repos: Repos,
-    private val localRepos: ReposLocal
+    private val detailUseCase: DetailUseCase,
+    private val detailRecommendUseCase: DetailRecommendUseCase,
+    private val detailLikedUseCase: DetailLikedUseCase,
+    private val detailFavoriteUseCase: DetailFavoriteUseCase
 ) : ViewModel() {
 
     private val _detailsFlow = MutableStateFlow<DetailResponse?>(null)
     val detailsFlow = _detailsFlow.asStateFlow()
+
+    private val _likedMovies = MutableStateFlow<Any?>(null)
+    val likedMovies = _likedMovies.asStateFlow()
+
+    private val _detailRecommended = MutableStateFlow<MoviesResponse?>(null)
+    val detailRecommended = _detailRecommended.asStateFlow()
+
+    private val _getFlowFavorite = MutableStateFlow<List<DetailResponse>?>(null)
+    val getFlowFavorite = _getFlowFavorite.asStateFlow()
 
     private val _loadingFlow = MutableStateFlow(false)
     val loadingFlow = _loadingFlow.asStateFlow()
@@ -35,7 +50,7 @@ class DetailsViewModel @Inject constructor(
 
     fun getDetails(movie_id: Int?, language: String) {
         viewModelScope.launch {
-            repos.getDetails(movie_id, language).collectLatest {
+            detailUseCase.invoke(movie_id, language).collectLatest {
                 when (it) {
                     is NetworkResult.Error -> {
                         _loadingFlow.value = false
@@ -51,23 +66,17 @@ class DetailsViewModel @Inject constructor(
         }
     }
 
-    private val _detailRecommended = MutableStateFlow<MoviesResponse?>(null)
-    val detailRecommended = _detailRecommended.asStateFlow()
-
     fun getRecommended(id: Int?, page: Int?, language: String?) {
         viewModelScope.launch {
-            repos.getRecommended(id, page, language).collectLatest {
+            detailRecommendUseCase.invoke(id, page, language).collectLatest {
                 network(it, _detailRecommended)
             }
         }
     }
 
-    private val _likedMovies = MutableStateFlow<Any?>(null)
-    val likedMovies = _likedMovies.asStateFlow()
-
     fun setLikedMovies(moviesResponse: DetailResponse) {
         viewModelScope.launch {
-            localRepos.insertLiked(moviesResponse).collectLatest { setMovies ->
+            detailLikedUseCase.invoke(moviesResponse).collectLatest { setMovies ->
                 when (setMovies) {
                     is NetworkResult.Loading -> {
 
@@ -82,14 +91,9 @@ class DetailsViewModel @Inject constructor(
             }
         }
     }
-
-    private val _getFlowFavorite = MutableStateFlow<List<DetailResponse>?>(null)
-    val getFlowFavorite = _getFlowFavorite.asStateFlow()
-
-
     fun getFavorite() {
         viewModelScope.launch {
-            localRepos.getLiked().collectLatest { likeds ->
+            detailFavoriteUseCase.invoke().collectLatest { likeds ->
                 when (likeds) {
                     is NetworkResult.Loading -> {
 

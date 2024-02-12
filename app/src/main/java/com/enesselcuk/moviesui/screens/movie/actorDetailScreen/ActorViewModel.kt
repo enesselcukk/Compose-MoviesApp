@@ -2,6 +2,9 @@ package com.enesselcuk.moviesui.screens.movie.actorDetailScreen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.enesselcuk.moviesui.domain.actor.ActorDetailUseCase
+import com.enesselcuk.moviesui.domain.actor.ActorMoviesUseCase
+import com.enesselcuk.moviesui.domain.actor.ActorTvUseCase
 import com.enesselcuk.moviesui.repos.reposRemote.Repos
 import com.enesselcuk.moviesui.source.model.response.ActorDetailResponse
 import com.enesselcuk.moviesui.source.model.response.ActorMoviesResponse
@@ -16,14 +19,18 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class ActorViewModel @Inject constructor(private val repos: Repos) : ViewModel() {
+class ActorViewModel @Inject constructor(
+    private val actorDetailUseCase: ActorDetailUseCase,
+    private val actorMoviesUseCase: ActorMoviesUseCase,
+    private val actorTvUseCase: ActorTvUseCase
+) : ViewModel() {
 
     private val _actorDetailFlow = MutableStateFlow<ActorDetailResponse?>(null)
     val actorDetailFlow = _actorDetailFlow.asStateFlow()
 
     fun getActor(id: Int, language: String) {
         viewModelScope.launch {
-            repos.getActorDetail(id = id, language).collectLatest {
+            actorDetailUseCase.invoke(id, language).collectLatest {
                 network(it, _actorDetailFlow)
             }
         }
@@ -34,7 +41,7 @@ class ActorViewModel @Inject constructor(private val repos: Repos) : ViewModel()
 
     fun getActorMovie(id: Int, language: String) {
         viewModelScope.launch {
-            repos.getActorMovies(id = id, language).collectLatest {
+           actorMoviesUseCase.invoke(id, language).collectLatest {
                 network(it, _actorMovieDetailFlow)
             }
         }
@@ -45,7 +52,7 @@ class ActorViewModel @Inject constructor(private val repos: Repos) : ViewModel()
 
     fun getActorTv(id: Int, language: String) {
         viewModelScope.launch {
-            repos.getActorTv(id = id, language).collectLatest {
+            actorTvUseCase.invoke(id, language).collectLatest {
                 network(it, _actorTvDetailFlow)
             }
         }

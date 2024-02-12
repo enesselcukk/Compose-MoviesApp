@@ -50,8 +50,8 @@ fun TvDetailScreen(
     screenName.invoke("Tv Detail")
 
     if (!tvViewModel.isClickRecommended.value) {
-        tvViewModel.getSearchMovies(id = tvId, language = "tr")
-        tvViewModel.getRecommendationsMovies(id = tvId, language = "tr", page = 1)
+        tvViewModel.getTvDetail(id = tvId, language = "tr")
+        tvViewModel.getRecommendationsTv(id = tvId, language = "tr", page = 1)
         tvViewModel.getFavorite()
     }
 
@@ -87,8 +87,8 @@ fun TvDetailScreen(
                 TvRecommendedItems(items = recommendData.value, viewModel = tvViewModel,
                     onClick = { id ->
                         tvViewModel.isClickRecommended.value = true
-                        tvViewModel.getSearchMovies(id = id, language = "tr")
-                        tvViewModel.getRecommendationsMovies(id = id, language = "tr", page = 1)
+                        tvViewModel.getTvDetail(id = id, language = "tr")
+                        tvViewModel.getRecommendationsTv(id = id, language = "tr", page = 1)
                         tvViewModel.getFavorite()
                     })
             })

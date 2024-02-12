@@ -5,6 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.enesselcuk.moviesui.domain.search.SearchMoviesUseCase
+import com.enesselcuk.moviesui.domain.search.SearchPeopleUseCase
 import com.enesselcuk.moviesui.repos.reposRemote.Repos
 import com.enesselcuk.moviesui.source.model.response.MoviesPeople
 import com.enesselcuk.moviesui.source.model.response.MoviesResponse
@@ -18,7 +20,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SearchViewModel @Inject constructor(val repo: Repos) : ViewModel() {
+class SearchViewModel @Inject constructor(private val searchMoviesUseCase: SearchMoviesUseCase,
+    private val searchPeopleUseCase: SearchPeopleUseCase) : ViewModel() {
 
     private val _searchMoviesFlow = MutableStateFlow<MoviesResponse?>(null)
     val searchMoviesFlow = _searchMoviesFlow.asStateFlow()
@@ -32,7 +35,7 @@ class SearchViewModel @Inject constructor(val repo: Repos) : ViewModel() {
 
     fun getSearchMovies(language: String, page: Int, query: String) {
         viewModelScope.launch {
-            repo.getSearchMovies(language, page, query).collectLatest {
+           searchMoviesUseCase.invoke(language, page, query).collectLatest {
                 when (it) {
                     is NetworkResult.Error -> {
                         _getToastMessage.value = it.message
@@ -56,7 +59,7 @@ class SearchViewModel @Inject constructor(val repo: Repos) : ViewModel() {
 
     fun getSearchPeople(language: String, page: Int, query: String) {
         viewModelScope.launch {
-            repo.getSearchPeople(language, page, query).collectLatest {
+           searchPeopleUseCase.invoke(language, page, query).collectLatest {
                 when (it) {
                     is NetworkResult.Error -> {
                         _getToastMessage.value = it.message
