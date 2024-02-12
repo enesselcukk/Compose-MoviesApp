@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.enesselcuk.moviesui.R
 import com.enesselcuk.moviesui.screens.tv.TvDetailViewModel
-import com.enesselcuk.moviesui.source.model.response.TvDetailResponse
+import com.enesselcuk.moviesui.data.model.response.TvDetailResponse
 
 
 @Composable

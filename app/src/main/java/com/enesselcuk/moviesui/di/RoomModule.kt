@@ -2,9 +2,9 @@ package com.enesselcuk.moviesui.di
 
 import android.content.Context
 import androidx.room.Room
-import com.enesselcuk.moviesui.source.local.MoviesDao
-import com.enesselcuk.moviesui.source.local.MoviesDatabase
-import com.enesselcuk.moviesui.source.local.TvDao
+import com.enesselcuk.moviesui.data.local.MoviesDao
+import com.enesselcuk.moviesui.data.local.MoviesDatabase
+import com.enesselcuk.moviesui.data.local.TvDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

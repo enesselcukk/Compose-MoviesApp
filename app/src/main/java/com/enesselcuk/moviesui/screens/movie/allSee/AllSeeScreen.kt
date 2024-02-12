@@ -31,7 +31,7 @@ import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.AsyncImage
-import com.enesselcuk.moviesui.source.model.response.Result
+import com.enesselcuk.moviesui.data.model.response.Result
 import com.enesselcuk.moviesui.util.Constant.IMAGE_BASE_W500
 import java.math.RoundingMode
 

@@ -1,13 +1,11 @@
 package com.enesselcuk.moviesui.screens.likedScreen
 
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.enesselcuk.moviesui.repos.reposLocal.ReposLocal
-import com.enesselcuk.moviesui.source.model.response.DetailResponse
-import com.enesselcuk.moviesui.source.model.response.TvDetailResponse
+import com.enesselcuk.moviesui.domain.repository.ReposLocal
+import com.enesselcuk.moviesui.data.model.response.DetailResponse
+import com.enesselcuk.moviesui.data.model.response.TvDetailResponse
 import com.enesselcuk.moviesui.util.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

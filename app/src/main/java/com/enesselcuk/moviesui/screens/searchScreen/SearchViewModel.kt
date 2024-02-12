@@ -5,11 +5,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.enesselcuk.moviesui.domain.search.SearchMoviesUseCase
-import com.enesselcuk.moviesui.domain.search.SearchPeopleUseCase
-import com.enesselcuk.moviesui.repos.reposRemote.Repos
-import com.enesselcuk.moviesui.source.model.response.MoviesPeople
-import com.enesselcuk.moviesui.source.model.response.MoviesResponse
+import com.enesselcuk.moviesui.domain.useCase.search.SearchMoviesUseCase
+import com.enesselcuk.moviesui.domain.useCase.search.SearchPeopleUseCase
+import com.enesselcuk.moviesui.data.model.response.MoviesPeople
+import com.enesselcuk.moviesui.data.model.response.MoviesResponse
 import com.enesselcuk.moviesui.util.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -21,7 +20,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(private val searchMoviesUseCase: SearchMoviesUseCase,
-    private val searchPeopleUseCase: SearchPeopleUseCase) : ViewModel() {
+                                          private val searchPeopleUseCase: SearchPeopleUseCase
+) : ViewModel() {
 
     private val _searchMoviesFlow = MutableStateFlow<MoviesResponse?>(null)
     val searchMoviesFlow = _searchMoviesFlow.asStateFlow()

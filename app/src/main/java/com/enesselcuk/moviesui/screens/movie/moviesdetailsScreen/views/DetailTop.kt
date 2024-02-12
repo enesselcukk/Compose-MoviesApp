@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.enesselcuk.moviesui.R
 import com.enesselcuk.moviesui.screens.movie.moviesdetailsScreen.DetailsViewModel
-import com.enesselcuk.moviesui.source.model.response.DetailResponse
+import com.enesselcuk.moviesui.data.model.response.DetailResponse
 
 @Composable
 fun DetailTop(

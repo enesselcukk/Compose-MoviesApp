@@ -32,8 +32,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.enesselcuk.moviesui.R
 import com.enesselcuk.moviesui.screens.movie.SharedViewModel
-import com.enesselcuk.moviesui.source.model.response.DetailResponse
-import com.enesselcuk.moviesui.source.model.response.TvDetailResponse
+import com.enesselcuk.moviesui.data.model.response.DetailResponse
+import com.enesselcuk.moviesui.data.model.response.TvDetailResponse
 import com.enesselcuk.moviesui.util.Constant
 import java.math.RoundingMode
 

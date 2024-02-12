@@ -2,9 +2,10 @@ package com.enesselcuk.moviesui.repos.reposRemote
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
 import com.enesselcuk.moviesui.TestCoroutineRule
-import com.enesselcuk.moviesui.source.model.response.MoviesResponse
-import com.enesselcuk.moviesui.source.model.response.Result
-import com.enesselcuk.moviesui.source.remote.MoviesService
+import com.enesselcuk.moviesui.data.repos.reposRemote.RepositoryImpl
+import com.enesselcuk.moviesui.data.model.response.MoviesResponse
+import com.enesselcuk.moviesui.data.model.response.Result
+import com.enesselcuk.moviesui.data.remote.MoviesService
 import com.enesselcuk.moviesui.util.NetworkResult
 import io.grpc.internal.SharedResourceHolder.Resource
 import io.mockk.MockKAnnotations

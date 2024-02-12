@@ -7,13 +7,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.enesselcuk.moviesui.domain.allMoviesAndTv.AllMoviesAndTvUseCase
-import com.enesselcuk.moviesui.repos.reposRemote.Repos
+import com.enesselcuk.moviesui.domain.useCase.allMoviesAndTv.AllMoviesAndTvUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import com.enesselcuk.moviesui.source.model.response.Result
+import com.enesselcuk.moviesui.data.model.response.Result
 import kotlinx.coroutines.flow.flowOf
 
 

@@ -2,8 +2,8 @@ package com.enesselcuk.moviesui.data.remote
 
 
 import com.enesselcuk.moviesui.unit.enqueueResponse
-import com.enesselcuk.moviesui.source.model.response.MoviesResponse
-import com.enesselcuk.moviesui.source.remote.MoviesService
+import com.enesselcuk.moviesui.data.model.response.MoviesResponse
+import com.enesselcuk.moviesui.data.remote.MoviesService
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.runBlocking

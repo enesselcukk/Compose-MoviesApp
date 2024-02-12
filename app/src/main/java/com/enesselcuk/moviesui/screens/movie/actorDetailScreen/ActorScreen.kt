@@ -30,7 +30,7 @@ import com.enesselcuk.moviesui.screens.movie.actorDetailScreen.view.ActorMoviesI
 import com.enesselcuk.moviesui.screens.movie.actorDetailScreen.view.ActorMoviesTitle
 import com.enesselcuk.moviesui.screens.movie.actorDetailScreen.view.ActorTvItems
 import com.enesselcuk.moviesui.screens.movie.actorDetailScreen.view.ActorTvTitle
-import com.enesselcuk.moviesui.source.model.response.ActorDetailResponse
+import com.enesselcuk.moviesui.data.model.response.ActorDetailResponse
 import com.enesselcuk.moviesui.util.Constant.IMAGE_BASE
 import com.enesselcuk.moviesui.util.dateCurrent
 

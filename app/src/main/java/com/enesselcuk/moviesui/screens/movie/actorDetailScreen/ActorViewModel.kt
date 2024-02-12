@@ -2,13 +2,12 @@ package com.enesselcuk.moviesui.screens.movie.actorDetailScreen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.enesselcuk.moviesui.domain.actor.ActorDetailUseCase
-import com.enesselcuk.moviesui.domain.actor.ActorMoviesUseCase
-import com.enesselcuk.moviesui.domain.actor.ActorTvUseCase
-import com.enesselcuk.moviesui.repos.reposRemote.Repos
-import com.enesselcuk.moviesui.source.model.response.ActorDetailResponse
-import com.enesselcuk.moviesui.source.model.response.ActorMoviesResponse
-import com.enesselcuk.moviesui.source.model.response.ActorTvResponse
+import com.enesselcuk.moviesui.domain.useCase.actor.ActorDetailUseCase
+import com.enesselcuk.moviesui.domain.useCase.actor.ActorMoviesUseCase
+import com.enesselcuk.moviesui.domain.useCase.actor.ActorTvUseCase
+import com.enesselcuk.moviesui.data.model.response.ActorDetailResponse
+import com.enesselcuk.moviesui.data.model.response.ActorMoviesResponse
+import com.enesselcuk.moviesui.data.model.response.ActorTvResponse
 import com.enesselcuk.moviesui.util.CustomNetwork.Companion.network
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

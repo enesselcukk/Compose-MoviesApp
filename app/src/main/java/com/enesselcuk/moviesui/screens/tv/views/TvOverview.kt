@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.enesselcuk.moviesui.source.model.response.TvDetailResponse
+import com.enesselcuk.moviesui.data.model.response.TvDetailResponse
 
 @Composable
 fun TvOverView(item: TvDetailResponse?) {

@@ -2,7 +2,7 @@ package com.enesselcuk.moviesui.di
 
 import android.content.Context
 import com.enesselcuk.moviesui.BuildConfig
-import com.enesselcuk.moviesui.source.remote.MoviesService
+import com.enesselcuk.moviesui.data.remote.MoviesService
 import com.enesselcuk.moviesui.util.Constant.BASE_URL
 import com.enesselcuk.moviesui.util.NetworkConnectionInterceptor
 import com.google.gson.Gson

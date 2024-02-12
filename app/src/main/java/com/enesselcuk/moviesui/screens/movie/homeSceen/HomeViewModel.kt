@@ -6,11 +6,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.enesselcuk.moviesui.domain.home.HomeTrendUseCase
-import com.enesselcuk.moviesui.domain.home.HomeUseCase
-import com.enesselcuk.moviesui.repos.reposRemote.Repos
-import com.enesselcuk.moviesui.source.model.response.MoviesResponse
-import com.enesselcuk.moviesui.source.model.response.TrendingResponse
+import com.enesselcuk.moviesui.domain.useCase.home.HomeTrendUseCase
+import com.enesselcuk.moviesui.domain.useCase.home.HomeUseCase
+import com.enesselcuk.moviesui.data.model.response.MoviesResponse
+import com.enesselcuk.moviesui.data.model.response.TrendingResponse
 import com.enesselcuk.moviesui.util.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,7 +20,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(private val homeUseCase: HomeUseCase,
-    private val homeTrendUseCase: HomeTrendUseCase) : ViewModel() {
+                                        private val homeTrendUseCase: HomeTrendUseCase
+) : ViewModel() {
 
     private val _getMoviesFlow = MutableStateFlow<MoviesResponse?>(null)
     val getMoviesFlow = _getMoviesFlow.asStateFlow()

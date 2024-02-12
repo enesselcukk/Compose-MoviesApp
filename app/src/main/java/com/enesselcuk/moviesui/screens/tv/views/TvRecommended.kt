@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import coil.compose.AsyncImage
 import com.enesselcuk.moviesui.screens.tv.TvDetailViewModel
-import com.enesselcuk.moviesui.source.model.response.TvRecommendationsResponse
+import com.enesselcuk.moviesui.data.model.response.TvRecommendationsResponse
 import com.enesselcuk.moviesui.util.Constant.IMAGE_BASE_W500
 import java.math.RoundingMode
 

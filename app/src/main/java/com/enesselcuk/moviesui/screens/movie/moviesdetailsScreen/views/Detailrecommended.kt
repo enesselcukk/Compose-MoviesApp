@@ -21,7 +21,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.enesselcuk.moviesui.screens.movie.moviesdetailsScreen.DetailsViewModel
-import com.enesselcuk.moviesui.source.model.response.MoviesResponse
+import com.enesselcuk.moviesui.data.model.response.MoviesResponse
 import com.enesselcuk.moviesui.util.Constant.IMAGE_BASE_W500
 import java.math.RoundingMode
 
@@ -82,7 +82,7 @@ private fun DetailRecommendedView(
 
 
 @Composable
-fun DetailRecommendedRow(item: MoviesResponse? = null,onClick: (id:Int) -> Unit) {
+fun DetailRecommendedRow(item: MoviesResponse? = null, onClick: (id:Int) -> Unit) {
     val viewModel = hiltViewModel<DetailsViewModel>()
     if (!item?.results.isNullOrEmpty()) viewModel.isVisible.value = true
 
