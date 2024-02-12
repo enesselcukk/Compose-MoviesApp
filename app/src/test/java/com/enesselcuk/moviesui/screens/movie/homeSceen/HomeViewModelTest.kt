@@ -6,6 +6,8 @@ import com.enesselcuk.moviesui.data.repos.reposRemote.RepositoryImpl
 import com.enesselcuk.moviesui.data.model.response.MoviesResponse
 import com.enesselcuk.moviesui.data.model.response.Result
 import com.enesselcuk.moviesui.data.remote.MoviesService
+import com.enesselcuk.moviesui.domain.useCase.home.HomeTrendUseCase
+import com.enesselcuk.moviesui.domain.useCase.home.HomeUseCase
 import com.enesselcuk.moviesui.util.NetworkResult
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
@@ -36,6 +38,12 @@ class HomeViewModelTest {
     @Mock
     lateinit var mainRepos: RepositoryImpl
 
+    @Mock
+    lateinit var homeUseCase: HomeUseCase
+
+    @Mock
+    lateinit var homeTrendUseCase: HomeTrendUseCase
+
     lateinit var homeViewModel: HomeViewModel
 
     lateinit var service: MoviesService
@@ -45,7 +53,9 @@ class HomeViewModelTest {
         service = mockk()
         MockKAnnotations.init(this)
         mainRepos = RepositoryImpl(service)
-        homeViewModel = HomeViewModel(mainRepos)
+        homeUseCase = HomeUseCase(mainRepos)
+        homeTrendUseCase = HomeTrendUseCase(mainRepos)
+        homeViewModel = HomeViewModel(homeUseCase,homeTrendUseCase)
     }
 
 

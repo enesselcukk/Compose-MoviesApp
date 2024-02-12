@@ -119,7 +119,7 @@ class RepositoryImplTest {
     }
 
 
-    private val createFakeMoviesResponseList = listOf<MoviesResponse>(
+    private val createFakeGameItemList = listOf<MoviesResponse>(
         MoviesResponse(
             1, 1, listOf(
                 Result(
