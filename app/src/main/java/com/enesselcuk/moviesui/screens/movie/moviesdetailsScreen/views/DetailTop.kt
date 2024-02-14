@@ -25,7 +25,8 @@ import com.enesselcuk.moviesui.data.model.response.DetailResponse
 
 @Composable
 fun DetailTop(
-    movies: DetailResponse?, isLiked: Boolean,
+    movies: DetailResponse?,
+    isLiked: Boolean,
     onClick: (playerId: Int) -> Unit,
     viewModel: DetailsViewModel
 ) {

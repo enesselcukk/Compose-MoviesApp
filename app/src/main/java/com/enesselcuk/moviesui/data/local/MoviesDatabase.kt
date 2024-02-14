@@ -15,7 +15,7 @@ import com.enesselcuk.moviesui.data.model.response.TvDetailResponse
         MoviesResponse::class,
         DetailResponse::class,
         TvDetailResponse::class],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 @TypeConverters(Converters::class)

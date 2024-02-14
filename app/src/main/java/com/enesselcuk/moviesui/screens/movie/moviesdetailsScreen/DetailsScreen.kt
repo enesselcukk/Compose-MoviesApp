@@ -58,7 +58,7 @@ fun DetailsScreen(
     val dataRecommended = viewModel.detailRecommended.collectAsStateWithLifecycle()
     val getLikedResponse = viewModel.getFlowFavorite.collectAsStateWithLifecycle()
 
-    val likedItem = getLikedResponse.value?.find { it.title == data.value?.title }
+    val likedItem = getLikedResponse.value?.find { it.id == data.value?.id }
     isLiked.value = likedItem != null
 
     Column(
