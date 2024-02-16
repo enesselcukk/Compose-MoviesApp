@@ -1,7 +1,7 @@
 package com.enesselcuk.moviesui.screens
 
 import android.annotation.SuppressLint
-import android.os.Build
+
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -43,15 +43,12 @@ import kotlinx.coroutines.launch
 class MainActivity : ComponentActivity() {
 
     @SuppressLint("CoroutineCreationDuringComposition")
-    @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
 
             val scope = rememberCoroutineScope()
             val scopeTheme = rememberSaveable { mutableStateOf(false) }
-
-           // scopeTheme.value = isSystemInDarkTheme()
 
             scope.launch {
                 baseContext.dataStore.data.collectLatest {
@@ -64,20 +61,16 @@ class MainActivity : ComponentActivity() {
             }
 
             MoviesUiTheme(darkTheme = scopeTheme.value) {
-                val navController = rememberNavController()
                 Surface(color = Color.White) {
+                    val navController = rememberNavController()
                     Scaffold(
                         topBar = {
-                            TopBar(
-                                backScreenClick = { navController.popBackStack() },
-                                navController = navController
-                            )
+                            TopBar(backScreenClick = { navController.popBackStack() },)
                         },
                         bottomBar = {
-                            BottomNavigationBar(
-                                navController = navController
-                            )
-                        }, content = { padding ->
+                            BottomNavigationBar(navController = navController)
+                        },
+                        content = { padding ->
                             NavHostContainer(
                                 navController = navController,
                                 paddingValues = padding
@@ -92,10 +85,9 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun BottomNavigationBar(
-    navController: NavHostController? = NavHostController(LocalContext.current),
-    sharedViewModel: SharedViewModel = hiltViewModel(),
+    navController: NavHostController? = NavHostController(LocalContext.current)
 ) {
-
+    val sharedViewModel = hiltViewModel<SharedViewModel>()
     if (sharedViewModel.isBottomNavVisible.value) {
         NavigationBar(
             modifier = Modifier
@@ -144,12 +136,10 @@ fun BottomNavigationBar(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBar(
-    navController: NavHostController,
     backScreenClick: (() -> Unit)? = null,
-    sharedViewModel: SharedViewModel = hiltViewModel()
 ) {
+    val sharedViewModel = hiltViewModel<SharedViewModel>()
     val isMenu = rememberSaveable { mutableStateOf(false) }
-
     if (sharedViewModel.isTopVisible.value) {
         TopAppBar(
             modifier = Modifier

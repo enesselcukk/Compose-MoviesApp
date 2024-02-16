@@ -38,7 +38,7 @@ import com.enesselcuk.moviesui.util.Constant
 import java.math.RoundingMode
 
 
-@RequiresApi(Build.VERSION_CODES.N)
+
 @Composable
 fun LikedScreen(
     isVisibleTopBar: (Boolean) -> Unit,
@@ -166,7 +166,7 @@ fun ToggleMovieOrTv(
 }
 
 
-@RequiresApi(Build.VERSION_CODES.N)
+
 @Composable
 fun LikedScreenView(
     onClick: () -> Unit,
@@ -185,18 +185,20 @@ fun LikedScreenView(
     ConstraintLayout(modifier = Modifier.clickable {
         onClick.invoke()
 
-        if (sharedViewModel.isChooseClick.value) {
-            if (change.value) {
-                viewModel.chooseList.add(id)
-                viewModel.chooseListTv.add(id)
-                change.value = false
-            } else {
-                viewModel.chooseList.removeIf { it == id }
-                viewModel.chooseListTv.removeIf { it == id }
-                change.value = true
-            }
-        } else {
+        when {
+            sharedViewModel.isChooseClick.value -> {
+                if (change.value) {
+                    viewModel.chooseList.add(id)
+                    viewModel.chooseListTv.add(id)
+                    change.value = false
+                } else {
+                    viewModel.chooseList.removeAll { it == id }
+                    viewModel.chooseListTv.removeAll { it == id }
+                    change.value = true
+                }
+            }else -> {
             onClickNav.invoke(id)
+            }
         }
 
     }) {
@@ -257,7 +259,7 @@ fun LikedScreenView(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.N)
+
 @Composable
 fun LikedScreenItemsMovies(
     detailResponse: List<DetailResponse>?,
@@ -287,7 +289,7 @@ fun LikedScreenItemsMovies(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.N)
+
 @Composable
 fun LikedScreenItemsTv(
     detailResponse: List<TvDetailResponse>?,

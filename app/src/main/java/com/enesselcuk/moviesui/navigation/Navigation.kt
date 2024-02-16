@@ -45,14 +45,12 @@ import com.enesselcuk.moviesui.util.NavigationItem.TV_ID
 import com.enesselcuk.moviesui.util.Screen
 
 
-@RequiresApi(Build.VERSION_CODES.N)
 @Composable
 fun NavHostContainer(
-    navController: NavHostController = rememberNavController(),
-    paddingValues: PaddingValues,
-    viewModel: MainViewModel = hiltViewModel(),
-    sharedViewModel: SharedViewModel = hiltViewModel()
+    navController: NavHostController,
+    paddingValues: PaddingValues
 ) {
+    val sharedViewModel = hiltViewModel<SharedViewModel>()
     NavHost(navController = navController,
         startDestination = SPLASH,
         modifier = Modifier.padding(paddingValues = paddingValues),
@@ -229,7 +227,7 @@ fun NavHostContainer(
             }
 
             composable(PLAYER_ID) {
-                MoviesOrTvScreenPlayer(sharedViewModel)
+                //MoviesOrTvScreenPlayer(sharedViewModel)
             }
 
 /*
