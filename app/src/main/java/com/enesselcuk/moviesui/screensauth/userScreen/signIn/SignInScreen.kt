@@ -37,15 +37,16 @@ import kotlinx.coroutines.launch
 
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
-fun SignInViewTmdb(
+fun SignInScreen(
     isTopBarVisibility: (visible: Boolean) -> Unit,
-    viewModel: SignInTmdbViewModel = hiltViewModel(),
     goHome: () -> Unit,
     goSignUp: () -> Unit,
     isBottomVisible: (visible: Boolean) -> Unit
 ) {
-    var emailValue = rememberSaveable { mutableStateOf("") }
-    var passwordValue = rememberSaveable { mutableStateOf("") }
+
+    val signInViewModel = hiltViewModel<SignInViewModel>()
+    val emailValue = rememberSaveable { mutableStateOf("") }
+    val passwordValue = rememberSaveable { mutableStateOf("") }
     val passwordVisible = rememberSaveable { mutableStateOf(false) }
     val checked = rememberSaveable { mutableStateOf(false) }
     val isLoading = rememberSaveable { mutableStateOf(false) }
@@ -53,8 +54,8 @@ fun SignInViewTmdb(
     isTopBarVisibility.invoke(false)
     isBottomVisible.invoke(false)
 
-    var context = LocalContext.current
-    val loginObserver by viewModel.loginStateFlow.collectAsStateWithLifecycle()
+    val context = LocalContext.current
+    val loginObserver by signInViewModel.loginStateFlow.collectAsStateWithLifecycle()
     val dataStoreRemember = rememberCoroutineScope()
 
     when (loginObserver) {
@@ -168,8 +169,7 @@ fun SignInViewTmdb(
 
         OutlinedButton(
             onClick = {
-                val auth: FirebaseAuth = Firebase.auth
-                viewModel.login(emailValue.value, passwordValue.value, auth)
+                signInViewModel.login(emailValue.value, passwordValue.value)
             },
             modifier = Modifier
                 .fillMaxWidth()

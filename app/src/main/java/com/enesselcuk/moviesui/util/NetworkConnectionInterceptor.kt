@@ -5,25 +5,17 @@ import okhttp3.Response
 
 class NetworkConnectionInterceptor : Interceptor {
 
-    var token : String = ""
-
-    fun token(token: String ) {
-        this.token = token
-    }
-
     override fun intercept(chain: Interceptor.Chain): Response {
         var request = chain.request()
-
-        if(request.header("No-Authentication")==null){
-            //val token = getTokenFromSharedPreference();
-            //or use Token Function
-            if(!token.isNullOrEmpty())
-            {
-                val finalToken = "Bearer $token"
-                request = request.newBuilder()
-                    .addHeader("Authorization",finalToken)
-                    .build()
-            }
+        try {
+            request = request.newBuilder()
+                .addHeader("Accept","application/json")
+                .addHeader("Content-Type","application/json")
+                .addHeader("Authorization","Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3ZDc3OWMxZTdhMjAyZDJhYTRlMjBlYjkwYTY3NTQ4ZSIsInN1YiI6IjYxYzQ5NmFhY2FlMTdjMDBjNjg3MWJhZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.muSTAiNlUaJg92Pg06C6q2ImYmYjK0onTdPl-srkfIQ")
+                .build()
+        }
+        catch (ex:Exception){
+            val exception = ex
         }
         return chain.proceed(request)
     }

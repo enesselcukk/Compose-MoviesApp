@@ -27,7 +27,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideOkhttpClient(@ApplicationContext context: Context): OkHttpClient {
+    fun provideOkhttpClient(): OkHttpClient {
         val httpLoggingInterceptor = HttpLoggingInterceptor().apply {
             level = if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY
             else HttpLoggingInterceptor.Level.NONE

@@ -37,12 +37,12 @@ import java.nio.charset.StandardCharsets
 import java.util.*
 
 
-@RequiresApi(Build.VERSION_CODES.O)
+
 @Composable
 fun MoviesOrTvScreenPlayer(
-    sharedViewModel: SharedViewModel,
-    playerViewModel: PlayerViewModel = hiltViewModel()
+    sharedViewModel: SharedViewModel
 ) {
+    val playerViewModel = hiltViewModel<PlayerViewModel>()
     val playerId = sharedViewModel.playerId.value
 
     Column(
@@ -50,16 +50,11 @@ fun MoviesOrTvScreenPlayer(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxSize()
     ) {
-
-
+        val context = LocalContext.current
+        val exoPlayer = ExoPlayer.Builder(context).build()
+     //   val mediaItem  = MediaItem.fromUri()
 
     }
-}
-
-
-@Composable
-fun YouTubePlayer(videoUrl: String) {
-
 }
 
 

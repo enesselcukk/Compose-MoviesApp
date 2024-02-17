@@ -11,26 +11,16 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SignInTmdbViewModel @Inject constructor() : ViewModel() {
+class SignInViewModel @Inject constructor() : ViewModel() {
 
     private val _loginStateFlow = MutableStateFlow<SignTmdbInState>(SignTmdbInState.Initial)
     val loginStateFlow = _loginStateFlow.asStateFlow()
 
 
-    fun login(userName: String, password: String, auth: FirebaseAuth?) {
+    fun login(userName: String, password: String) {
         viewModelScope.launch {
             _loginStateFlow.value = SignTmdbInState.Loading
-            auth?.signInWithEmailAndPassword(userName, password)?.addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val user = auth.currentUser
-                    if (user != null) {
-                        _loginStateFlow.value = SignTmdbInState.Success(auth)
-                    }
-                } else {
-                    _loginStateFlow.value =
-                        SignTmdbInState.Failure("Giriş Bilgilerinizi Doğru Giriniz.")
-                }
-            }
+
         }
     }
 }
