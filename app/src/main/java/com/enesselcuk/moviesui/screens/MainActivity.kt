@@ -5,7 +5,6 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -16,7 +15,6 @@ import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,12 +30,8 @@ import com.enesselcuk.moviesui.R
 import com.enesselcuk.moviesui.navigation.NavHostContainer
 import com.enesselcuk.moviesui.screens.movie.SharedViewModel
 import com.enesselcuk.moviesui.ui.theme.MoviesUiTheme
-import com.enesselcuk.moviesui.util.PreferencesDataStoreStatus
-import com.enesselcuk.moviesui.util.PreferencesDataStoreStatus.dataStore
 import com.enesselcuk.moviesui.util.bottomNavItem
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -45,24 +39,14 @@ class MainActivity : ComponentActivity() {
     @SuppressLint("CoroutineCreationDuringComposition")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
+            val mainViewModel = hiltViewModel<MainViewModel>()
 
-            val scope = rememberCoroutineScope()
-            val scopeTheme = rememberSaveable { mutableStateOf(false) }
-
-            scope.launch {
-                baseContext.dataStore.data.collectLatest {
-                    when (it[PreferencesDataStoreStatus.dataStoreDarkKey]) {
-                        true -> scopeTheme.value = true
-                        false -> scopeTheme.value = false
-                        else ->  scopeTheme.value
-                    }
-                }
-            }
-
-            MoviesUiTheme(darkTheme = scopeTheme.value) {
-                Surface(color = Color.White) {
+            MoviesUiTheme(darkTheme = mainViewModel.getTheme()) {
+                Surface(color = Color.Black) {
                     val navController = rememberNavController()
+
                     Scaffold(
                         topBar = {
                             TopBar(backScreenClick = { navController.popBackStack() },)
@@ -73,7 +57,7 @@ class MainActivity : ComponentActivity() {
                         content = { padding ->
                             NavHostContainer(
                                 navController = navController,
-                                paddingValues = padding
+                                paddingValues = padding,
                             )
                         })
                 }

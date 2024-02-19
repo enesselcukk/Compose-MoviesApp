@@ -14,6 +14,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.enesselcuk.moviesui.datastore.LocalDataStore
 import com.enesselcuk.moviesui.screens.MainViewModel
 import com.enesselcuk.moviesui.screens.likedScreen.LikedScreen
 import com.enesselcuk.moviesui.screens.movie.SharedViewModel
@@ -48,7 +49,7 @@ import com.enesselcuk.moviesui.util.Screen
 @Composable
 fun NavHostContainer(
     navController: NavHostController,
-    paddingValues: PaddingValues
+    paddingValues: PaddingValues,
 ) {
     val sharedViewModel = hiltViewModel<SharedViewModel>()
     NavHost(navController = navController,

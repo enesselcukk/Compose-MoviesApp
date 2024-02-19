@@ -24,10 +24,8 @@ import androidx.constraintlayout.compose.Dimension
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.enesselcuk.moviesui.screens.searchScreen.SearchViewModel
-import com.enesselcuk.moviesui.ui.theme.MoviesUiTheme
-import com.enesselcuk.moviesui.util.Constant
 import com.enesselcuk.moviesui.util.Constant.IMAGE_BASE
-import com.enesselcuk.moviesui.util.Constant.IMAGE_BASE_W500
+
 
 
 @Composable

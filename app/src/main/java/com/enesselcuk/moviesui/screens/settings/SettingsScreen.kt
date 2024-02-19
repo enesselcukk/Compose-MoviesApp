@@ -1,9 +1,7 @@
 package com.enesselcuk.moviesui.screens.settings
 
 import android.annotation.SuppressLint
-import android.content.Context
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,14 +12,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.enesselcuk.moviesui.screens.movie.SharedViewModel
-import com.enesselcuk.moviesui.util.PreferencesDataStoreStatus
-import com.enesselcuk.moviesui.util.PreferencesDataStoreStatus.dataStore
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @Composable
@@ -33,9 +27,10 @@ fun SettingsScreen(
     isActionInTopBar: (isVisible: Boolean) -> Unit,
     isChooseLiked: (isVisible: Boolean) -> Unit,
     isVisibleSettings: (isVisible: Boolean) -> Unit,
-    sharedViewModel: SharedViewModel,
-    viewModel: SettingsViewModel = hiltViewModel()
+    sharedViewModel: SharedViewModel
 ) {
+
+    val viewModel =  hiltViewModel<SettingsViewModel>()
     isVisibleBottom.invoke(false)
     isVisibleTopBar.invoke(true)
     isVisibleTopBarBack.invoke(true)
@@ -45,24 +40,24 @@ fun SettingsScreen(
     isVisibleSettings.invoke(true)
     sharedViewModel.isGoSettings.value = false
 
+
+
     Column(
         verticalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterVertically),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        ThemeStatus(viewModel = viewModel)
-        LanguageAndThemeView(contentTheme = {
-        }, viewModel = viewModel)
+        LanguageAndThemeView(viewModel = viewModel)
     }
 }
 
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun LanguageAndThemeView(
-    contentTheme: (isChange: Boolean) -> Unit,
-    context: Context = LocalContext.current,
-    viewModel: SettingsViewModel
+    viewModel: SettingsViewModel,
 ) {
     val composableScope = rememberCoroutineScope()
+
+    viewModel.themeChange.value = viewModel.getTheme()
 
     ConstraintLayout(
         modifier = Modifier
@@ -100,9 +95,11 @@ fun LanguageAndThemeView(
                     viewModel.themeChange.value = !viewModel.themeChange.value
                     composableScope.launch {
                         if (viewModel.themeChange.value) {
-                            PreferencesDataStoreStatus.status(context, true)
+                            viewModel.putTheme("theme", true)
+                            //  PreferencesDataStoreStatus.status(context, true)
                         } else {
-                            PreferencesDataStoreStatus.status(context, false)
+                            viewModel.putTheme("theme", false)
+                            // PreferencesDataStoreStatus.status(context, false)
                         }
                     }
                 })
@@ -117,24 +114,5 @@ fun LanguageAndThemeView(
 
 
     }
-}
-
-@SuppressLint("CoroutineCreationDuringComposition")
-@Composable
-fun ThemeStatus(context: Context = LocalContext.current, viewModel: SettingsViewModel) {
-    val rememberScope = rememberCoroutineScope()
-
-    rememberScope.launch {
-        context.dataStore.data.collectLatest {
-            when (it[PreferencesDataStoreStatus.dataStoreDarkKey]) {
-                true -> viewModel.themeChange.value = true
-                false -> viewModel.themeChange.value = false
-                else -> viewModel.themeChange.value = false
-
-            }
-        }
-    }
-
-
 }
 
