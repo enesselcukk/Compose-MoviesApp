@@ -23,4 +23,6 @@ class SharedViewModel @Inject constructor() : ViewModel() {
 
     val playerId = mutableStateOf(0)
 
+    val themeChange = mutableStateOf(false)
+
 }

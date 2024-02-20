@@ -29,4 +29,17 @@ class PreferencesDataStoreImpl @Inject constructor(private val context: Context)
         }.firstOrNull()
     }
 
+    override suspend fun remove(key: String) {
+        val dataStoreDarkKey = booleanPreferencesKey(key)
+        context.dataStore.edit {
+            it.remove(dataStoreDarkKey)
+        }
+    }
+
+    override suspend fun clear() {
+        context.dataStore.edit {
+            it.clear()
+        }
+    }
+
 }

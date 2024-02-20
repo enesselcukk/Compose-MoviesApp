@@ -24,4 +24,16 @@ class SettingsViewModel @Inject constructor(private val localDataStore: LocalDat
             localDataStore.putBoolean(key,value)
         }
     }
+
+    fun remove(key: String){
+        viewModelScope.launch {
+            localDataStore.remove(key)
+        }
+    }
+
+    fun clear(){
+        viewModelScope.launch{
+            localDataStore.clear()
+        }
+    }
 }

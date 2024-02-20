@@ -43,7 +43,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             val mainViewModel = hiltViewModel<MainViewModel>()
 
-            MoviesUiTheme(darkTheme = mainViewModel.getTheme()) {
+              MoviesUiTheme(darkTheme = mainViewModel.getTheme()) {
                 Surface(color = Color.Black) {
                     val navController = rememberNavController()
 

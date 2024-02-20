@@ -6,10 +6,20 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -27,10 +37,10 @@ fun SettingsScreen(
     isActionInTopBar: (isVisible: Boolean) -> Unit,
     isChooseLiked: (isVisible: Boolean) -> Unit,
     isVisibleSettings: (isVisible: Boolean) -> Unit,
-    sharedViewModel: SharedViewModel
+    sharedViewModel: SharedViewModel,
 ) {
 
-    val viewModel =  hiltViewModel<SettingsViewModel>()
+    val viewModel = hiltViewModel<SettingsViewModel>()
     isVisibleBottom.invoke(false)
     isVisibleTopBar.invoke(true)
     isVisibleTopBarBack.invoke(true)
@@ -39,8 +49,6 @@ fun SettingsScreen(
     isChooseLiked.invoke(true)
     isVisibleSettings.invoke(true)
     sharedViewModel.isGoSettings.value = false
-
-
 
     Column(
         verticalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterVertically),
@@ -94,19 +102,28 @@ fun LanguageAndThemeView(
                 .clickable {
                     viewModel.themeChange.value = !viewModel.themeChange.value
                     composableScope.launch {
-                        if (viewModel.themeChange.value) {
-                            viewModel.putTheme("theme", true)
-                            //  PreferencesDataStoreStatus.status(context, true)
-                        } else {
-                            viewModel.putTheme("theme", false)
-                            // PreferencesDataStoreStatus.status(context, false)
-                        }
+
                     }
                 })
 
-        Text(
-            text = if (viewModel.themeChange.value) "Dark" else "Light",
-            color = MaterialTheme.colorScheme.onSurface,
+        Switch(
+            checked = viewModel.themeChange.value,
+            onCheckedChange = {
+                viewModel.themeChange.value = it
+                when {
+                    viewModel.themeChange.value -> viewModel.putTheme("theme", true)
+                    else -> viewModel.putTheme("theme", false)
+                }
+            },
+            thumbContent = {
+                if (viewModel.themeChange.value) {
+                    Icon(
+                        imageVector = Icons.Filled.Check,
+                        contentDescription = null,
+                        modifier = Modifier.size(SwitchDefaults.IconSize),
+                    )
+                }
+            },
             modifier = Modifier.constrainAs(themeName) {
                 top.linkTo(languageName.bottom, 15.dp)
                 end.linkTo(parent.end)

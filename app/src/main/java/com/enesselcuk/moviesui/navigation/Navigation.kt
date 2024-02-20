@@ -161,7 +161,7 @@ fun NavHostContainer(
                     isActionInTopBar = { sharedViewModel.isActionInTopBar.value = it },
                     isChooseLiked = { sharedViewModel.isSelect.value = it },
                     isVisibleSettings = { sharedViewModel.isVisibleSetting.value = it },
-                    sharedViewModel = sharedViewModel
+                    sharedViewModel = sharedViewModel,
                 )
             }
 

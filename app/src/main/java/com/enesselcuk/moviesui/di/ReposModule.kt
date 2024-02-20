@@ -22,22 +22,15 @@ import javax.inject.Singleton
 @[Module InstallIn(SingletonComponent::class)]
 object ReposModule {
 
-    @Provides
-    fun provideContext(
-        @ApplicationContext context: Context,
-    ): Context {
-        return context
-    }
-
-
     @Singleton
      fun provideRepository(api: MoviesService) = RepositoryImpl(api)
 
     @Singleton
      fun provideRepositoryLocal(database: MoviesDatabase) = RepositoryLocalImpl(database)
 
+    @Provides
     @Singleton
-     fun preferencesDataStore(context: Context) = PreferencesDataStoreImpl(context)
+     fun preferencesDataStore(@ApplicationContext context: Context) = PreferencesDataStoreImpl(context)
 
 
 }
