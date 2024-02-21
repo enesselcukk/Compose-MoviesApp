@@ -9,12 +9,12 @@ plugins {
 
 android {
     namespace 'com.enesselcuk.moviesui'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.enesselcuk.moviesui"
         minSdk 21
-        targetSdk 32
+        targetSdk 34
         versionCode 1
         versionName "1.0"
 
@@ -173,9 +173,16 @@ kapt {
     correctErrorTypes true
 }
 
+import org.apache.tools.ant.taskdefs.condition.Os
+def archSuffix = Os.isFamily(Os.FAMILY_MAC) ? ':osx-x86_64' : ''
 protobuf {
     protoc {
-        artifact = "com.google.protobuf:protoc:3.14.0"
+        artifact = "com.google.protobuf:protoc:3.20.1$archSuffix"
+    }
+    plugins {
+        javalite {
+            artifact = "com.google.protobuf:protoc-gen-javalite:3.0.0$archSuffix"
+        }
     }
     generateProtoTasks {
         all().each { task ->

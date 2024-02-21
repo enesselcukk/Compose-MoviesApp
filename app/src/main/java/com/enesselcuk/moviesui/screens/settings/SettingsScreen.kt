@@ -96,7 +96,7 @@ fun LanguageAndThemeView(
             color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier
                 .constrainAs(theme) {
-                    top.linkTo(language.bottom, 15.dp)
+                    top.linkTo(language.bottom, 25.dp)
                     start.linkTo(parent.start)
                 }
                 .clickable {
@@ -111,8 +111,8 @@ fun LanguageAndThemeView(
             onCheckedChange = {
                 viewModel.themeChange.value = it
                 when {
-                    viewModel.themeChange.value -> viewModel.putTheme("theme", true)
-                    else -> viewModel.putTheme("theme", false)
+                    viewModel.themeChange.value -> viewModel.putTheme(true)
+                    else -> viewModel.putTheme(false)
                 }
             },
             thumbContent = {
@@ -128,8 +128,6 @@ fun LanguageAndThemeView(
                 top.linkTo(languageName.bottom, 15.dp)
                 end.linkTo(parent.end)
             })
-
-
     }
 }
 

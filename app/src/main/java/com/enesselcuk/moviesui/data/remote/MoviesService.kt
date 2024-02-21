@@ -10,7 +10,6 @@ import com.enesselcuk.moviesui.data.model.response.MoviesResponse
 import com.enesselcuk.moviesui.data.model.response.TrendingResponse
 import com.enesselcuk.moviesui.data.model.response.TvDetailResponse
 import com.enesselcuk.moviesui.data.model.response.TvRecommendationsResponse
-import com.enesselcuk.moviesui.util.Constant.API_KEY
 import com.enesselcuk.moviesui.util.NetworkResult
 import retrofit2.Response
 import retrofit2.http.*

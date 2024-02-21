@@ -47,7 +47,6 @@ fun SplashScreen(
             }
     }
 
-
     UiObserver(goHome = { goHome.invoke() }, goLogin = { goLogin.invoke() })
 
 }

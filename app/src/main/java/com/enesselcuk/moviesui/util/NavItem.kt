@@ -42,6 +42,7 @@ object NavigationItem {
     const val SETTINGS = "settings"
     const val PLAYER = "player"
     const val PLAYER_ID = "playersId"
+    const val AUTH_SIGN = "authSign"
 }
 
 sealed class Screen(val route: String) {

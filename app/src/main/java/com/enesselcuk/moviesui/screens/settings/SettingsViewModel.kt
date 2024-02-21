@@ -4,36 +4,27 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.enesselcuk.moviesui.datastore.LocalDataStore
+import com.enesselcuk.moviesui.domain.useCase.datastore.DataStoreUseCase
+import com.enesselcuk.moviesui.util.Constant
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SettingsViewModel @Inject constructor(private val localDataStore: LocalDataStore) : ViewModel() {
+class SettingsViewModel @Inject constructor(private val localDataStoreUseCase: DataStoreUseCase) : ViewModel() {
     val themeChange = mutableStateOf(false)
     private val theme = mutableStateOf(false)
     fun getTheme():Boolean{
         viewModelScope.launch {
-            theme.value = localDataStore.getBoolean("theme") == true
+            theme.value = localDataStoreUseCase.invoke(Constant.THEME_KEY) == true
         }
         return theme.value
     }
 
-    fun putTheme(key:String,value:Boolean){
+    fun putTheme(value:Boolean){
         viewModelScope.launch {
-            localDataStore.putBoolean(key,value)
+           localDataStoreUseCase.invoke(Constant.THEME_KEY,value)
         }
     }
 
-    fun remove(key: String){
-        viewModelScope.launch {
-            localDataStore.remove(key)
-        }
-    }
-
-    fun clear(){
-        viewModelScope.launch{
-            localDataStore.clear()
-        }
-    }
 }

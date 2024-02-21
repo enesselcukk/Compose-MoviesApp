@@ -84,11 +84,7 @@ fun SignInScreen(
             Toast.makeText(context, fail, Toast.LENGTH_SHORT).show()
             isLoading.value = false
         }
-        else -> {}
     }
-
-
-
 
     Column(
         verticalArrangement = Arrangement.SpaceAround,
@@ -119,7 +115,7 @@ fun SignInScreen(
             shape = RoundedCornerShape(3.dp),
             value = emailValue.value,
             onValueChange = { emailValue.value = it },
-            label = { Text(text = "Email") },
+            label = { Text(text = "User Name") },
             leadingIcon = {
                 Icon(painter = painterResource(id = R.drawable.person), contentDescription = "")
             },
