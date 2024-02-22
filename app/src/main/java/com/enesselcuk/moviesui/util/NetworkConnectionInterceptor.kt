@@ -13,6 +13,8 @@ class NetworkConnectionInterceptor : Interceptor {
                 .addHeader("Content-Type","application/json")
                 .addHeader("Authorization","Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3ZDc3OWMxZTdhMjAyZDJhYTRlMjBlYjkwYTY3NTQ4ZSIsInN1YiI6IjYxYzQ5NmFhY2FlMTdjMDBjNjg3MWJhZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.muSTAiNlUaJg92Pg06C6q2ImYmYjK0onTdPl-srkfIQ")
                 .build()
+
+
         }
         catch (ex:Exception){
             val exception = ex

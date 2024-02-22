@@ -30,6 +30,7 @@ import com.enesselcuk.moviesui.R
 import com.enesselcuk.moviesui.navigation.NavHostContainer
 import com.enesselcuk.moviesui.screens.movie.SharedViewModel
 import com.enesselcuk.moviesui.ui.theme.MoviesUiTheme
+import com.enesselcuk.moviesui.util.ChuckerHelper
 import com.enesselcuk.moviesui.util.bottomNavItem
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -39,6 +40,8 @@ class MainActivity : ComponentActivity() {
     @SuppressLint("CoroutineCreationDuringComposition")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        ChuckerHelper.create(baseContext)
 
         setContent {
             val mainViewModel = hiltViewModel<MainViewModel>()
