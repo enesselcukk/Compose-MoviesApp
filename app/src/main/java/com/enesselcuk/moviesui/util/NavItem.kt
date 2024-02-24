@@ -1,6 +1,7 @@
 package com.enesselcuk.moviesui.util
 
 import com.enesselcuk.moviesui.R
+import com.enesselcuk.moviesui.util.NavigationItem.AUTH_SIGN
 import com.enesselcuk.moviesui.util.NavigationItem.HOME
 import com.enesselcuk.moviesui.util.NavigationItem.LIKED
 import com.enesselcuk.moviesui.util.NavigationItem.MOVIES_NAME
@@ -43,6 +44,7 @@ object NavigationItem {
     const val PLAYER = "player"
     const val PLAYER_ID = "playersId"
     const val AUTH_SIGN = "authSign"
+    const val BOTTOM_SHEET = "bottom"
 }
 
 sealed class Screen(val route: String) {
@@ -51,6 +53,6 @@ sealed class Screen(val route: String) {
     object PEOPLE : Screen(route = "people_detail/{$PEOPLE_DETAIL}")
     object TvDetail : Screen("tvDetail/{$TV_ID}")
     object Player : Screen(route = "player_Id/${PLAYER_ID}")
-
+    object Auth : Screen(route = "AuthLogin/{${AUTH_SIGN}}")
 
 }

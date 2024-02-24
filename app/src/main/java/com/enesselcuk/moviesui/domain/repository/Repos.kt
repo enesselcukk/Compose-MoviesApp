@@ -36,7 +36,7 @@ interface Repos {
     suspend fun getTvDetail(id:Int,language: String?):Flow<NetworkResult<TvDetailResponse>>
     suspend fun getTvRecommendations(id: Int,language: String?,page: Int?):Flow<NetworkResult<TvRecommendationsResponse>>
 
-  //  suspend fun createToken():Flow<NetworkResult<Response<CreateRequestToken>>>
+    suspend fun createToken():Flow<NetworkResult<CreateRequestToken>>
 
 
 }

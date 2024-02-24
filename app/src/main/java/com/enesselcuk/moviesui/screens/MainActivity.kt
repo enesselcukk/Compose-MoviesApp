@@ -1,7 +1,9 @@
 package com.enesselcuk.moviesui.screens
 
 import android.annotation.SuppressLint
-
+import android.app.PendingIntent
+import android.app.TaskStackBuilder
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -22,6 +24,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -32,6 +35,7 @@ import com.enesselcuk.moviesui.screens.movie.SharedViewModel
 import com.enesselcuk.moviesui.ui.theme.MoviesUiTheme
 import com.enesselcuk.moviesui.util.bottomNavItem
 import dagger.hilt.android.AndroidEntryPoint
+import android.net.Uri
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -43,13 +47,13 @@ class MainActivity : ComponentActivity() {
         setContent {
             val mainViewModel = hiltViewModel<MainViewModel>()
 
-              MoviesUiTheme(darkTheme = mainViewModel.getTheme()) {
+            MoviesUiTheme(darkTheme = mainViewModel.getTheme()) {
                 Surface(color = Color.Black) {
                     val navController = rememberNavController()
 
                     Scaffold(
                         topBar = {
-                            TopBar(backScreenClick = { navController.popBackStack() },)
+                            TopBar(backScreenClick = { navController.popBackStack() })
                         },
                         bottomBar = {
                             BottomNavigationBar(navController = navController)

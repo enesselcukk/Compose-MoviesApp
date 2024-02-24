@@ -1,8 +1,10 @@
 package com.enesselcuk.moviesui.data.repos.reposRemote
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import com.enesselcuk.moviesui.data.model.authresponse.CreateRequestToken
 import com.enesselcuk.moviesui.data.model.response.ActorDetailResponse
 import com.enesselcuk.moviesui.data.model.response.ActorMoviesResponse
 import com.enesselcuk.moviesui.data.model.response.ActorTvResponse
@@ -156,13 +158,11 @@ class RepositoryImpl @Inject constructor(
         emit(NetworkResult.Success(response))
     }.catch { emit(NetworkResult.Error(it.message)) }.flowOn(Dispatchers.IO)
 
-
-/*    override suspend fun createToken(): Flow<NetworkResult<NetworkResult<Response<CreateRequestToken>>>> = flow {
+    override suspend fun createToken(): Flow<NetworkResult<CreateRequestToken>> = flow {
         emit(NetworkResult.Loading())
-        val responseToken = remoteDataSource.createToken()
-        emit(NetworkResult.Success(responseToken))
-    }.catch { emit(NetworkResult.Error(it.message)) }.flowOn(Dispatchers.IO)*/
-
+        val response = remoteDataSource.createToken()
+        emit(NetworkResult.Success(response))
+    }.catch { emit(NetworkResult.Error(it.message)) }.flowOn(Dispatchers.IO)
 
     companion object {
         const val NETWORK_PAGE_SIZE = 20

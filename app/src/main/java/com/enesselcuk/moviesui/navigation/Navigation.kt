@@ -1,6 +1,8 @@
 package com.enesselcuk.moviesui.navigation
 
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.PaddingValues
@@ -14,8 +16,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.enesselcuk.moviesui.datastore.LocalDataStore
-import com.enesselcuk.moviesui.screens.MainViewModel
 import com.enesselcuk.moviesui.screens.likedScreen.LikedScreen
 import com.enesselcuk.moviesui.screens.movie.SharedViewModel
 import com.enesselcuk.moviesui.screens.movie.actorDetailScreen.ActorScreen
@@ -32,6 +32,7 @@ import com.enesselcuk.moviesui.screens.userScreen.register.RegisterScreen
 import com.enesselcuk.moviesui.screens.userScreen.signIn.SignInView
 import com.enesselcuk.moviesui.screensauth.userScreen.signIn.SignInScreen
 import com.enesselcuk.moviesui.util.NavigationItem.AUTH_SIGN
+import com.enesselcuk.moviesui.util.NavigationItem.BOTTOM_SHEET
 import com.enesselcuk.moviesui.util.NavigationItem.HOME
 import com.enesselcuk.moviesui.util.NavigationItem.LIKED
 import com.enesselcuk.moviesui.util.NavigationItem.MOVIES_NAME
@@ -55,7 +56,7 @@ fun NavHostContainer(
 ) {
     val sharedViewModel = hiltViewModel<SharedViewModel>()
     NavHost(navController = navController,
-        startDestination = SPLASH,
+        startDestination = AUTH_SIGN,
         modifier = Modifier.padding(paddingValues = paddingValues),
         builder = {
 
@@ -71,14 +72,29 @@ fun NavHostContainer(
 
                          */
 
-                             navController.navigate(AUTH_SIGN)
+                        //   navController.navigate(AUTH_SIGN)
                     },
                     goLogin = {
+                        /*
                         navController.navigate(SIGN_IN) {
                             launchSingleTop = true
                         }
+
+                         */
+
+                        navController.navigate(AUTH_SIGN)
                     })
             }
+
+            composable(route = AUTH_SIGN){
+                SignInScreen(
+                    isTopBarVisibility = { sharedViewModel.isTopVisible.value = it },
+                    goHome = { /*TODO*/ },
+                    goSignUp = { /*TODO*/ },
+                    isBottomVisible = { sharedViewModel.isBottomNavVisible.value = it }
+                )
+            }
+
 
             composable(SIGN_IN) {
                 SignInView(
@@ -103,14 +119,6 @@ fun NavHostContainer(
                 })
             }
 
-            composable(AUTH_SIGN) {
-                SignInScreen(
-                    isTopBarVisibility ={ sharedViewModel.isTopVisible.value = it },
-                    goHome = { /*TODO*/ },
-                    goSignUp = { /*TODO*/ },
-                    isBottomVisible = { sharedViewModel.isBottomNavVisible.value = it }
-                )
-            }
 
 
             composable(HOME) {
@@ -248,14 +256,14 @@ fun NavHostContainer(
                 //MoviesOrTvScreenPlayer(sharedViewModel)
             }
 
-/*
-            composable(
-                route = Screen.Player.route,
-                arguments = listOf(navArgument(PLAYER_ID) { type = NavType.IntType })
-            ) {
-                val getUrl = it.arguments?.getInt(PLAYER_ID) ?: 0
-                MoviesOrTvScreenPlayer(playerId = getUrl)
-            }*/
+            /*
+                        composable(
+                            route = Screen.Player.route,
+                            arguments = listOf(navArgument(PLAYER_ID) { type = NavType.IntType })
+                        ) {
+                            val getUrl = it.arguments?.getInt(PLAYER_ID) ?: 0
+                            MoviesOrTvScreenPlayer(playerId = getUrl)
+                        }*/
 
         })
 

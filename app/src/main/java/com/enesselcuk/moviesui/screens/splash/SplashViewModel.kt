@@ -2,18 +2,23 @@ package com.enesselcuk.moviesui.screens.splash
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.enesselcuk.moviesui.data.model.authresponse.CreateRequestToken
+import com.enesselcuk.moviesui.domain.useCase.token.CreateTokenUseCase
+import com.enesselcuk.moviesui.util.NetworkResult
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SplashViewModel @Inject constructor():ViewModel(){
+class SplashViewModel @Inject constructor(private val createTokenUseCase: CreateTokenUseCase):ViewModel(){
 
     private val _authFlow = MutableStateFlow<MainUiState>(MainUiState.Initial)
     val authFlow =  _authFlow.asStateFlow()
+
 
     fun login(mail:String,password:String, auth: FirebaseAuth) {
         viewModelScope.launch {

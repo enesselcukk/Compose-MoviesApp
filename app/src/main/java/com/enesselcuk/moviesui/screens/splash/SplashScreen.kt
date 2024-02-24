@@ -24,28 +24,19 @@ import kotlinx.coroutines.launch
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun SplashScreen(
-    context: Context = LocalContext.current,
-    viewModel: SplashViewModel = hiltViewModel(),
-    auth: FirebaseAuth = Firebase.auth,
     isVisibleBottom: (Boolean) -> Unit,
     isVisibleTopBar: (Boolean) -> Unit,
     goHome: () -> Unit,
     goLogin: () -> Unit,
 ) {
 
+    val viewModel = hiltViewModel<SplashViewModel>()
+
     isVisibleBottom.invoke(false)
     isVisibleTopBar.invoke(false)
-    val dataStoreCoroutine = rememberCoroutineScope()
 
 
-    dataStoreCoroutine.launch {
-        context.UserSettingDataStore.data
-            .collectLatest { users ->
-                if (!users.username.isNullOrEmpty() && !users.password.isNullOrEmpty()) {
-                    viewModel.login(users.username, users.password, auth)
-                }
-            }
-    }
+
 
     UiObserver(goHome = { goHome.invoke() }, goLogin = { goLogin.invoke() })
 
@@ -58,6 +49,7 @@ fun UiObserver(
     goLogin: () -> Unit
 ) {
     val data = viewModel.authFlow.collectAsStateWithLifecycle().value
+
     val isClose = remember { mutableStateOf(true) }
 
     when (data) {

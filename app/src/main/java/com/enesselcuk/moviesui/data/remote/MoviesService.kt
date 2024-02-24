@@ -83,10 +83,8 @@ interface MoviesService {
         @Query("page") page: Int? = null,
     ): TvRecommendationsResponse
 
-
-    @Headers("accept : application/json")
     @GET("3/authentication/token/new")
-    suspend fun createToken():NetworkResult<Response<CreateRequestToken>>
+    suspend fun createToken():CreateRequestToken
 
 
 }

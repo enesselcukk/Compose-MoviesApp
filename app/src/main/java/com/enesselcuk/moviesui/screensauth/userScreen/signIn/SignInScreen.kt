@@ -2,9 +2,17 @@ package com.enesselcuk.moviesui.screensauth.userScreen.signIn
 
 
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.net.Uri
+import android.webkit.CookieManager
+import android.webkit.WebSettings
+import android.webkit.WebStorage
+import android.webkit.WebViewClient
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.*
@@ -25,14 +33,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.enesselcuk.moviesui.R
-import com.enesselcuk.moviesui.di.UserSettingsModule.UserSettingDataStore
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.launch
+import com.enesselcuk.moviesui.util.Constant.LOGIN_URL
 
 
 @SuppressLint("CoroutineCreationDuringComposition")
@@ -55,36 +59,14 @@ fun SignInScreen(
     isBottomVisible.invoke(false)
 
     val context = LocalContext.current
-    val loginObserver by signInViewModel.loginStateFlow.collectAsStateWithLifecycle()
-    val dataStoreRemember = rememberCoroutineScope()
+    signInViewModel.getToken()
 
-    when (loginObserver) {
-        is SignTmdbInState.Initial -> {
-            isLoading.value = false
-        }
-        is SignTmdbInState.Loading -> {
-            isLoading.value = true
-        }
-        is SignTmdbInState.Success -> {
-            isLoading.value = false
-            dataStoreRemember.launch {
-                if (checked.value) {
-                    context.UserSettingDataStore.updateData { users ->
-                        users.toBuilder()
-                            .setUsername(emailValue.value)
-                            .setPassword(passwordValue.value)
-                            .build()
-                    }
-                }
-            }
-            goHome.invoke()
-        }
-        is SignTmdbInState.Failure -> {
-            val fail = (loginObserver as SignTmdbInState.Failure).errorMessage
-            Toast.makeText(context, fail, Toast.LENGTH_SHORT).show()
-            isLoading.value = false
-        }
-    }
+
+    val loginObserver by signInViewModel.loginStateFlow.collectAsState()
+    val createToken by signInViewModel.tokenStateFlow.collectAsState()
+
+    var showBottomSheet by remember { mutableStateOf(false) }
+
 
     Column(
         verticalArrangement = Arrangement.SpaceAround,
@@ -160,12 +142,15 @@ fun SignInScreen(
             Text(
                 text = "Remember Me", color = MaterialTheme.colorScheme.onSurface
             )
-
         }
 
         OutlinedButton(
             onClick = {
-                signInViewModel.login(emailValue.value, passwordValue.value)
+                if (emailValue.value.isEmpty().not() && passwordValue.value.isEmpty().not()) {
+                    showBottomSheet = true
+                } else {
+                    Toast.makeText(context, R.string.emailpasswordfailer, Toast.LENGTH_LONG).show()
+                }
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -181,9 +166,11 @@ fun SignInScreen(
             )
         }
 
+        if (showBottomSheet) {
+            BottomSheet(token = createToken?.requestToken.orEmpty()) { showBottomSheet = it }
+        }
 
         SignUpView(signUp = { goSignUp.invoke() })
-
 
         if (isLoading.value) {
             CircularProgressIndicator(
@@ -233,3 +220,43 @@ fun SignUpView(signUp: () -> Unit) {
     )
 }
 
+@SuppressLint("SetJavaScriptEnabled")
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun BottomSheet(token: String, showBottom: (Boolean) -> Unit) {
+    val modalBottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+
+    ModalBottomSheet(
+        onDismissRequest = { showBottom.invoke(false) },
+        sheetState = modalBottomSheetState,
+        dragHandle = { BottomSheetDefaults.DragHandle() },
+
+    ) {
+
+        val client = object : CustomWebViewClient({
+            showBottom.invoke(it)
+        }) {}
+
+        AndroidView(
+            factory = { context ->
+                android.webkit.WebView(context).apply {
+
+                    settings.javaScriptEnabled = true
+                    webViewClient = client
+
+                    settings.loadWithOverviewMode = true
+                    settings.useWideViewPort = true
+                    settings.setSupportZoom(true)
+
+                }
+            },
+            update = { webView ->
+
+                webView.clearCache(true)
+                webView.clearFormData()
+                webView.clearHistory()
+                webView.clearSslPreferences()
+                webView.loadUrl(LOGIN_URL.plus(token))
+            })
+    }
+}
