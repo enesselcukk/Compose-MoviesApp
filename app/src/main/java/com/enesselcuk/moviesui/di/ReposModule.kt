@@ -9,6 +9,7 @@ import com.enesselcuk.moviesui.datastore.LocalDataStore
 import com.enesselcuk.moviesui.datastore.PreferencesDataStoreImpl
 import com.enesselcuk.moviesui.domain.repository.Repos
 import com.enesselcuk.moviesui.domain.repository.ReposLocal
+import com.enesselcuk.moviesui.util.NetworkConnectionInterceptor
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -23,7 +24,7 @@ import javax.inject.Singleton
 object ReposModule {
 
     @Singleton
-     fun provideRepository(api: MoviesService) = RepositoryImpl(api)
+    fun provideRepository(api: MoviesService) = RepositoryImpl(api)
 
     @Singleton
      fun provideRepositoryLocal(database: MoviesDatabase) = RepositoryLocalImpl(database)
@@ -35,7 +36,7 @@ object ReposModule {
 }
 
 @Module
-@InstallIn(ViewModelComponent::class)
+@InstallIn(SingletonComponent::class)
 interface ModuleRepos {
 
     @Binds
