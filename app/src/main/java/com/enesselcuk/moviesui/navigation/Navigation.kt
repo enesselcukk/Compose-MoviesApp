@@ -56,7 +56,7 @@ fun NavHostContainer(
 ) {
     val sharedViewModel = hiltViewModel<SharedViewModel>()
     NavHost(navController = navController,
-        startDestination = AUTH_SIGN,
+        startDestination = HOME,
         modifier = Modifier.padding(paddingValues = paddingValues),
         builder = {
 
@@ -85,16 +85,6 @@ fun NavHostContainer(
                         navController.navigate(AUTH_SIGN)
                     })
             }
-
-            composable(route = AUTH_SIGN){
-                SignInScreen(
-                    isTopBarVisibility = { sharedViewModel.isTopVisible.value = it },
-                    goHome = { /*TODO*/ },
-                    goSignUp = { /*TODO*/ },
-                    isBottomVisible = { sharedViewModel.isBottomNavVisible.value = it }
-                )
-            }
-
 
             composable(SIGN_IN) {
                 SignInView(

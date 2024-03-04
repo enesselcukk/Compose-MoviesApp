@@ -1,7 +1,9 @@
 package com.enesselcuk.moviesui.data.model.request
 
+import com.google.gson.annotations.SerializedName
+
 data class LoginRequest(
-    val username: String? = null,
-    val password: String? = null,
-    val request_token: String? = null
+   @SerializedName("username") val username: String? = null,
+   @SerializedName("password") val password: String? = null,
+   @SerializedName("request_token") val requestToken: String? = null
 )

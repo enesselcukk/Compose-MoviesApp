@@ -5,10 +5,12 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.enesselcuk.moviesui.data.model.authresponse.CreateRequestToken
+import com.enesselcuk.moviesui.data.model.request.LoginRequest
 import com.enesselcuk.moviesui.data.model.response.ActorDetailResponse
 import com.enesselcuk.moviesui.data.model.response.ActorMoviesResponse
 import com.enesselcuk.moviesui.data.model.response.ActorTvResponse
 import com.enesselcuk.moviesui.data.model.response.DetailResponse
+import com.enesselcuk.moviesui.data.model.response.LoginResponse
 import com.enesselcuk.moviesui.data.model.response.MoviesPeople
 import com.enesselcuk.moviesui.data.model.response.MoviesResponse
 import com.enesselcuk.moviesui.data.model.response.Result
@@ -161,6 +163,12 @@ class RepositoryImpl @Inject constructor(
     override suspend fun createToken(): Flow<NetworkResult<CreateRequestToken>> = flow {
         emit(NetworkResult.Loading())
         val response = remoteDataSource.createToken()
+        emit(NetworkResult.Success(response))
+    }.catch { emit(NetworkResult.Error(it.message)) }.flowOn(Dispatchers.IO)
+
+    override suspend fun loginRequest(loginRequest: LoginRequest): Flow<NetworkResult<LoginResponse>> = flow<NetworkResult<LoginResponse>> {
+        emit(NetworkResult.Loading())
+        val response = remoteDataSource.login(loginRequest)
         emit(NetworkResult.Success(response))
     }.catch { emit(NetworkResult.Error(it.message)) }.flowOn(Dispatchers.IO)
 

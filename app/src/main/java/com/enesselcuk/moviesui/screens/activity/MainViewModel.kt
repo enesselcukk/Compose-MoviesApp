@@ -1,4 +1,4 @@
-package com.enesselcuk.moviesui.screens
+package com.enesselcuk.moviesui.screens.activity
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel

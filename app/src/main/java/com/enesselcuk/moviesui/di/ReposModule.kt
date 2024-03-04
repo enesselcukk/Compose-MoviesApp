@@ -32,12 +32,12 @@ object ReposModule {
     @Singleton
      fun preferencesDataStore(@ApplicationContext context: Context) = PreferencesDataStoreImpl(context)
 
-
 }
 
 @Module
 @InstallIn(ViewModelComponent::class)
 interface ModuleRepos {
+
     @Binds
     fun reposModule(repos: RepositoryImpl): Repos
 

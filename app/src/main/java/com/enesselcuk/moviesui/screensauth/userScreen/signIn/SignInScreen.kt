@@ -2,17 +2,10 @@ package com.enesselcuk.moviesui.screensauth.userScreen.signIn
 
 
 import android.annotation.SuppressLint
-import android.content.Intent
-import android.net.Uri
 import android.webkit.CookieManager
-import android.webkit.WebSettings
-import android.webkit.WebStorage
-import android.webkit.WebViewClient
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.*
@@ -36,37 +29,26 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.enesselcuk.moviesui.R
+import com.enesselcuk.moviesui.data.model.request.LoginRequest
+import com.enesselcuk.moviesui.data.model.response.LoginResponse
 import com.enesselcuk.moviesui.util.Constant.LOGIN_URL
 
 
-@SuppressLint("CoroutineCreationDuringComposition")
+@SuppressLint("CoroutineCreationDuringComposition", "StateFlowValueCalledInComposition")
 @Composable
 fun SignInScreen(
-    isTopBarVisibility: (visible: Boolean) -> Unit,
     goHome: () -> Unit,
     goSignUp: () -> Unit,
-    isBottomVisible: (visible: Boolean) -> Unit
 ) {
 
     val signInViewModel = hiltViewModel<SignInViewModel>()
-    val emailValue = rememberSaveable { mutableStateOf("") }
+    val usernameValue = rememberSaveable { mutableStateOf("") }
     val passwordValue = rememberSaveable { mutableStateOf("") }
     val passwordVisible = rememberSaveable { mutableStateOf(false) }
     val checked = rememberSaveable { mutableStateOf(false) }
     val isLoading = rememberSaveable { mutableStateOf(false) }
 
-    isTopBarVisibility.invoke(false)
-    isBottomVisible.invoke(false)
-
     val context = LocalContext.current
-    signInViewModel.getToken()
-
-
-    val loginObserver by signInViewModel.loginStateFlow.collectAsState()
-    val createToken by signInViewModel.tokenStateFlow.collectAsState()
-
-    var showBottomSheet by remember { mutableStateOf(false) }
-
 
     Column(
         verticalArrangement = Arrangement.SpaceAround,
@@ -95,8 +77,8 @@ fun SignInScreen(
                 .fillMaxWidth()
                 .padding(horizontal = 10.dp),
             shape = RoundedCornerShape(3.dp),
-            value = emailValue.value,
-            onValueChange = { emailValue.value = it },
+            value = usernameValue.value,
+            onValueChange = { usernameValue.value = it },
             label = { Text(text = "User Name") },
             leadingIcon = {
                 Icon(painter = painterResource(id = R.drawable.person), contentDescription = "")
@@ -146,8 +128,8 @@ fun SignInScreen(
 
         OutlinedButton(
             onClick = {
-                if (emailValue.value.isEmpty().not() && passwordValue.value.isEmpty().not()) {
-                    showBottomSheet = true
+                if (usernameValue.value.isEmpty().not() && passwordValue.value.isEmpty().not()) {
+                    signInViewModel.showBottomSheet = true
                 } else {
                     Toast.makeText(context, R.string.emailpasswordfailer, Toast.LENGTH_LONG).show()
                 }
@@ -166,8 +148,14 @@ fun SignInScreen(
             )
         }
 
-        if (showBottomSheet) {
-            BottomSheet(token = createToken?.requestToken.orEmpty()) { showBottomSheet = it }
+        if (signInViewModel.showBottomSheet) {
+            BottomSheet(
+                { signInViewModel.showBottomSheet = it },
+                signInViewModel,
+                usernameValue.value,
+                passwordValue.value,
+                goHome::invoke
+            )
         }
 
         SignUpView(signUp = { goSignUp.invoke() })
@@ -181,6 +169,7 @@ fun SignInScreen(
                     .align(alignment = Alignment.CenterHorizontally), strokeWidth = 5.dp
             )
         }
+
     }
 }
 
@@ -223,18 +212,38 @@ fun SignUpView(signUp: () -> Unit) {
 @SuppressLint("SetJavaScriptEnabled")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BottomSheet(token: String, showBottom: (Boolean) -> Unit) {
+fun BottomSheet(
+    showBottom: (Boolean) -> Unit,
+    signInViewModel: SignInViewModel,
+    username: String,
+    password: String,
+    goHome: () -> Unit,
+) {
+
+    signInViewModel.getToken()
+    val createToken by signInViewModel.tokenStateFlow.collectAsState()
+
+
     val modalBottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val context = LocalContext.current
 
     ModalBottomSheet(
         onDismissRequest = { showBottom.invoke(false) },
         sheetState = modalBottomSheetState,
         dragHandle = { BottomSheetDefaults.DragHandle() },
-
     ) {
 
+
+        signInViewModel.login(LoginRequest(username, password, createToken?.requestToken))
+        val loginObserver by signInViewModel.loginStateFlow.collectAsState()
+
         val client = object : CustomWebViewClient({
-            showBottom.invoke(it)
+            if (loginObserver?.success == true) {
+                goHome.invoke()
+                showBottom.invoke(it)
+            } else {
+                Toast.makeText(context, "OOPS", Toast.LENGTH_LONG).show()
+            }
         }) {}
 
         AndroidView(
@@ -252,11 +261,16 @@ fun BottomSheet(token: String, showBottom: (Boolean) -> Unit) {
             },
             update = { webView ->
 
+
+                CookieManager.getInstance().removeAllCookies(null)
+                CookieManager.getInstance().flush()
+
                 webView.clearCache(true)
                 webView.clearFormData()
                 webView.clearHistory()
                 webView.clearSslPreferences()
-                webView.loadUrl(LOGIN_URL.plus(token))
+                webView.loadUrl(LOGIN_URL.plus(createToken?.requestToken))
             })
     }
+
 }

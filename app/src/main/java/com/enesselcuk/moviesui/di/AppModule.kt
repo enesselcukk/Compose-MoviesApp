@@ -27,14 +27,16 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideOkhttpClient(): OkHttpClient {
+    fun provideOkhttpClient(
+         networkConnectionInterceptor: NetworkConnectionInterceptor
+    ): OkHttpClient {
         val httpLoggingInterceptor = HttpLoggingInterceptor().apply {
             level = if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY
             else HttpLoggingInterceptor.Level.NONE
         }
         return OkHttpClient.Builder()
             .addInterceptor(httpLoggingInterceptor)
-            .addInterceptor(NetworkConnectionInterceptor())
+            .addInterceptor(networkConnectionInterceptor)
             .connectTimeout(connectionTimeOut, TimeUnit.SECONDS)
             .readTimeout(readTimeOut, TimeUnit.SECONDS)
             .writeTimeout(writeTimeOut, TimeUnit.SECONDS)
