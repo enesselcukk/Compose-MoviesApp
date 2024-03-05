@@ -1,19 +1,15 @@
 package com.enesselcuk.moviesui.screensauth.userScreen.signIn
 
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.enesselcuk.moviesui.data.model.authresponse.CreateRequestToken
+import com.enesselcuk.moviesui.data.model.authresponse.CreateResponseToken
 import com.enesselcuk.moviesui.data.model.request.LoginRequest
 import com.enesselcuk.moviesui.data.model.response.LoginResponse
 import com.enesselcuk.moviesui.domain.useCase.login.LoginUseCase
 import com.enesselcuk.moviesui.domain.useCase.token.CreateTokenUseCase
 import com.enesselcuk.moviesui.util.NetworkResult
-import com.google.firebase.auth.FirebaseAuth
+import com.enesselcuk.moviesui.util.state.SignInState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -30,11 +26,8 @@ class SignInViewModel @Inject constructor(
     private val _loginStateFlow = MutableStateFlow<LoginResponse?>(null)
     val loginStateFlow = _loginStateFlow.asStateFlow()
 
-    private val _tokenStateFlow = MutableStateFlow<CreateRequestToken?>(null)
+    private val _tokenStateFlow = MutableStateFlow<CreateResponseToken?>(null)
     val tokenStateFlow = _tokenStateFlow.asStateFlow()
-
-    var showBottomSheet by mutableStateOf(false)
-
 
     fun getToken() {
         viewModelScope.launch {

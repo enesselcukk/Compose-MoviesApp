@@ -28,8 +28,6 @@ import com.enesselcuk.moviesui.screens.player.MoviesOrTvScreenPlayer
 import com.enesselcuk.moviesui.screens.settings.SettingsScreen
 import com.enesselcuk.moviesui.screens.splash.SplashScreen
 import com.enesselcuk.moviesui.screens.tv.TvDetailScreen
-import com.enesselcuk.moviesui.screens.userScreen.register.RegisterScreen
-import com.enesselcuk.moviesui.screens.userScreen.signIn.SignInView
 import com.enesselcuk.moviesui.screensauth.userScreen.signIn.SignInScreen
 import com.enesselcuk.moviesui.util.NavigationItem.AUTH_SIGN
 import com.enesselcuk.moviesui.util.NavigationItem.BOTTOM_SHEET
@@ -85,31 +83,6 @@ fun NavHostContainer(
                         navController.navigate(AUTH_SIGN)
                     })
             }
-
-            composable(SIGN_IN) {
-                SignInView(
-                    isTopBarVisibility = { sharedViewModel.isTopVisible.value = it },
-                    goHome = {
-                        navController.navigate(HOME) {
-                            launchSingleTop = true
-                        }
-                    },
-                    goSignUp = {
-                        navController.navigate(REGISTER)
-                    },
-                    isBottomVisible = { sharedViewModel.isBottomNavVisible.value = it }
-                )
-            }
-
-            composable(REGISTER) {
-                RegisterScreen(goHome = {
-                    navController.navigate(HOME) {
-                        launchSingleTop = true
-                    }
-                })
-            }
-
-
 
             composable(HOME) {
                 HomeScreen(

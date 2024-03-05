@@ -2,6 +2,7 @@ package com.enesselcuk.moviesui.screensauth.userScreen.signIn
 
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.webkit.CookieManager
 import android.widget.Toast
 import androidx.compose.foundation.clickable
@@ -28,10 +29,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.enesselcuk.moviesui.R
 import com.enesselcuk.moviesui.data.model.request.LoginRequest
-import com.enesselcuk.moviesui.data.model.response.LoginResponse
 import com.enesselcuk.moviesui.util.Constant.LOGIN_URL
+import com.enesselcuk.moviesui.util.state.SignInState
+import kotlinx.coroutines.launch
+import kotlin.math.log
 
 
 @SuppressLint("CoroutineCreationDuringComposition", "StateFlowValueCalledInComposition")
@@ -40,13 +44,12 @@ fun SignInScreen(
     goHome: () -> Unit,
     goSignUp: () -> Unit,
 ) {
-
-    val signInViewModel = hiltViewModel<SignInViewModel>()
     val usernameValue = rememberSaveable { mutableStateOf("") }
     val passwordValue = rememberSaveable { mutableStateOf("") }
     val passwordVisible = rememberSaveable { mutableStateOf(false) }
     val checked = rememberSaveable { mutableStateOf(false) }
     val isLoading = rememberSaveable { mutableStateOf(false) }
+    val showBottomSheet = rememberSaveable { mutableStateOf(false)}
 
     val context = LocalContext.current
 
@@ -129,7 +132,7 @@ fun SignInScreen(
         OutlinedButton(
             onClick = {
                 if (usernameValue.value.isEmpty().not() && passwordValue.value.isEmpty().not()) {
-                    signInViewModel.showBottomSheet = true
+                    showBottomSheet.value = true
                 } else {
                     Toast.makeText(context, R.string.emailpasswordfailer, Toast.LENGTH_LONG).show()
                 }
@@ -146,19 +149,17 @@ fun SignInScreen(
                 color = MaterialTheme.colorScheme.onSurface,
                 textAlign = TextAlign.Center
             )
+
+            if (showBottomSheet.value){
+                BottomSheet(
+                    { showBottomSheet.value = it },
+                    usernameValue.value,
+                    passwordValue.value,
+                    goHome::invoke
+                )
+            }
         }
 
-        if (signInViewModel.showBottomSheet) {
-            BottomSheet(
-                { signInViewModel.showBottomSheet = it },
-                signInViewModel,
-                usernameValue.value,
-                passwordValue.value,
-                goHome::invoke
-            )
-        }
-
-        SignUpView(signUp = { goSignUp.invoke() })
 
         if (isLoading.value) {
             CircularProgressIndicator(
@@ -169,44 +170,7 @@ fun SignInScreen(
                     .align(alignment = Alignment.CenterHorizontally), strokeWidth = 5.dp
             )
         }
-
     }
-}
-
-
-@Composable
-fun SignUpView(signUp: () -> Unit) {
-    val text = buildAnnotatedString {
-        withStyle(
-            style = SpanStyle(
-                color = MaterialTheme.colorScheme.outline,
-                fontWeight = FontWeight.Bold
-            )
-        ) { append("Don't Have Account?") }
-
-
-        pushStringAnnotation(tag = "navigation", annotation = "sign_up")
-        withStyle(
-            style = SpanStyle(
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                fontWeight = FontWeight.Bold
-            )
-        ) { append("Sign Up") }
-        pop()
-    }
-
-    ClickableText(
-        text = text, onClick = { offset ->
-            val annotations = text.getStringAnnotations(
-                tag = "navigation", start = offset, end = offset
-            )
-            if (annotations.isNotEmpty() && annotations[0].item == "sign_up") {
-                signUp.invoke()
-            }
-        }, modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 5.dp, start = 20.dp, end = 20.dp)
-    )
 }
 
 @SuppressLint("SetJavaScriptEnabled")
@@ -214,18 +178,18 @@ fun SignUpView(signUp: () -> Unit) {
 @Composable
 fun BottomSheet(
     showBottom: (Boolean) -> Unit,
-    signInViewModel: SignInViewModel,
     username: String,
     password: String,
-    goHome: () -> Unit,
+    goHome: () -> Unit
 ) {
 
-    signInViewModel.getToken()
-    val createToken by signInViewModel.tokenStateFlow.collectAsState()
-
+    val signInViewModel = hiltViewModel<SignInViewModel>()
 
     val modalBottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val context = LocalContext.current
+
+    signInViewModel.getToken()
+    val createToken by signInViewModel.tokenStateFlow.collectAsState()
 
     ModalBottomSheet(
         onDismissRequest = { showBottom.invoke(false) },
@@ -233,44 +197,52 @@ fun BottomSheet(
         dragHandle = { BottomSheetDefaults.DragHandle() },
     ) {
 
+        if(createToken != null){
+            signInViewModel.login(LoginRequest(username, password, createToken?.requestToken))
+            val loginObserver by signInViewModel.loginStateFlow.collectAsStateWithLifecycle()
 
-        signInViewModel.login(LoginRequest(username, password, createToken?.requestToken))
-        val loginObserver by signInViewModel.loginStateFlow.collectAsState()
+            Log.i("token:", createToken?.requestToken.orEmpty())
 
-        val client = object : CustomWebViewClient({
-            if (loginObserver?.success == true) {
-                goHome.invoke()
-                showBottom.invoke(it)
-            } else {
-                Toast.makeText(context, "OOPS", Toast.LENGTH_LONG).show()
-            }
-        }) {}
-
-        AndroidView(
-            factory = { context ->
-                android.webkit.WebView(context).apply {
-
-                    settings.javaScriptEnabled = true
-                    webViewClient = client
-
-                    settings.loadWithOverviewMode = true
-                    settings.useWideViewPort = true
-                    settings.setSupportZoom(true)
-
+            val client = object : CustomWebViewClient({
+                if (loginObserver?.success == true) {
+                    goHome.invoke()
+                    showBottom.invoke(it)
+                } else {
+                    Toast.makeText(context, loginObserver?.expiresAt.orEmpty(), Toast.LENGTH_LONG).show()
                 }
-            },
-            update = { webView ->
+            }) {}
+
+            AndroidView(
+                factory = { context ->
+                    android.webkit.WebView(context).apply {
+
+                        settings.javaScriptEnabled = true
+                        webViewClient = client
+
+                        settings.loadWithOverviewMode = true
+                        settings.useWideViewPort = true
+                        settings.setSupportZoom(true)
+
+                    }
+                },
+                update = { webView ->
 
 
-                CookieManager.getInstance().removeAllCookies(null)
-                CookieManager.getInstance().flush()
+                   // CookieManager.getInstance().removeAllCookies(null)
+                   // CookieManager.getInstance().flush()
 
-                webView.clearCache(true)
-                webView.clearFormData()
-                webView.clearHistory()
-                webView.clearSslPreferences()
-                webView.loadUrl(LOGIN_URL.plus(createToken?.requestToken))
-            })
+                    webView.clearCache(true)
+                    webView.clearFormData()
+                    webView.clearHistory()
+                    webView.clearSslPreferences()
+                    webView.loadUrl(LOGIN_URL.plus(createToken?.requestToken))
+                })
+        }
+
+
+
+
+
     }
 
 }

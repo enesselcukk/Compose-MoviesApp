@@ -1,7 +1,7 @@
 package com.enesselcuk.moviesui.domain.repository
 
 import androidx.paging.PagingData
-import com.enesselcuk.moviesui.data.model.authresponse.CreateRequestToken
+import com.enesselcuk.moviesui.data.model.authresponse.CreateResponseToken
 import com.enesselcuk.moviesui.data.model.request.LoginRequest
 import com.enesselcuk.moviesui.data.model.response.ActorDetailResponse
 import com.enesselcuk.moviesui.data.model.response.ActorMoviesResponse
@@ -38,7 +38,7 @@ interface Repos {
     suspend fun getTvDetail(id:Int,language: String?):Flow<NetworkResult<TvDetailResponse>>
     suspend fun getTvRecommendations(id: Int,language: String?,page: Int?):Flow<NetworkResult<TvRecommendationsResponse>>
 
-    suspend fun createToken():Flow<NetworkResult<CreateRequestToken>>
+    suspend fun createToken():Flow<NetworkResult<CreateResponseToken>>
 
     suspend fun loginRequest(loginRequest: LoginRequest):Flow<NetworkResult<LoginResponse>>
 

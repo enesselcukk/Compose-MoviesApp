@@ -4,7 +4,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.enesselcuk.moviesui.data.model.authresponse.CreateRequestToken
+import com.enesselcuk.moviesui.data.model.authresponse.CreateResponseToken
 import com.enesselcuk.moviesui.data.model.request.LoginRequest
 import com.enesselcuk.moviesui.data.model.response.ActorDetailResponse
 import com.enesselcuk.moviesui.data.model.response.ActorMoviesResponse
@@ -160,7 +160,7 @@ class RepositoryImpl @Inject constructor(
         emit(NetworkResult.Success(response))
     }.catch { emit(NetworkResult.Error(it.message)) }.flowOn(Dispatchers.IO)
 
-    override suspend fun createToken(): Flow<NetworkResult<CreateRequestToken>> = flow {
+    override suspend fun createToken(): Flow<NetworkResult<CreateResponseToken>> = flow {
         emit(NetworkResult.Loading())
         val response = remoteDataSource.createToken()
         emit(NetworkResult.Success(response))

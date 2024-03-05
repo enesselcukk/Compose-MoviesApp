@@ -1,6 +1,6 @@
 package com.enesselcuk.moviesui.data.remote
 
-import com.enesselcuk.moviesui.data.model.authresponse.CreateRequestToken
+import com.enesselcuk.moviesui.data.model.authresponse.CreateResponseToken
 import com.enesselcuk.moviesui.data.model.request.LoginRequest
 import com.enesselcuk.moviesui.data.model.response.ActorDetailResponse
 import com.enesselcuk.moviesui.data.model.response.ActorMoviesResponse
@@ -86,7 +86,7 @@ interface MoviesService {
     ): TvRecommendationsResponse
 
     @GET("3/authentication/token/new")
-    suspend fun createToken():CreateRequestToken
+    suspend fun createToken():CreateResponseToken
 
     @POST("3/authentication/token/validate_with_login")
     suspend fun login(@Body request: LoginRequest):LoginResponse
