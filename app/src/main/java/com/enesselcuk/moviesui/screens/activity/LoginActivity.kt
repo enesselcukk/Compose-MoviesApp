@@ -21,8 +21,7 @@ class LoginActivity : ComponentActivity(){
                     goHome = {
                         val intent = Intent(baseContext, MainActivity::class.java)
                         startActivity(intent)
-                    },
-                    goSignUp = { /*TODO*/ },
+                    }
                 )
             }
         }

@@ -41,8 +41,7 @@ import kotlin.math.log
 @SuppressLint("CoroutineCreationDuringComposition", "StateFlowValueCalledInComposition")
 @Composable
 fun SignInScreen(
-    goHome: () -> Unit,
-    goSignUp: () -> Unit,
+    goHome: () -> Unit
 ) {
     val usernameValue = rememberSaveable { mutableStateOf("") }
     val passwordValue = rememberSaveable { mutableStateOf("") }
@@ -149,15 +148,15 @@ fun SignInScreen(
                 color = MaterialTheme.colorScheme.onSurface,
                 textAlign = TextAlign.Center
             )
+        }
 
-            if (showBottomSheet.value){
-                BottomSheet(
-                    { showBottomSheet.value = it },
-                    usernameValue.value,
-                    passwordValue.value,
-                    goHome::invoke
-                )
-            }
+        if (showBottomSheet.value){
+            BottomSheet(
+                { showBottomSheet.value = it },
+                usernameValue.value,
+                passwordValue.value,
+                goHome::invoke
+            )
         }
 
 
@@ -184,11 +183,10 @@ fun BottomSheet(
 ) {
 
     val signInViewModel = hiltViewModel<SignInViewModel>()
-
     val modalBottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+
     val context = LocalContext.current
 
-    signInViewModel.getToken()
     val createToken by signInViewModel.tokenStateFlow.collectAsState()
 
     ModalBottomSheet(
@@ -197,9 +195,8 @@ fun BottomSheet(
         dragHandle = { BottomSheetDefaults.DragHandle() },
     ) {
 
-        if(createToken != null){
             signInViewModel.login(LoginRequest(username, password, createToken?.requestToken))
-            val loginObserver by signInViewModel.loginStateFlow.collectAsStateWithLifecycle()
+            val loginObserver by signInViewModel.loginStateFlow.collectAsState()
 
             Log.i("token:", createToken?.requestToken.orEmpty())
 
@@ -231,6 +228,8 @@ fun BottomSheet(
                    // CookieManager.getInstance().removeAllCookies(null)
                    // CookieManager.getInstance().flush()
 
+                    signInViewModel.getToken()
+
                     webView.clearCache(true)
                     webView.clearFormData()
                     webView.clearHistory()
@@ -239,10 +238,5 @@ fun BottomSheet(
                 })
         }
 
-
-
-
-
-    }
 
 }
