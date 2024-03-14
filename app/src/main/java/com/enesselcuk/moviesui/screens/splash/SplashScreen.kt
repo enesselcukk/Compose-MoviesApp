@@ -10,6 +10,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.enesselcuk.moviesui.R
@@ -24,19 +25,11 @@ import kotlinx.coroutines.launch
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun SplashScreen(
-    isVisibleBottom: (Boolean) -> Unit,
-    isVisibleTopBar: (Boolean) -> Unit,
     goHome: () -> Unit,
     goLogin: () -> Unit,
 ) {
 
     val viewModel = hiltViewModel<SplashViewModel>()
-
-    isVisibleBottom.invoke(false)
-    isVisibleTopBar.invoke(false)
-
-
-
 
     UiObserver(goHome = { goHome.invoke() }, goLogin = { goLogin.invoke() })
 
@@ -44,35 +37,29 @@ fun SplashScreen(
 
 @Composable
 fun UiObserver(
-    viewModel: SplashViewModel = hiltViewModel(),
     goHome: () -> Unit,
     goLogin: () -> Unit
 ) {
-    val data = viewModel.authFlow.collectAsStateWithLifecycle().value
 
-    val isClose = remember { mutableStateOf(true) }
+    val viewModel = hiltViewModel<SplashViewModel>()
 
-    when (data) {
-        is MainUiState.Initial -> {}
-        is MainUiState.Loading -> {}
-        is MainUiState.Success -> {
-            goHome.invoke()
-            isClose.value = false
+    val preloaderLottieComposition by rememberLottieComposition(
+        LottieCompositionSpec.RawRes(R.raw.movie))
+
+    val preloaderProgress by animateLottieCompositionAsState(
+        preloaderLottieComposition,
+        iterations = 1
+    )
+
+    LaunchedEffect(preloaderProgress) {
+        if(preloaderProgress >= 1F){
+            goLogin.invoke()
         }
-        is MainUiState.Failure -> {}
     }
 
-    LaunchedEffect(isClose) {
-        delay(8000L)
-        goLogin.invoke()
-    }
-
-    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.movie))
-    val progress by animateLottieCompositionAsState(composition)
     LottieAnimation(
-        composition = composition,
-        progress = progress,
-        modifier = Modifier.fillMaxSize()
+        composition = preloaderLottieComposition,
+        progress = preloaderProgress,
     )
 
 

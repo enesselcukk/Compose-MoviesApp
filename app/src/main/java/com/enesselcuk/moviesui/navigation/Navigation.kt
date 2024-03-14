@@ -58,32 +58,6 @@ fun NavHostContainer(
         modifier = Modifier.padding(paddingValues = paddingValues),
         builder = {
 
-            composable(SPLASH) {
-                SplashScreen(
-                    isVisibleTopBar = { sharedViewModel.isTopVisible.value = it },
-                    isVisibleBottom = { sharedViewModel.isBottomNavVisible.value = it },
-                    goHome = {
-                        /*
-                        navController.navigate(HOME) {
-                            launchSingleTop = true
-                        }
-
-                         */
-
-                        //   navController.navigate(AUTH_SIGN)
-                    },
-                    goLogin = {
-                        /*
-                        navController.navigate(SIGN_IN) {
-                            launchSingleTop = true
-                        }
-
-                         */
-
-                        navController.navigate(AUTH_SIGN)
-                    })
-            }
-
             composable(HOME) {
                 HomeScreen(
                     isVisibleBottom = { sharedViewModel.isBottomNavVisible.value = it },

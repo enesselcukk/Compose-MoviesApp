@@ -5,21 +5,26 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.enesselcuk.moviesui.screensauth.userScreen.signIn.SignInScreen
+import com.enesselcuk.moviesui.screens.splash.SplashScreen
 import com.enesselcuk.moviesui.ui.theme.MoviesUiTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class LoginActivity : ComponentActivity(){
+class SplashActivity : ComponentActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContent {
             val mainViewModel = hiltViewModel<ViewModel>()
             MoviesUiTheme(darkTheme = mainViewModel.getTheme()) {
-                SignInScreen(
+                SplashScreen(
                     goHome = {
                         val intent = Intent(baseContext, MainActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    },
+                    goLogin = {
+                        val intent = Intent(baseContext, LoginActivity::class.java)
                         startActivity(intent)
                         finish()
                     }

@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(private val localDataStoreUseCase: DataStoreUseCase) : ViewModel() {
+class ViewModel @Inject constructor(private val localDataStoreUseCase: DataStoreUseCase) : ViewModel() {
 
     private val theme = mutableStateOf(false)
 

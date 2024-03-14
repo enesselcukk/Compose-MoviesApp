@@ -46,9 +46,11 @@ fun SignInScreen(
     val usernameValue = rememberSaveable { mutableStateOf("") }
     val passwordValue = rememberSaveable { mutableStateOf("") }
     val passwordVisible = rememberSaveable { mutableStateOf(false) }
-    val checked = rememberSaveable { mutableStateOf(false) }
+
     val isLoading = rememberSaveable { mutableStateOf(false) }
     val showBottomSheet = rememberSaveable { mutableStateOf(false)}
+
+    val signInViewModel = hiltViewModel<SignInViewModel>()
 
     val context = LocalContext.current
 
@@ -115,10 +117,10 @@ fun SignInScreen(
 
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.clickable { checked.value = !checked.value }) {
+            modifier = Modifier.clickable { signInViewModel.checked.value = !signInViewModel.checked.value }) {
             Checkbox(
-                checked = checked.value,
-                onCheckedChange = { checked.value = it },
+                checked = signInViewModel.checked.value,
+                onCheckedChange = { signInViewModel.checked.value = it },
                 colors = CheckboxDefaults.colors(checkedColor = MaterialTheme.colorScheme.primary),
                 modifier = Modifier.clip(RoundedCornerShape(6.dp))
             )
@@ -152,6 +154,7 @@ fun SignInScreen(
 
         if (showBottomSheet.value){
             BottomSheet(
+                signInViewModel,
                 { showBottomSheet.value = it },
                 usernameValue.value,
                 passwordValue.value,
@@ -176,13 +179,13 @@ fun SignInScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BottomSheet(
+    signInViewModel: SignInViewModel,
     showBottom: (Boolean) -> Unit,
     username: String,
     password: String,
     goHome: () -> Unit
 ) {
 
-    val signInViewModel = hiltViewModel<SignInViewModel>()
     val modalBottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
     val context = LocalContext.current
@@ -195,7 +198,6 @@ fun BottomSheet(
         dragHandle = { BottomSheetDefaults.DragHandle() },
     ) {
 
-            signInViewModel.login(LoginRequest(username, password, createToken?.requestToken))
             val loginObserver by signInViewModel.loginStateFlow.collectAsState()
 
             Log.i("token:", createToken?.requestToken.orEmpty())
@@ -204,6 +206,10 @@ fun BottomSheet(
                 if (loginObserver?.success == true) {
                     goHome.invoke()
                     showBottom.invoke(it)
+                    if(signInViewModel.checked.value){
+                        signInViewModel.setLogin(true)
+                    }
+
                 } else {
                     Toast.makeText(context, loginObserver?.expiresAt.orEmpty(), Toast.LENGTH_LONG).show()
                 }
@@ -229,6 +235,7 @@ fun BottomSheet(
                    // CookieManager.getInstance().flush()
 
                     signInViewModel.getToken()
+                    signInViewModel.login(LoginRequest(username, password, createToken?.requestToken))
 
                     webView.clearCache(true)
                     webView.clearFormData()
@@ -237,6 +244,4 @@ fun BottomSheet(
                     webView.loadUrl(LOGIN_URL.plus(createToken?.requestToken))
                 })
         }
-
-
 }
