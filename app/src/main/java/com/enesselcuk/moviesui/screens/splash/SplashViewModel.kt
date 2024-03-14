@@ -27,10 +27,8 @@ class SplashViewModel @Inject constructor(
     private val localDataStoreUseCase: DataStoreUseCase
 ) : ViewModel() {
 
-
     private val _loginStateFlow = MutableStateFlow<LoginResponse?>(null)
     val loginStateFlow = _loginStateFlow.asStateFlow()
-
 
      var setUsers = mutableStateOf(false)
          private set
@@ -42,7 +40,6 @@ class SplashViewModel @Inject constructor(
                     is NetworkResult.Success -> {
                         _loginStateFlow.emit(it.data)
                     }
-
                     is NetworkResult.Error -> {
                         it.message
                     }
@@ -60,12 +57,4 @@ class SplashViewModel @Inject constructor(
 
 
 
-}
-
-
-sealed class MainUiState {
-    object Initial : MainUiState()
-    object Loading : MainUiState()
-    data class Success(val auth: FirebaseAuth) : MainUiState()
-    data class Failure(val errorMessage: String) : MainUiState()
 }

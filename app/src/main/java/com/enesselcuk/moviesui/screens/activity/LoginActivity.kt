@@ -5,7 +5,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.enesselcuk.moviesui.screensauth.userScreen.signIn.SignInScreen
+import com.enesselcuk.moviesui.screens.sign.SignInScreen
 import com.enesselcuk.moviesui.ui.theme.MoviesUiTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -19,8 +19,7 @@ class LoginActivity : ComponentActivity(){
             MoviesUiTheme(darkTheme = mainViewModel.getTheme()) {
                 SignInScreen(
                     goHome = {
-                        val intent = Intent(baseContext, MainActivity::class.java)
-                        startActivity(intent)
+                        startActivity(Intent(baseContext, MainActivity::class.java))
                         finish()
                     }
                 )

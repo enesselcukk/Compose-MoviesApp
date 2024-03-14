@@ -1,8 +1,7 @@
-package com.enesselcuk.moviesui.screensauth.userScreen.signIn
+package com.enesselcuk.moviesui.screens.sign
 
 
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.enesselcuk.moviesui.data.model.authresponse.CreateResponseToken
@@ -13,7 +12,6 @@ import com.enesselcuk.moviesui.domain.useCase.login.LoginUseCase
 import com.enesselcuk.moviesui.domain.useCase.token.CreateTokenUseCase
 import com.enesselcuk.moviesui.util.Constant
 import com.enesselcuk.moviesui.util.NetworkResult
-import com.enesselcuk.moviesui.util.state.SignInState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

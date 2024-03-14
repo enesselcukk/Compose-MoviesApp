@@ -19,15 +19,14 @@ class SplashActivity : ComponentActivity(){
             MoviesUiTheme(darkTheme = mainViewModel.getTheme()) {
                 SplashScreen(
                     goHome = {
-                        val intent = Intent(baseContext, MainActivity::class.java)
-                        startActivity(intent)
+                        startActivity(Intent(baseContext, MainActivity::class.java))
                         finish()
                     },
                     goLogin = {
-                        val intent = Intent(baseContext, LoginActivity::class.java)
-                        startActivity(intent)
+                        startActivity(Intent(baseContext, LoginActivity::class.java))
                         finish()
                     }
+
                 )
             }
         }

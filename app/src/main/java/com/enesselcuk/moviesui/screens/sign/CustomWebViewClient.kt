@@ -1,4 +1,4 @@
-package com.enesselcuk.moviesui.screensauth.userScreen.signIn
+package com.enesselcuk.moviesui.screens.sign
 
 import android.webkit.WebView
 import android.webkit.WebViewClient

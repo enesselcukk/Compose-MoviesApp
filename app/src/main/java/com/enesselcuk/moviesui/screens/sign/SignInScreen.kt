@@ -1,14 +1,12 @@
-package com.enesselcuk.moviesui.screensauth.userScreen.signIn
+package com.enesselcuk.moviesui.screens.sign
 
 
 import android.annotation.SuppressLint
 import android.util.Log
-import android.webkit.CookieManager
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.*
 import androidx.compose.material3.ButtonDefaults.buttonColors
 import androidx.compose.runtime.*
@@ -18,24 +16,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.enesselcuk.moviesui.R
 import com.enesselcuk.moviesui.data.model.request.LoginRequest
 import com.enesselcuk.moviesui.util.Constant.LOGIN_URL
-import com.enesselcuk.moviesui.util.state.SignInState
-import kotlinx.coroutines.launch
-import kotlin.math.log
 
 
 @SuppressLint("CoroutineCreationDuringComposition", "StateFlowValueCalledInComposition")
