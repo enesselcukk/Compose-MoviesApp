@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.enesselcuk.moviesui.data.model.authresponse.CreateResponseToken
 import com.enesselcuk.moviesui.data.model.request.LoginRequest
-import com.enesselcuk.moviesui.data.model.response.LoginResponse
+import com.enesselcuk.moviesui.data.model.authresponse.LoginResponse
 import com.enesselcuk.moviesui.domain.useCase.datastore.DataStoreUseCase
 import com.enesselcuk.moviesui.domain.useCase.login.LoginUseCase
 import com.enesselcuk.moviesui.domain.useCase.token.CreateTokenUseCase
@@ -68,10 +68,17 @@ class SignInViewModel @Inject constructor(
         }
     }
 
-    fun setLogin(value:Boolean) {
+    fun setLogin(username:String,password:String,token:String) {
         viewModelScope.launch {
-            localDataStoreUseCase.invoke(Constant.USERS_KEY,value)
+            localDataStoreUseCase.invoke(Constant.USERS_KEY,username, password, token)
         }
     }
+
+    fun clearUsers(){
+        viewModelScope.launch {
+            localDataStoreUseCase.clearUsers(Constant.USERS_KEY)
+        }
+    }
+
 }
 

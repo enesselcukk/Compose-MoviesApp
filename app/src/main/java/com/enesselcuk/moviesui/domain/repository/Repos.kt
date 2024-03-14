@@ -7,7 +7,7 @@ import com.enesselcuk.moviesui.data.model.response.ActorDetailResponse
 import com.enesselcuk.moviesui.data.model.response.ActorMoviesResponse
 import com.enesselcuk.moviesui.data.model.response.ActorTvResponse
 import com.enesselcuk.moviesui.data.model.response.DetailResponse
-import com.enesselcuk.moviesui.data.model.response.LoginResponse
+import com.enesselcuk.moviesui.data.model.authresponse.LoginResponse
 import com.enesselcuk.moviesui.data.model.response.MoviesPeople
 import com.enesselcuk.moviesui.data.model.response.MoviesResponse
 import com.enesselcuk.moviesui.data.model.response.TrendingResponse
@@ -28,7 +28,7 @@ interface Repos {
 
     suspend fun getMoviesTrending(): Flow<NetworkResult<TrendingResponse>>
 
-    suspend fun getDetails(movie_id: Int? = null, language: String? = null): Flow<NetworkResult<DetailResponse>>
+    suspend fun getDetails(movieId: Int? = null, language: String? = null): Flow<NetworkResult<DetailResponse>>
 
     suspend fun getRecommended(movies: Int?, page: Int?, language: String?): Flow<NetworkResult<MoviesResponse>>
 
@@ -37,9 +37,7 @@ interface Repos {
     suspend fun getActorTv(id:Int,language: String?):Flow<NetworkResult<ActorTvResponse>>
     suspend fun getTvDetail(id:Int,language: String?):Flow<NetworkResult<TvDetailResponse>>
     suspend fun getTvRecommendations(id: Int,language: String?,page: Int?):Flow<NetworkResult<TvRecommendationsResponse>>
-
     suspend fun createToken():Flow<NetworkResult<CreateResponseToken>>
-
     suspend fun loginRequest(loginRequest: LoginRequest):Flow<NetworkResult<LoginResponse>>
 
 

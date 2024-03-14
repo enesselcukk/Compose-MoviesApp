@@ -198,7 +198,8 @@ fun BottomSheet(
                     goHome.invoke()
                     showBottom.invoke(it)
                     if(signInViewModel.checked.value){
-                        signInViewModel.setLogin(true)
+                        signInViewModel.clearUsers()
+                        signInViewModel.setLogin(username,password,createToken?.requestToken.orEmpty())
                     }
                 } else {
                     Toast.makeText(context, loginObserver?.expiresAt.orEmpty(), Toast.LENGTH_LONG).show()

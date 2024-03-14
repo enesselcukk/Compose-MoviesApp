@@ -1,7 +1,7 @@
 package com.enesselcuk.moviesui.domain.useCase.login
 
 import com.enesselcuk.moviesui.data.model.request.LoginRequest
-import com.enesselcuk.moviesui.data.model.response.LoginResponse
+import com.enesselcuk.moviesui.data.model.authresponse.LoginResponse
 import com.enesselcuk.moviesui.domain.repository.Repos
 import com.enesselcuk.moviesui.util.NetworkResult
 import kotlinx.coroutines.flow.Flow

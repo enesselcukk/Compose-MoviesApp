@@ -4,22 +4,17 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.enesselcuk.moviesui.data.model.request.LoginRequest
-import com.enesselcuk.moviesui.data.model.response.LoginResponse
+import com.enesselcuk.moviesui.data.model.authresponse.LoginResponse
 import com.enesselcuk.moviesui.domain.useCase.datastore.DataStoreUseCase
 import com.enesselcuk.moviesui.domain.useCase.login.LoginUseCase
-import com.enesselcuk.moviesui.domain.useCase.token.CreateTokenUseCase
 import com.enesselcuk.moviesui.util.Constant
 import com.enesselcuk.moviesui.util.NetworkResult
-import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
-import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
 
 @HiltViewModel
 class SplashViewModel @Inject constructor(
@@ -30,11 +25,21 @@ class SplashViewModel @Inject constructor(
     private val _loginStateFlow = MutableStateFlow<LoginResponse?>(null)
     val loginStateFlow = _loginStateFlow.asStateFlow()
 
-     var setUsers = mutableStateOf(false)
-         private set
-    fun login(loginRequest: LoginRequest) {
+    private var setUsers = mutableStateOf(LoginRequest())
+
+
+    fun getUser() {
         viewModelScope.launch {
-            loginUseCase.invoke(loginRequest).collectLatest {
+            localDataStoreUseCase.getUser(Constant.USERS_KEY)?.toList()?.apply {
+                setUsers.value = LoginRequest(get(0), get(1), get(2))
+                login()
+            }
+        }
+    }
+
+    fun login() {
+        viewModelScope.launch {
+            loginUseCase.invoke(setUsers.value).collectLatest {
                 when (it) {
                     is NetworkResult.Loading -> {}
                     is NetworkResult.Success -> {
@@ -47,14 +52,6 @@ class SplashViewModel @Inject constructor(
             }
         }
     }
-
-    fun getLogin():Boolean{
-        viewModelScope.launch {
-            setUsers.value = localDataStoreUseCase.invoke(Constant.USERS_KEY) == true
-        }
-        return setUsers.value
-    }
-
 
 
 }

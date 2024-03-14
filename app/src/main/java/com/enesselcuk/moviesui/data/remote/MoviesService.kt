@@ -6,14 +6,12 @@ import com.enesselcuk.moviesui.data.model.response.ActorDetailResponse
 import com.enesselcuk.moviesui.data.model.response.ActorMoviesResponse
 import com.enesselcuk.moviesui.data.model.response.ActorTvResponse
 import com.enesselcuk.moviesui.data.model.response.DetailResponse
-import com.enesselcuk.moviesui.data.model.response.LoginResponse
+import com.enesselcuk.moviesui.data.model.authresponse.LoginResponse
 import com.enesselcuk.moviesui.data.model.response.MoviesPeople
 import com.enesselcuk.moviesui.data.model.response.MoviesResponse
 import com.enesselcuk.moviesui.data.model.response.TrendingResponse
 import com.enesselcuk.moviesui.data.model.response.TvDetailResponse
 import com.enesselcuk.moviesui.data.model.response.TvRecommendationsResponse
-import com.enesselcuk.moviesui.util.NetworkResult
-import retrofit2.Response
 import retrofit2.http.*
 
 interface MoviesService {
@@ -89,7 +87,7 @@ interface MoviesService {
     suspend fun createToken():CreateResponseToken
 
     @POST("3/authentication/token/validate_with_login")
-    suspend fun login(@Body request: LoginRequest):LoginResponse
+    suspend fun login(@Body request: LoginRequest): LoginResponse
 
 
 }

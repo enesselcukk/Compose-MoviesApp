@@ -1,6 +1,5 @@
 package com.enesselcuk.moviesui.data.repos.reposRemote
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
@@ -10,7 +9,7 @@ import com.enesselcuk.moviesui.data.model.response.ActorDetailResponse
 import com.enesselcuk.moviesui.data.model.response.ActorMoviesResponse
 import com.enesselcuk.moviesui.data.model.response.ActorTvResponse
 import com.enesselcuk.moviesui.data.model.response.DetailResponse
-import com.enesselcuk.moviesui.data.model.response.LoginResponse
+import com.enesselcuk.moviesui.data.model.authresponse.LoginResponse
 import com.enesselcuk.moviesui.data.model.response.MoviesPeople
 import com.enesselcuk.moviesui.data.model.response.MoviesResponse
 import com.enesselcuk.moviesui.data.model.response.Result
@@ -71,11 +70,11 @@ class RepositoryImpl @Inject constructor(
     }.flowOn(Dispatchers.IO).catch { emit(NetworkResult.Error(it.message)) }
 
     override suspend fun getDetails(
-        movie_id: Int?,
+        movieId: Int?,
         language: String?
     ): Flow<NetworkResult<DetailResponse>> = flow {
         emit(NetworkResult.Loading())
-        val response = remoteDataSource.getDetail(movie_id, language)
+        val response = remoteDataSource.getDetail(movieId, language)
         emit(NetworkResult.Success(response))
     }.flowOn(Dispatchers.IO).catch { emit(NetworkResult.Error(it.message)) }
 

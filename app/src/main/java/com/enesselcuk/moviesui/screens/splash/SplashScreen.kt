@@ -19,19 +19,23 @@ fun SplashScreen(
     val viewModel = hiltViewModel<SplashViewModel>()
 
     val preloaderLottieComposition by rememberLottieComposition(
-        LottieCompositionSpec.RawRes(R.raw.movie))
+        LottieCompositionSpec.RawRes(R.raw.movie)
+    )
 
     val preloaderProgress by animateLottieCompositionAsState(
         preloaderLottieComposition,
         iterations = 1
     )
 
+    viewModel.getUser()
+    val getUser = viewModel.loginStateFlow.collectAsState()
+
     LaunchedEffect(preloaderProgress) {
         when {
-            preloaderProgress >= 1F && viewModel.getLogin() -> {
+            preloaderProgress >= 1F && getUser.value?.success == true -> {
                 goHome.invoke()
             }
-            preloaderProgress >= 1F && viewModel.getLogin().not() -> {
+            preloaderProgress >= 1F && getUser.value?.success == false -> {
                 goLogin.invoke()
             }
         }
