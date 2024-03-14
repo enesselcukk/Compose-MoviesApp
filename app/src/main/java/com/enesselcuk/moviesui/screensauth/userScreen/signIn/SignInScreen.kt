@@ -209,7 +209,6 @@ fun BottomSheet(
                     if(signInViewModel.checked.value){
                         signInViewModel.setLogin(true)
                     }
-
                 } else {
                     Toast.makeText(context, loginObserver?.expiresAt.orEmpty(), Toast.LENGTH_LONG).show()
                 }

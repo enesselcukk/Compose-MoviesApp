@@ -52,8 +52,13 @@ fun UiObserver(
     )
 
     LaunchedEffect(preloaderProgress) {
-        if(preloaderProgress >= 1F){
-            goLogin.invoke()
+        when {
+            preloaderProgress >= 1F && viewModel.getLogin() -> {
+                goHome.invoke()
+            }
+            preloaderProgress >= 1F && viewModel.getLogin().not() -> {
+                goLogin.invoke()
+            }
         }
     }
 
