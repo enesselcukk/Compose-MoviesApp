@@ -1,5 +1,6 @@
 package com.enesselcuk.moviesui.screens.activity
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -8,6 +9,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.enesselcuk.moviesui.screens.splash.SplashScreen
 import com.enesselcuk.moviesui.ui.theme.MoviesUiTheme
 import dagger.hilt.android.AndroidEntryPoint
+
 
 @AndroidEntryPoint
 class SplashActivity : ComponentActivity(){
@@ -26,7 +28,6 @@ class SplashActivity : ComponentActivity(){
                         startActivity(Intent(baseContext, LoginActivity::class.java))
                         finish()
                     }
-
                 )
             }
         }

@@ -203,7 +203,8 @@ fun LikedScreenView(
 
     }) {
         val (imageCons, voteCons, nameCons, choose) = createRefs()
-        AsyncImage(model = "${Constant.IMAGE_BASE_W500}$movieImage",
+        AsyncImage(
+            model = "${Constant.IMAGE_BASE_W500}$movieImage",
             contentDescription = "",
             contentScale = ContentScale.Crop,
             modifier = Modifier

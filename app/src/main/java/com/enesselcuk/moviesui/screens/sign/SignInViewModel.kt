@@ -36,15 +36,14 @@ class SignInViewModel @Inject constructor(
 
     fun getToken() {
         viewModelScope.launch {
-            createTokenUseCase.invoke().collectLatest {
-                when (it) {
+            createTokenUseCase.invoke().collectLatest {response ->
+                when (response) {
                     is NetworkResult.Loading -> {}
                     is NetworkResult.Success -> {
-                        _tokenStateFlow.emit(it.data)
+                        _tokenStateFlow.emit(response.data)
                     }
-
                     is NetworkResult.Error -> {
-                        it.message
+                        response.message
                     }
                 }
             }

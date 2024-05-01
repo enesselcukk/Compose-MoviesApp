@@ -1,15 +1,9 @@
 package com.enesselcuk.moviesui.util
 
-import com.enesselcuk.moviesui.data.remote.MoviesService
-import com.enesselcuk.moviesui.data.repos.reposRemote.RepositoryImpl
-import com.enesselcuk.moviesui.domain.repository.Repos
-import dagger.assisted.Assisted
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.runBlocking
+
 import okhttp3.Interceptor
 import okhttp3.Response
-import javax.inject.Inject
-import kotlin.reflect.jvm.internal.impl.load.kotlin.JvmType
+
 
 class NetworkConnectionInterceptor : Interceptor {
 

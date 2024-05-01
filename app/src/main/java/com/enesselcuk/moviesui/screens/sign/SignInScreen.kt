@@ -2,6 +2,7 @@ package com.enesselcuk.moviesui.screens.sign
 
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.clickable
@@ -32,7 +33,7 @@ import com.enesselcuk.moviesui.util.Constant.LOGIN_URL
 @SuppressLint("CoroutineCreationDuringComposition", "StateFlowValueCalledInComposition")
 @Composable
 fun SignInScreen(
-    goHome: () -> Unit
+    goHomeCallback: () -> Unit
 ) {
     val usernameValue = rememberSaveable { mutableStateOf("") }
     val passwordValue = rememberSaveable { mutableStateOf("") }
@@ -147,9 +148,10 @@ fun SignInScreen(
             BottomSheet(
                 signInViewModel,
                 { showBottomSheet.value = it },
+                context,
                 usernameValue.value,
                 passwordValue.value,
-                goHome::invoke
+                goHomeCallback::invoke
             )
         }
 
@@ -171,20 +173,19 @@ fun SignInScreen(
 @Composable
 fun BottomSheet(
     signInViewModel: SignInViewModel,
-    showBottom: (Boolean) -> Unit,
+    showBottomCallback: (Boolean) -> Unit,
+    context: Context = LocalContext.current,
     username: String,
     password: String,
-    goHome: () -> Unit
+    goHomeCallback: () -> Unit
 ) {
 
     val modalBottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
-    val context = LocalContext.current
-
     val createToken by signInViewModel.tokenStateFlow.collectAsState()
 
     ModalBottomSheet(
-        onDismissRequest = { showBottom.invoke(false) },
+        onDismissRequest = { showBottomCallback.invoke(false) },
         sheetState = modalBottomSheetState,
         dragHandle = { BottomSheetDefaults.DragHandle() },
     ) {
@@ -195,8 +196,8 @@ fun BottomSheet(
 
             val client = object : CustomWebViewClient({
                 if (loginObserver?.success == true) {
-                    goHome.invoke()
-                    showBottom.invoke(it)
+                    goHomeCallback.invoke()
+                    showBottomCallback.invoke(it)
                     if(signInViewModel.checked.value){
                         signInViewModel.clearUsers()
                         signInViewModel.setLogin(username,password,createToken?.requestToken.orEmpty())
@@ -216,14 +217,9 @@ fun BottomSheet(
                         settings.loadWithOverviewMode = true
                         settings.useWideViewPort = true
                         settings.setSupportZoom(true)
-
                     }
                 },
                 update = { webView ->
-
-
-                   // CookieManager.getInstance().removeAllCookies(null)
-                   // CookieManager.getInstance().flush()
 
                     signInViewModel.getToken()
                     signInViewModel.login(LoginRequest(username, password, createToken?.requestToken))

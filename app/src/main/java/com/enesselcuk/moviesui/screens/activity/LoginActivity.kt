@@ -18,7 +18,7 @@ class LoginActivity : ComponentActivity(){
             val mainViewModel = hiltViewModel<ViewModel>()
             MoviesUiTheme(darkTheme = mainViewModel.getTheme()) {
                 SignInScreen(
-                    goHome = {
+                    goHomeCallback = {
                         startActivity(Intent(baseContext, MainActivity::class.java))
                         finish()
                     }
