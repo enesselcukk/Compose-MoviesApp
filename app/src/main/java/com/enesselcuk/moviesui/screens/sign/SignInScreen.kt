@@ -26,8 +26,11 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.enesselcuk.moviesui.R
+import com.enesselcuk.moviesui.data.model.authresponse.CreateResponseToken
+import com.enesselcuk.moviesui.data.model.authresponse.LoginResponse
 import com.enesselcuk.moviesui.data.model.request.LoginRequest
 import com.enesselcuk.moviesui.util.Constant.LOGIN_URL
+import com.enesselcuk.moviesui.util.UiState
 
 
 @SuppressLint("CoroutineCreationDuringComposition", "StateFlowValueCalledInComposition")
@@ -40,7 +43,7 @@ fun SignInScreen(
     val passwordVisible = rememberSaveable { mutableStateOf(false) }
 
     val isLoading = rememberSaveable { mutableStateOf(false) }
-    val showBottomSheet = rememberSaveable { mutableStateOf(false)}
+    val showBottomSheet = rememberSaveable { mutableStateOf(false) }
 
     val signInViewModel = hiltViewModel<SignInViewModel>()
 
@@ -109,7 +112,9 @@ fun SignInScreen(
 
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.clickable { signInViewModel.checked.value = !signInViewModel.checked.value }) {
+            modifier = Modifier.clickable {
+                signInViewModel.checked.value = !signInViewModel.checked.value
+            }) {
             Checkbox(
                 checked = signInViewModel.checked.value,
                 onCheckedChange = { signInViewModel.checked.value = it },
@@ -144,7 +149,7 @@ fun SignInScreen(
             )
         }
 
-        if (showBottomSheet.value){
+        if (showBottomSheet.value) {
             BottomSheet(
                 signInViewModel,
                 { showBottomSheet.value = it },
@@ -181,8 +186,12 @@ fun BottomSheet(
 ) {
 
     val modalBottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    // TODO burada kaldın
+    val loginUiState = rememberSaveable { mutableStateOf(LoginResponse()) }
+    val tokenUiState = rememberSaveable { mutableStateOf(CreateResponseToken()) }
 
     val createToken by signInViewModel.tokenStateFlow.collectAsState()
+    val loginObserver by signInViewModel.loginStateFlow.collectAsState()
 
     ModalBottomSheet(
         onDismissRequest = { showBottomCallback.invoke(false) },
@@ -190,45 +199,78 @@ fun BottomSheet(
         dragHandle = { BottomSheetDefaults.DragHandle() },
     ) {
 
-            val loginObserver by signInViewModel.loginStateFlow.collectAsState()
+        observerLogin(loginObserver, calBackResponse = { loginUiState.value = it })
 
-            Log.i("token:", createToken?.requestToken.orEmpty())
+        observerToken(createToken, calBackResponse = { tokenUiState.value = it })
 
-            val client = object : CustomWebViewClient({
-                if (loginObserver?.success == true) {
-                    goHomeCallback.invoke()
-                    showBottomCallback.invoke(it)
-                    if(signInViewModel.checked.value){
-                        signInViewModel.clearUsers()
-                        signInViewModel.setLogin(username,password,createToken?.requestToken.orEmpty())
-                    }
-                } else {
-                    Toast.makeText(context, loginObserver?.expiresAt.orEmpty(), Toast.LENGTH_LONG).show()
+        Log.i("token:", tokenUiState.value.requestToken.orEmpty())
+
+        val client = object : CustomWebViewClient({
+            if (loginUiState.value.success == true) {
+                goHomeCallback.invoke()
+                showBottomCallback.invoke(it)
+                if (signInViewModel.checked.value) {
+                    signInViewModel.clearUsers()
+                    signInViewModel.setLogin(
+                        username,
+                        password,
+                        tokenUiState.value.expiresAt.orEmpty()
+                    )
                 }
-            }) {}
+            } else {
+                Toast.makeText(context, loginUiState.value.expiresAt.orEmpty(), Toast.LENGTH_LONG).show()
+            }
+        }) {}
 
-            AndroidView(
-                factory = { context ->
-                    android.webkit.WebView(context).apply {
+        AndroidView(
+            factory = { context ->
+                android.webkit.WebView(context).apply {
 
-                        settings.javaScriptEnabled = true
-                        webViewClient = client
+                    settings.javaScriptEnabled = true
+                    webViewClient = client
 
-                        settings.loadWithOverviewMode = true
-                        settings.useWideViewPort = true
-                        settings.setSupportZoom(true)
-                    }
-                },
-                update = { webView ->
+                    settings.loadWithOverviewMode = true
+                    settings.useWideViewPort = true
+                    settings.setSupportZoom(true)
+                }
+            },
+            update = { webView ->
 
-                    signInViewModel.getToken()
-                    signInViewModel.login(LoginRequest(username, password, createToken?.requestToken))
+                signInViewModel.getToken()
+                signInViewModel.login(LoginRequest(username, password, tokenUiState.value.requestToken))
 
-                    webView.clearCache(true)
-                    webView.clearFormData()
-                    webView.clearHistory()
-                    webView.clearSslPreferences()
-                    webView.loadUrl(LOGIN_URL.plus(createToken?.requestToken))
-                })
+                webView.clearCache(true)
+                webView.clearFormData()
+                webView.clearHistory()
+                webView.clearSslPreferences()
+                webView.loadUrl(LOGIN_URL.plus(tokenUiState.value.requestToken))
+            })
+    }
+}
+
+private fun observerLogin(uiState: UiState, calBackResponse: (response: LoginResponse) -> Unit) {
+    when (uiState) {
+        is UiState.Initial -> {}
+        is UiState.Loading -> {}
+        is UiState.Success<*> -> {
+            calBackResponse(uiState.response as LoginResponse)
         }
+
+        is UiState.Failure -> {}
+    }
+}
+
+private fun observerToken(
+    uiState: UiState,
+    calBackResponse: (response: CreateResponseToken) -> Unit
+) {
+    when (uiState) {
+        is UiState.Initial -> {}
+        is UiState.Loading -> {}
+        is UiState.Success<*> -> {
+            calBackResponse(uiState.response as CreateResponseToken)
+        }
+
+        is UiState.Failure -> {}
+    }
 }
