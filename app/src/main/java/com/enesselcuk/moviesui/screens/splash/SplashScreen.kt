@@ -43,7 +43,7 @@ fun SplashScreen(
 
     LaunchedEffect(preloaderProgress) {
         when {
-            preloaderProgress >= 1F &&  isSuccessState.value -> {
+            preloaderProgress >= 1F && isSuccessState.value -> {
                 goHome.invoke()
             }
 
