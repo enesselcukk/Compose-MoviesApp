@@ -156,13 +156,14 @@ fun SignInScreen(
         }
 
         if (signInViewModel.showBottomSheet) {
+            val createToken by signInViewModel.tokenStateFlow.collectAsStateWithLifecycle()
             BottomSheet(
                 signInViewModel,
                 context,
-                goHomeCallback::invoke
+                createToken
             )
-        }
 
+        }
 
         if (isLoading.value) {
             CircularProgressIndicator(
@@ -182,17 +183,15 @@ fun SignInScreen(
 fun BottomSheet(
     signInViewModel: SignInViewModel,
     context: Context = LocalContext.current,
-    goHomeCallback: () -> Unit
+    uiState: UiState
 ) {
 
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
-    val createToken by signInViewModel.tokenStateFlow.collectAsStateWithLifecycle()
-
-    when (createToken) {
+    when (uiState) {
         is UiState.Initial -> {}
         is UiState.Success<*> -> {
-            val response = (createToken as UiState.Success<*>).response as CreateResponseToken
+            val response = uiState.response as CreateResponseToken
             response.requestToken?.let {
                 signInViewModel.login(
                     LoginRequest(
@@ -229,7 +228,7 @@ fun BottomSheet(
                                 (loginObserver as UiState.Success<*>).response as LoginResponse
 
                             if (loginResponse.success == true) {
-                                goHomeCallback.invoke()
+                             //   goHomeCallback.invoke()
                                 signInViewModel.setShowBottom(false)
                                 signInViewModel.saveUser()
                             } else {
@@ -243,7 +242,6 @@ fun BottomSheet(
                 } else {
                     signInViewModel.setShowBottom(false)
                 }
-                signInViewModel.setResponseToken("")
             }) {}
 
 
@@ -258,7 +256,12 @@ fun BottomSheet(
                         settings.useWideViewPort = true
                         settings.setSupportZoom(true)
 
+                        this.clearCache(true)
+                        this.clearFormData()
+                        this.clearHistory()
+                        this.clearSslPreferences()
                         this.loadUrl(LOGIN_URL.plus(signInViewModel.token))
+                        signInViewModel.setResponseToken("")
                     }
                 })
 
