@@ -1,15 +1,13 @@
 package com.enesselcuk.moviesui.screens.sign
 
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
+import android.webkit.WebView
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
 import androidx.compose.material3.ButtonDefaults.buttonColors
 import androidx.compose.runtime.*
@@ -32,15 +30,13 @@ import com.enesselcuk.moviesui.R
 import com.enesselcuk.moviesui.data.model.authresponse.CreateResponseToken
 import com.enesselcuk.moviesui.data.model.authresponse.LoginResponse
 import com.enesselcuk.moviesui.data.model.request.LoginRequest
-import com.enesselcuk.moviesui.util.Constant.LOGIN_URL
+import com.enesselcuk.moviesui.util.Constant
 import com.enesselcuk.moviesui.util.UiState
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
 
 
 @Composable
 fun SignInScreen(
-    goHomeCallback: () -> Unit
+    goHomeCallback: () -> Unit,
 ) {
     val passwordVisible = rememberSaveable { mutableStateOf(false) }
 
@@ -134,8 +130,7 @@ fun SignInScreen(
                 if (signInViewModel.usernameValue.text.isEmpty()
                         .not() && signInViewModel.passwordValue.text.isEmpty().not()
                 ) {
-                    signInViewModel.setShowBottom(true)
-                    signInViewModel.getToken()
+                    signInViewModel.setShowWebView(true)
                 } else {
                     Toast.makeText(context, R.string.emailpasswordfailer, Toast.LENGTH_LONG).show()
                 }
@@ -155,15 +150,12 @@ fun SignInScreen(
             )
         }
 
-        if (signInViewModel.showBottomSheet) {
-            val createToken by signInViewModel.tokenStateFlow.collectAsStateWithLifecycle()
-            BottomSheet(
-                signInViewModel,
-                context,
-                createToken
-            )
 
+        if (signInViewModel.showSignWebView) {
+            BottomShowScreen(callback =goHomeCallback)
         }
+
+
 
         if (isLoading.value) {
             CircularProgressIndicator(
@@ -177,95 +169,104 @@ fun SignInScreen(
     }
 }
 
-@SuppressLint("SetJavaScriptEnabled")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BottomSheet(
-    signInViewModel: SignInViewModel,
+fun BottomShowScreen(
+    signInViewModel: SignInViewModel = hiltViewModel(),
     context: Context = LocalContext.current,
-    uiState: UiState
+    callback: () -> Unit
 ) {
 
-    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val sheetState = rememberModalBottomSheetState()
 
-    when (uiState) {
-        is UiState.Initial -> {}
-        is UiState.Success<*> -> {
-            val response = uiState.response as CreateResponseToken
-            response.requestToken?.let {
+    LaunchedEffect(Unit) {
+        signInViewModel.getToken()
+    }
+
+    val createToken by signInViewModel.tokenStateFlow.collectAsStateWithLifecycle()
+
+    LaunchedEffect(createToken) {
+        when (createToken) {
+            is UiState.Initial -> {
+                Toast.makeText(context, "null", Toast.LENGTH_SHORT).show()
+            }
+
+            is UiState.Success<CreateResponseToken> -> {
+                val response = (createToken as UiState.Success<CreateResponseToken>).response
+
+                signInViewModel.setResponseToken(response.requestToken.orEmpty())
+            }
+
+            is UiState.Failure -> {}
+            is UiState.Loading -> {}
+        }
+    }
+
+    ModalBottomSheet(
+        onDismissRequest = {
+            signInViewModel.setShowWebView(true)
+        },
+        sheetState = sheetState
+    ) {
+
+        val client = object : CustomWebViewClient({
+            if (it) {
+                signInViewModel.setIsLoginRequest(true)
+            } else {
+                signInViewModel.setIsLoginRequest(false)
+            }
+        }) {}
+
+        AndroidView(
+            factory = { context ->
+                WebView(context).apply {
+                    settings.javaScriptEnabled = true
+                    webViewClient = client
+
+                    settings.loadWithOverviewMode = true
+                    settings.useWideViewPort = true
+                    settings.setSupportZoom(true)
+
+                }
+            }, update = {
+                it.clearCache(true)
+                it.clearFormData()
+                it.clearHistory()
+                it.clearSslPreferences()
+                it.loadUrl(Constant.LOGIN_URL.plus(signInViewModel.updateToken()))
+            })
+
+        if (signInViewModel.isLoginRequest) {
+            LaunchedEffect(Unit) {
                 signInViewModel.login(
                     LoginRequest(
                         signInViewModel.usernameValue.text,
                         signInViewModel.passwordValue.text,
-                        it
+                        signInViewModel.updateToken()
                     )
                 )
-                signInViewModel.setResponseToken(it)
-                Log.i("token:", signInViewModel.token)
             }
-        }
 
-        is UiState.Failure -> {}
-        is UiState.Loading -> {}
-    }
+            val loginObserver by signInViewModel.loginStateFlow.collectAsStateWithLifecycle(UiState.Initial)
 
-    if (signInViewModel.token.isEmpty().not()) {
-        ModalBottomSheet(
-            onDismissRequest = { signInViewModel.setShowBottom(false) },
-            sheetState = sheetState,
-            dragHandle = { BottomSheetDefaults.DragHandle() },
-        ) {
+            LaunchedEffect(loginObserver) {
+                when (loginObserver) {
+                    is UiState.Initial -> {}
+                    is UiState.Loading -> {}
+                    is UiState.Success<LoginResponse> -> {
+                        val loginResponse = (loginObserver as UiState.Success<LoginResponse>).response
 
-            val loginObserver by signInViewModel.loginStateFlow.collectAsStateWithLifecycle()
-
-            val client = object : CustomWebViewClient({
-                if (it) {
-                    when (loginObserver) {
-                        is UiState.Initial -> {}
-                        is UiState.Loading -> {}
-                        is UiState.Success<*> -> {
-                            val loginResponse =
-                                (loginObserver as UiState.Success<*>).response as LoginResponse
-
-                            if (loginResponse.success == true) {
-                             //   goHomeCallback.invoke()
-                                signInViewModel.setShowBottom(false)
-                                signInViewModel.saveUser()
-                            } else {
-                                Toast.makeText(context, "hata", Toast.LENGTH_LONG)
-                                    .show()
-                            }
+                        if (loginResponse.success == true) {
+                            callback()
+                            signInViewModel.saveUser()
+                        } else {
+                            Toast.makeText(context, "hata", Toast.LENGTH_LONG).show()
                         }
-
-                        is UiState.Failure -> {}
                     }
-                } else {
-                    signInViewModel.setShowBottom(false)
+
+                    is UiState.Failure -> {}
                 }
-            }) {}
-
-
-
-            AndroidView(
-                factory = { context ->
-                    android.webkit.WebView(context).apply {
-                        settings.javaScriptEnabled = true
-                        webViewClient = client
-
-                        settings.loadWithOverviewMode = true
-                        settings.useWideViewPort = true
-                        settings.setSupportZoom(true)
-
-                        this.clearCache(true)
-                        this.clearFormData()
-                        this.clearHistory()
-                        this.clearSslPreferences()
-                        this.loadUrl(LOGIN_URL.plus(signInViewModel.token))
-                        signInViewModel.setResponseToken("")
-                    }
-                })
-
-
+            }
         }
     }
 }

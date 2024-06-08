@@ -24,7 +24,7 @@ class SplashViewModel @Inject constructor(
     private val localDataStoreUseCase: DataStoreUseCase
 ) : ViewModel() {
 
-    private val _loginStateFlow = MutableStateFlow<UiState>(UiState.Initial)
+    private val _loginStateFlow = MutableStateFlow<UiState<Boolean>>(UiState.Initial)
     val loginStateFlow = _loginStateFlow.asStateFlow()
 
     private var setUsers = mutableStateOf(LoginRequest())
@@ -51,7 +51,10 @@ class SplashViewModel @Inject constructor(
                         _loginStateFlow.emit(UiState.Loading(it.isLoading))
                     }
                     is NetworkResult.Success -> {
-                        _loginStateFlow.emit(UiState.Success(it.data.success))
+                        it.data.success?.let {isSuccess ->
+                            _loginStateFlow.emit(UiState.Success(isSuccess))
+                        }
+
                     }
                     is NetworkResult.Error -> {
                        _loginStateFlow.emit(UiState.Failure(it.message))

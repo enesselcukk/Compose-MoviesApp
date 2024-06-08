@@ -5,7 +5,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.enesselcuk.moviesui.screens.sign.BottomSheet
 import com.enesselcuk.moviesui.screens.sign.SignInScreen
 import com.enesselcuk.moviesui.ui.theme.MoviesUiTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -23,6 +22,7 @@ class LoginActivity : ComponentActivity(){
                         startActivity(Intent(baseContext, MainActivity::class.java))
                         finish()
                     }
+
                 )
             }
         }

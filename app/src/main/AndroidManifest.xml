@@ -16,7 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MoviesUi"
         tools:targetApi="31">
-
+        <activity
+            android:name=".screens.activity.WebViewSign"
+            android:exported="false" />
         <activity
             android:name=".screens.activity.SplashActivity"
             android:exported="true"
@@ -26,13 +28,10 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            
         </activity>
-
         <activity
             android:name=".screens.activity.MainActivity"
             android:exported="false" />
-
         <activity
             android:name=".screens.activity.LoginActivity"
             android:exported="false" />

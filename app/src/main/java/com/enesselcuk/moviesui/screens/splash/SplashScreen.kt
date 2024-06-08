@@ -21,12 +21,14 @@ fun SplashScreen(
     goLogin: () -> Unit,
 ) {
 
-
     val viewModel = hiltViewModel<SplashViewModel>()
     val isSuccessState = rememberSaveable { mutableStateOf(false) }
 
-    viewModel.getUser()
-    val getUser = viewModel.loginStateFlow.collectAsState()
+    LaunchedEffect(Unit) {
+        viewModel.getUser()
+    }
+
+    val getUser = viewModel.loginStateFlow.collectAsStateWithLifecycle()
 
     handleUiState(getUser.value, callback = {
         isSuccessState.value = it
@@ -60,12 +62,12 @@ fun SplashScreen(
     )
 }
 
-private fun handleUiState(uiState: UiState, callback: (loginResponse: Boolean) -> Unit) {
+private fun handleUiState(uiState: UiState<Boolean>, callback: (loginResponse: Boolean) -> Unit) {
     when (uiState) {
         is UiState.Initial -> {}
         is UiState.Loading -> {}
-        is UiState.Success<*> -> {
-            callback(uiState.response as Boolean)
+        is UiState.Success<Boolean> -> {
+            callback(uiState.response)
         }
 
         is UiState.Failure -> {}

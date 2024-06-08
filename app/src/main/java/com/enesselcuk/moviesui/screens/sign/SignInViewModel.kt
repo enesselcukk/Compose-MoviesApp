@@ -3,10 +3,8 @@ package com.enesselcuk.moviesui.screens.sign
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.text.input.TextInputService
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -24,8 +22,6 @@ import com.enesselcuk.moviesui.util.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -38,28 +34,37 @@ class SignInViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val _loginStateFlow = MutableStateFlow<UiState>(UiState.Initial)
+    private val _loginStateFlow = MutableStateFlow<UiState<LoginResponse>>(UiState.Initial)
     val loginStateFlow = _loginStateFlow.asStateFlow()
 
-    private val _tokenStateFlow = MutableStateFlow<UiState>(UiState.Initial)
+    private val _tokenStateFlow = MutableStateFlow<UiState<CreateResponseToken>>(UiState.Initial)
     val tokenStateFlow = _tokenStateFlow.asStateFlow()
 
+    //  save checkBox username and password
     var checked by mutableStateOf(false)
 
-    var token by savedStateHandle.saveable { mutableStateOf("") }
-        private set
+
+    // start token state
+    private var saveToken by savedStateHandle.saveable { mutableStateOf("") }
 
     fun setResponseToken(updateToken: String) {
-        token = updateToken
+        saveToken = ""
+        saveToken = updateToken
     }
 
-    var showBottomSheet by savedStateHandle.saveable { mutableStateOf(false) }
+    fun updateToken(): String = saveToken
+    // end token state
+
+    // start bottomSheet state screen
+    var showSignWebView by savedStateHandle.saveable { mutableStateOf(false) }
         private set
 
-    fun setShowBottom(bottom: Boolean) {
-        showBottomSheet = bottom
+    fun setShowWebView(bottom: Boolean) {
+        showSignWebView = bottom
     }
+    // end bottom state screen
 
+    // start username saveable state
     var usernameValue by savedStateHandle.saveable(stateSaver = TextFieldValue.Saver) {
         mutableStateOf(TextFieldValue())
     }
@@ -68,7 +73,9 @@ class SignInViewModel @Inject constructor(
     fun setUserName(userName: TextFieldValue) {
         usernameValue = userName
     }
+    // end username saveable state
 
+    //  start password saveable state
     var passwordValue by savedStateHandle.saveable(stateSaver = TextFieldValue.Saver) {
         mutableStateOf(TextFieldValue())
     }
@@ -77,65 +84,82 @@ class SignInViewModel @Inject constructor(
     fun setPassword(password: TextFieldValue) {
         passwordValue = password
     }
+    // end password saveable state
 
-    fun saveUser(){
-        when(checked){
-            true ->{
+    var isLoginRequest by savedStateHandle.saveable { mutableStateOf(false) }
+        private set
+
+    fun setIsLoginRequest(isLogin: Boolean) {
+        isLoginRequest = isLogin
+    }
+
+    // save user function.
+    fun saveUser() {
+        when (checked) {
+            true -> {
                 clearUsers()
-                setLogin(usernameValue.text,passwordValue.text,token)
+                setLogin(usernameValue.text, passwordValue.text, saveToken)
             }
+
             false -> {}
         }
     }
 
 
+    // get token
     fun getToken() {
         viewModelScope.launch {
-            createTokenUseCase.invoke().collectLatest { response ->
+            createTokenUseCase.invoke().collect { response ->
                 when (response) {
                     is NetworkResult.Loading -> {
-                        _tokenStateFlow.emit(UiState.Loading(response.isLoading))
+                        _tokenStateFlow.value = UiState.Loading(response.isLoading)
+                        // _tokenStateFlow.value = UiState.Loading(response.isLoading)
                     }
 
                     is NetworkResult.Success -> {
-                        _tokenStateFlow.emit(UiState.Success(response.data))
+                        _tokenStateFlow.value = UiState.Success<CreateResponseToken>(response.data)
+                        //  _tokenStateFlow.update { UiState.Success(response.data) }
                     }
 
                     is NetworkResult.Error -> {
-                        _tokenStateFlow.emit(UiState.Failure(response.message))
+                        _tokenStateFlow.value = UiState.Failure(response.message)
+                        //  _tokenStateFlow.update { UiState.Failure(response.message) }
                     }
                 }
             }
         }
     }
 
+    // get token
     fun login(loginRequest: LoginRequest) {
         viewModelScope.launch {
-            loginUseCase.invoke(loginRequest).collectLatest {
+            loginUseCase.invoke(loginRequest).collect {
                 when (it) {
                     is NetworkResult.Loading -> {
-                        _loginStateFlow.emit(UiState.Loading(it.isLoading))
+                        _loginStateFlow.value = UiState.Loading(it.isLoading)
                     }
 
                     is NetworkResult.Success -> {
-                        _loginStateFlow.emit(UiState.Success(it.data))
+                        _loginStateFlow.value = UiState.Success(it.data)
                     }
 
                     is NetworkResult.Error -> {
-                        _loginStateFlow.emit(UiState.Failure(it.message))
+                        _loginStateFlow.value = UiState.Failure(it.message)
                     }
                 }
             }
         }
     }
 
-    fun setLogin(username: String, password: String, token: String) {
+    // save datastore login username and password
+    private fun setLogin(username: String, password: String, token: String) {
         viewModelScope.launch {
             localDataStoreUseCase.invoke(Constant.USERS_KEY, username, password, token)
         }
     }
 
-    fun clearUsers() {
+    // clear username and password
+    private fun clearUsers() {
         viewModelScope.launch {
             localDataStoreUseCase.clearUsers(Constant.USERS_KEY)
         }
