@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -36,7 +37,6 @@ import com.enesselcuk.moviesui.data.model.response.DetailResponse
 import com.enesselcuk.moviesui.data.model.response.TvDetailResponse
 import com.enesselcuk.moviesui.util.Constant
 import java.math.RoundingMode
-
 
 
 @Composable
@@ -73,7 +73,7 @@ fun LikedScreen(
                 viewModel.chooseListTv.clear()
             }) {
 
-        ToggleMovieOrTv(viewModel,
+        ToggleMovieOrTv(
             isVisibleMovies = {
                 LikedScreenItemsMovies(detailResponse = data,
                     sharedViewModel = sharedViewModel,
@@ -93,7 +93,6 @@ fun LikedScreen(
 
 @Composable
 fun ToggleMovieOrTv(
-    viewModel: LikedViewModel,
     isVisibleMovies: @Composable () -> Unit,
     isVisibleTv: @Composable () -> Unit,
 ) {
@@ -128,7 +127,6 @@ fun ToggleMovieOrTv(
                 color = if (toggleChangeMovies.value) MaterialTheme.colorScheme.onSurface
                 else MaterialTheme.colorScheme.surface
             )
-
         }
 
         OutlinedButton(
@@ -149,7 +147,6 @@ fun ToggleMovieOrTv(
             )
 
         ) {
-
             Text(
                 text = "Tv",
                 color = if (toggleChangeTv.value) MaterialTheme.colorScheme.onSurface
@@ -166,7 +163,6 @@ fun ToggleMovieOrTv(
 }
 
 
-
 @Composable
 fun LikedScreenView(
     onClick: () -> Unit,
@@ -180,7 +176,6 @@ fun LikedScreenView(
 ) {
 
     val change = rememberSaveable { mutableStateOf(true) }
-
 
     ConstraintLayout(modifier = Modifier.clickable {
         onClick.invoke()
@@ -196,8 +191,10 @@ fun LikedScreenView(
                     viewModel.chooseListTv.removeAll { it == id }
                     change.value = true
                 }
-            }else -> {
-            onClickNav.invoke(id)
+            }
+
+            else -> {
+                onClickNav.invoke(id)
             }
         }
 
@@ -325,15 +322,16 @@ fun LikedScreenItemsTv(
 fun OpenDialog(
     viewModel: LikedViewModel, sharedViewModel: SharedViewModel
 ) {
-
     if (sharedViewModel.isOpenDialog.value) {
         AlertDialog(onDismissRequest = {
             sharedViewModel.isOpenDialog.value = false
         }, icon = { Icon(Icons.Filled.Favorite, contentDescription = null) }, title = {
-            Text(text = "Warning")
+            Text(stringResource(id = R.string.dialog_info))
         }, text = {
-            if (viewModel.chooseList.size > 0 || viewModel.chooseListTv.size > 0) Text("are you sure you want to delete")
-            else Text("please select movie")
+            if (viewModel.chooseList.size > 0 || viewModel.chooseListTv.size > 0) Text(
+                stringResource(id = R.string.dialog_choose_empty)
+            )
+            else Text(stringResource(id = R.string.dialog_text))
         }, confirmButton = {
             if (viewModel.chooseList.size > 0 || viewModel.chooseListTv.size > 0) {
                 Button(onClick = {
@@ -343,20 +341,20 @@ fun OpenDialog(
                     viewModel.getFavorite()
                     viewModel.getTvFavorite()
                 }) {
-                    Text("Yes")
+                    Text(stringResource(id = R.string.dialog_yes))
                 }
             } else {
                 Button(
                     onClick = { sharedViewModel.isOpenDialog.value = false },
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text("Okay")
+                    Text(stringResource(id = R.string.dialog_no))
                 }
             }
         }, dismissButton = {
             if (viewModel.chooseList.size > 0 || viewModel.chooseListTv.size > 0) {
                 Button(onClick = { sharedViewModel.isOpenDialog.value = false }) {
-                    Text("No")
+                    Text(stringResource(id = R.string.dialog_no))
                 }
             }
 

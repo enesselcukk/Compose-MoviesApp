@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Movies</string>
+    <string name="popular">Popular</string>
+    <string name="upcoming">UpComing</string>
+    <string name="see_all">See All ></string>
+
+    <string name="timeMovies">1.30</string>
+    <string name="pointMovies">8.9</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="search">Search</string>
+    <string name="movies">Movies</string>
+    <string name="actors">Popular Actors</string>
+    <string name="preview">Preview</string>
+    <string name="recommend">Recommendations</string>
+    <string name="actor_movies">Movies</string>
+    <string name="actor_Tv">Tv</string>
+
+    <string name="emailpasswordfailer">enter email and password</string>
+    <string name="dialog_text">"please select movie"</string>
+    <string name="dialog_info">"Info"</string>
+    <string name="dialog_yes">"Yes"</string>
+    <string name="dialog_no">"No"</string>
+    <string name="dialog_choose_empty">"are you sure you want to delete"</string>
+</resources>

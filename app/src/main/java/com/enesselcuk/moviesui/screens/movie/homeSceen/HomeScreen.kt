@@ -11,6 +11,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -46,8 +47,10 @@ fun HomeScreen(
     val language = "en-US"
     val page = 1
 
-    viewModel.getMovies(title = titlePopular, language = language, page = page)
-    viewModel.getMoviesUpComing(title = uoComingTitle, language = language, page = page)
+    LaunchedEffect(Unit) {
+        viewModel.getMovies(title = titlePopular, language = language, page = page)
+        viewModel.getMoviesUpComing(title = uoComingTitle, language = language, page = page)
+    }
 
     val popularMovie by viewModel.getMoviesFlow.collectAsStateWithLifecycle()
     val upComingMovie by viewModel.getUpComingFlow.collectAsStateWithLifecycle()

@@ -33,6 +33,7 @@ import com.enesselcuk.moviesui.screens.movie.actorDetailScreen.view.ActorTvTitle
 import com.enesselcuk.moviesui.data.model.response.ActorDetailResponse
 import com.enesselcuk.moviesui.util.Constant.IMAGE_BASE
 import com.enesselcuk.moviesui.util.dateCurrent
+import java.util.Locale
 
 @Composable
 fun ActorScreen(
@@ -49,9 +50,11 @@ fun ActorScreen(
 
     isActionInTopBar.invoke(false)
 
-    viewModel.getActor(id = id, language = "tr")
-    viewModel.getActorMovie(id = id, language = "tr")
-    viewModel.getActorTv(id = id, language = "tr")
+    LaunchedEffect(Unit) {
+        viewModel.getActor(id = id, language = Locale.getDefault().language)
+        viewModel.getActorMovie(id = id, language = Locale.getDefault().language)
+        viewModel.getActorTv(id = id, language = Locale.getDefault().language)
+    }
 
     val data = viewModel.actorDetailFlow.collectAsStateWithLifecycle()
     val movieData = viewModel.actorMovieDetailFlow.collectAsStateWithLifecycle()
@@ -83,7 +86,7 @@ private fun ActorScreenView(
     actorData: ActorDetailResponse?
 ) {
     ConstraintLayout(modifier = Modifier.fillMaxSize()) {
-        val (image, name, acContent,birth,job,place_birth) = createRefs()
+        val (image, name, acContent,birth,job,placeBirth) = createRefs()
 
         AsyncImage(model = "$IMAGE_BASE${actorData?.profile_path}",
             contentDescription = "",
@@ -124,7 +127,7 @@ private fun ActorScreenView(
         )
 
         Text(
-            text = actorData?.place_of_birth.orEmpty(), modifier = Modifier.constrainAs(place_birth) {
+            text = actorData?.place_of_birth.orEmpty(), modifier = Modifier.constrainAs(placeBirth) {
                 top.linkTo(job.bottom, 3.dp)
                 start.linkTo(image.end,10.dp)
                 end.linkTo(parent.end,3.dp)
@@ -132,7 +135,7 @@ private fun ActorScreenView(
             fontWeight = FontWeight.Bold
         )
 
-        ActorContent(content = actorData?.biography.orEmpty(),
+         ActorContent(content = actorData?.biography.orEmpty(),
             titleContent = "Biography",
             modifier = Modifier.constrainAs(acContent) {
                 top.linkTo(image.bottom, 10.dp)
@@ -147,7 +150,7 @@ private fun ActorScreenView(
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun ActorContent(content: String, titleContent: String, modifier: Modifier) {
-    if (!content.isNullOrEmpty()) {
+    if (content.isNotEmpty()) {
         ConstraintLayout(
             modifier = modifier
                 .fillMaxWidth()
@@ -199,7 +202,7 @@ fun ActorContent(content: String, titleContent: String, modifier: Modifier) {
                         }
                     }
                 }
-            }) { targetExpanded ->
+            }, label = "") { targetExpanded ->
                 if (targetExpanded) {
                     Text(text = content)
                 }

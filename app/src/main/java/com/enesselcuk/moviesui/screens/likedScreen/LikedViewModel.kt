@@ -32,7 +32,7 @@ class LikedViewModel @Inject constructor(private val localRepos: ReposLocal) : V
 
                     }
                     is NetworkResult.Success -> {
-                        _getFlowFavorite.emit(likeds.data)
+                        _getFlowFavorite.value = likeds.data
                     }
                     is NetworkResult.Error -> {
                         val error = likeds.message
@@ -63,7 +63,7 @@ class LikedViewModel @Inject constructor(private val localRepos: ReposLocal) : V
 
                     }
                     is NetworkResult.Success -> {
-                        _getFlowTvFavorite.emit(likeds.data)
+                        _getFlowTvFavorite.value = likeds.data
                     }
                     is NetworkResult.Error -> {
                         val error = likeds.message

@@ -8,6 +8,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -48,10 +49,12 @@ fun DetailsScreen(
     isVisibleTopBarBack.invoke(true)
     screeName.invoke("Details")
 
-    if (!viewModel.isClickRecommended.value) {
-        viewModel.getDetails(movie_id = moviesId, language = "en")
-        viewModel.getRecommended(id = moviesId, 1, "en")
-        viewModel.getFavorite()
+    LaunchedEffect(Unit) {
+        if (!viewModel.isClickRecommended.value) {
+            viewModel.getDetails(movie_id = moviesId, language = "en")
+            viewModel.getRecommended(id = moviesId, 1, "en")
+            viewModel.getFavorite()
+        }
     }
 
     val data = viewModel.detailsFlow.collectAsStateWithLifecycle()

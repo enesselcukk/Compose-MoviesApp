@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -35,7 +36,9 @@ fun HomeTopMoviesPager(
     viewModel: HomeViewModel = hiltViewModel()
 ) {
 
-    viewModel.getMoviesTrending()
+    LaunchedEffect(Unit) {
+        viewModel.getMoviesTrending()
+    }
     val data = viewModel.getMoviesTrendingFlow.collectAsStateWithLifecycle()
 
     val pagerState = rememberPagerState()

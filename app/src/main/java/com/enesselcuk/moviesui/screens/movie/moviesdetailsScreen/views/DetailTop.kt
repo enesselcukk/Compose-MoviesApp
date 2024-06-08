@@ -75,6 +75,7 @@ fun DetailTop(
                 }
                 .clickable {
                     if (!isLiked) {
+
                         viewModel.setLikedMovies(movies!!)
                         viewModel.ifLiked.value = true
                     }

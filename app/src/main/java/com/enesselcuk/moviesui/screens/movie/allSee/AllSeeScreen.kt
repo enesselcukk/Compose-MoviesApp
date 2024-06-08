@@ -12,6 +12,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,6 +35,8 @@ import coil.compose.AsyncImage
 import com.enesselcuk.moviesui.data.model.response.Result
 import com.enesselcuk.moviesui.util.Constant.IMAGE_BASE_W500
 import java.math.RoundingMode
+import java.util.Locale
+import kotlin.reflect.jvm.internal.impl.descriptors.Visibilities.Local
 
 @Composable
 fun AllSeeScreenHome(
@@ -43,7 +46,10 @@ fun AllSeeScreenHome(
     isActionInTopBar : (isVisible:Boolean) -> Unit,
     viewModel: AllSeeViewModel = hiltViewModel(),
 ) {
-    viewModel.allMovies(titleName?.lowercase().orEmpty(), "en-US")
+    LaunchedEffect(Unit) {
+        viewModel.allMovies(titleName?.lowercase().orEmpty(), Locale.getDefault().language)
+    }
+
     val data = viewModel.pageFlow.collectAsLazyPagingItems()
 
     isVisibleBottom?.invoke(false)
