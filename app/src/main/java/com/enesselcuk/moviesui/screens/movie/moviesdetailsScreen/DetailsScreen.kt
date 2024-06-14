@@ -49,13 +49,15 @@ fun DetailsScreen(
     isVisibleTopBarBack.invoke(true)
     screeName.invoke("Details")
 
-    LaunchedEffect(Unit) {
-        if (!viewModel.isClickRecommended.value) {
+
+    if (!viewModel.isClickRecommended.value) {
+        LaunchedEffect(Unit) {
             viewModel.getDetails(movie_id = moviesId, language = "en")
             viewModel.getRecommended(id = moviesId, 1, "en")
             viewModel.getFavorite()
         }
     }
+
 
     val data = viewModel.detailsFlow.collectAsStateWithLifecycle()
     val dataRecommended = viewModel.detailRecommended.collectAsStateWithLifecycle()

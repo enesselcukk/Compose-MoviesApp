@@ -24,4 +24,11 @@
     <string name="dialog_yes">"Evet"</string>
     <string name="dialog_no">"Hayır"</string>
     <string name="dialog_choose_empty">"Silmek istediğinize emin misiniz?"</string>
+    <string name="tr">"tr"</string>
+    <string name="en">"en"</string>
+
+    <string name="language_tr">"Türkçe"</string>
+    <string name="language_en">"English"</string>
+    <string name="theme">"Theme"</string>
+    <string name="language">"Language"</string>
 </resources>

@@ -8,6 +8,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -49,10 +50,12 @@ fun TvDetailScreen(
     isVisibleTopBarBack.invoke(true)
     screenName.invoke("Tv Detail")
 
-    if (!tvViewModel.isClickRecommended.value) {
-        tvViewModel.getTvDetail(id = tvId, language = "tr")
-        tvViewModel.getRecommendationsTv(id = tvId, language = "tr", page = 1)
-        tvViewModel.getFavorite()
+    LaunchedEffect(Unit) {
+        if (!tvViewModel.isClickRecommended.value) {
+            tvViewModel.getTvDetail(id = tvId, language = "tr")
+            tvViewModel.getRecommendationsTv(id = tvId, language = "tr", page = 1)
+            tvViewModel.getFavorite()
+        }
     }
 
     val data = tvViewModel.tvDetailFlow.collectAsStateWithLifecycle()

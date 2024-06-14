@@ -24,4 +24,12 @@
     <string name="dialog_yes">"Yes"</string>
     <string name="dialog_no">"No"</string>
     <string name="dialog_choose_empty">"are you sure you want to delete"</string>
+    <string name="tr">"tr"</string>
+    <string name="en">"en"</string>
+
+    <string name="language_tr">"Türkçe"</string>
+    <string name="language_en">"İngilizce"</string>
+
+    <string name="theme">"Tema"</string>
+    <string name="language">"Dil"</string>
 </resources>

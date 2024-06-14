@@ -1,8 +1,12 @@
 package com.enesselcuk.moviesui.screens.likedScreen
 
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.SavedStateHandleSaveableApi
+import androidx.lifecycle.viewmodel.compose.saveable
 import com.enesselcuk.moviesui.domain.repository.ReposLocal
 import com.enesselcuk.moviesui.data.model.response.DetailResponse
 import com.enesselcuk.moviesui.data.model.response.TvDetailResponse
@@ -14,8 +18,12 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@OptIn(SavedStateHandleSaveableApi::class)
 @HiltViewModel
-class LikedViewModel @Inject constructor(private val localRepos: ReposLocal) : ViewModel() {
+class LikedViewModel @Inject constructor(
+    private val localRepos: ReposLocal,
+    private val savedStateHandle: SavedStateHandle
+) : ViewModel() {
 
     val chooseList = mutableStateListOf<Int>()
     val chooseListTv = mutableStateListOf<Int>()
@@ -23,6 +31,13 @@ class LikedViewModel @Inject constructor(private val localRepos: ReposLocal) : V
     private val _getFlowFavorite = MutableStateFlow<List<DetailResponse>?>(null)
     val getFlowFavorite = _getFlowFavorite.asStateFlow()
 
+    private var isDeleteTvOrMovies by savedStateHandle.saveable { mutableStateOf(false) }
+
+    fun setRemove(isRemove: Boolean) {
+        isDeleteTvOrMovies = isRemove
+    }
+
+    fun updateDb(): Boolean = isDeleteTvOrMovies
 
     fun getFavorite() {
         viewModelScope.launch {
@@ -31,9 +46,11 @@ class LikedViewModel @Inject constructor(private val localRepos: ReposLocal) : V
                     is NetworkResult.Loading -> {
 
                     }
+
                     is NetworkResult.Success -> {
                         _getFlowFavorite.value = likeds.data
                     }
+
                     is NetworkResult.Error -> {
                         val error = likeds.message
                     }
@@ -44,7 +61,7 @@ class LikedViewModel @Inject constructor(private val localRepos: ReposLocal) : V
     }
 
 
-    fun delete(id:Int) {
+    fun delete(id: Int) {
         viewModelScope.launch {
             localRepos.delete(id)
         }
@@ -62,9 +79,11 @@ class LikedViewModel @Inject constructor(private val localRepos: ReposLocal) : V
                     is NetworkResult.Loading -> {
 
                     }
+
                     is NetworkResult.Success -> {
                         _getFlowTvFavorite.value = likeds.data
                     }
+
                     is NetworkResult.Error -> {
                         val error = likeds.message
                     }
@@ -75,7 +94,7 @@ class LikedViewModel @Inject constructor(private val localRepos: ReposLocal) : V
     }
 
 
-    fun deleteTv(id:Int) {
+    fun deleteTv(id: Int) {
         viewModelScope.launch {
             localRepos.deleteTv(id)
         }

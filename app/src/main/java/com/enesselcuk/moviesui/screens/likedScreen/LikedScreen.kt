@@ -14,6 +14,7 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.*
 import androidx.compose.material3.ButtonDefaults.buttonColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -338,14 +339,16 @@ fun OpenDialog(
                     sharedViewModel.isOpenDialog.value = false
                     viewModel.chooseList.onEach { viewModel.delete(it) }
                     viewModel.chooseListTv.onEach { viewModel.deleteTv(it) }
-                    viewModel.getFavorite()
-                    viewModel.getTvFavorite()
+                    viewModel.setRemove(true)
                 }) {
                     Text(stringResource(id = R.string.dialog_yes))
                 }
             } else {
                 Button(
-                    onClick = { sharedViewModel.isOpenDialog.value = false },
+                    onClick = {
+                        sharedViewModel.isOpenDialog.value = false
+                        viewModel.setRemove(true)
+                    },
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(stringResource(id = R.string.dialog_no))
@@ -353,13 +356,25 @@ fun OpenDialog(
             }
         }, dismissButton = {
             if (viewModel.chooseList.size > 0 || viewModel.chooseListTv.size > 0) {
-                Button(onClick = { sharedViewModel.isOpenDialog.value = false }) {
+                Button(onClick = {
+                    sharedViewModel.isOpenDialog.value = false
+                    viewModel.setRemove(true)
+                }) {
                     Text(stringResource(id = R.string.dialog_no))
                 }
             }
 
         })
+
     }
+
+    if (viewModel.updateDb()) {
+        LaunchedEffect(Unit) {
+            viewModel.getFavorite()
+            viewModel.getTvFavorite()
+        }
+    }
+
 }
 
 
