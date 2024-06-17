@@ -195,6 +195,8 @@ fun BottomShowScreen(
                 val response = (createToken as UiState.Success<CreateResponseToken>).response
 
                 signInViewModel.setResponseToken(response.requestToken.orEmpty())
+
+                Log.i("token",response.requestToken.toString())
             }
 
             is UiState.Failure -> {}
@@ -204,7 +206,7 @@ fun BottomShowScreen(
 
     ModalBottomSheet(
         onDismissRequest = {
-            signInViewModel.setShowWebView(true)
+            signInViewModel.setShowWebView(false)
         },
         sheetState = sheetState
     ) {
