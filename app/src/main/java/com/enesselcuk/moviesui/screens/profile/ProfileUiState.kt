@@ -1,4 +1,4 @@
-package com.enesselcuk.moviesui.screens.movie.profile
+package com.enesselcuk.moviesui.screens.profile
 
 sealed class ProfileUiState {
     object Initial : ProfileUiState()

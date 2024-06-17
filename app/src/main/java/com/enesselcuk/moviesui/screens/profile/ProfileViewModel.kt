@@ -1,4 +1,4 @@
-package com.enesselcuk.moviesui.screens.movie.profile
+package com.enesselcuk.moviesui.screens.profile
 
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.ktx.auth

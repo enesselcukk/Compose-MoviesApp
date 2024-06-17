@@ -1,4 +1,4 @@
-package com.enesselcuk.moviesui.screens.movie.profile
+package com.enesselcuk.moviesui.screens.profile
 
 import android.content.Context
 import androidx.compose.foundation.Image

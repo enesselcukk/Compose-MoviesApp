@@ -17,7 +17,7 @@ import com.enesselcuk.moviesui.screens.movie.actorDetailScreen.ActorScreen
 import com.enesselcuk.moviesui.screens.movie.allSee.AllSeeScreenHome
 import com.enesselcuk.moviesui.screens.movie.homeSceen.HomeScreen
 import com.enesselcuk.moviesui.screens.movie.moviesdetailsScreen.DetailsScreen
-import com.enesselcuk.moviesui.screens.movie.profile.ProfileScreen
+import com.enesselcuk.moviesui.screens.profile.ProfileScreen
 import com.enesselcuk.moviesui.screens.searchScreen.SearchScreen
 import com.enesselcuk.moviesui.screens.settings.SettingsScreen
 import com.enesselcuk.moviesui.screens.tv.TvDetailScreen
