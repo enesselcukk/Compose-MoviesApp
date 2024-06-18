@@ -152,93 +152,29 @@ fun SignInScreen(
 
 
         if (signInViewModel.showSignWebView) {
-            BottomShowScreen(callback =goHomeCallback)
-        }
-
-
-
-        if (isLoading.value) {
-            CircularProgressIndicator(
-                modifier = Modifier
-                    .size(40.dp)
-                    .fillMaxWidth()
-                    .fillMaxHeight()
-                    .align(alignment = Alignment.CenterHorizontally), strokeWidth = 5.dp
-            )
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun BottomShowScreen(
-    signInViewModel: SignInViewModel = hiltViewModel(),
-    context: Context = LocalContext.current,
-    callback: () -> Unit
-) {
-
-    val sheetState = rememberModalBottomSheetState()
-
-    LaunchedEffect(Unit) {
-        signInViewModel.getToken()
-    }
-
-    val createToken by signInViewModel.tokenStateFlow.collectAsStateWithLifecycle()
-
-    LaunchedEffect(createToken) {
-        when (createToken) {
-            is UiState.Initial -> {
-                Toast.makeText(context, "null", Toast.LENGTH_SHORT).show()
+            LaunchedEffect(Unit) {
+                signInViewModel.getToken()
             }
 
-            is UiState.Success<CreateResponseToken> -> {
-                val response = (createToken as UiState.Success<CreateResponseToken>).response
+            val createToken by signInViewModel.tokenStateFlow.collectAsStateWithLifecycle()
 
-                signInViewModel.setResponseToken(response.requestToken.orEmpty())
+            LaunchedEffect(createToken) {
+                when (createToken) {
+                    is UiState.Initial -> {
+                        Toast.makeText(context, "null", Toast.LENGTH_SHORT).show()
+                    }
 
-                Log.i("token",response.requestToken.toString())
-            }
+                    is UiState.Success<CreateResponseToken> -> {
+                        val response = (createToken as UiState.Success<CreateResponseToken>).response
+                        signInViewModel.setResponseToken(response.requestToken.orEmpty())
 
-            is UiState.Failure -> {}
-            is UiState.Loading -> {}
-        }
-    }
+                    }
 
-    ModalBottomSheet(
-        onDismissRequest = {
-            signInViewModel.setShowWebView(false)
-        },
-        sheetState = sheetState
-    ) {
-
-        val client = object : CustomWebViewClient({
-            if (it) {
-                signInViewModel.setIsLoginRequest(true)
-            } else {
-                signInViewModel.setIsLoginRequest(false)
-            }
-        }) {}
-
-        AndroidView(
-            factory = { context ->
-                WebView(context).apply {
-                    settings.javaScriptEnabled = true
-                    webViewClient = client
-
-                    settings.loadWithOverviewMode = true
-                    settings.useWideViewPort = true
-                    settings.setSupportZoom(true)
-
+                    is UiState.Failure -> {}
+                    is UiState.Loading -> {}
                 }
-            }, update = {
-                it.clearCache(true)
-                it.clearFormData()
-                it.clearHistory()
-                it.clearSslPreferences()
-                it.loadUrl(Constant.LOGIN_URL.plus(signInViewModel.updateToken()))
-            })
+            }
 
-        if (signInViewModel.isLoginRequest) {
             LaunchedEffect(Unit) {
                 signInViewModel.login(
                     LoginRequest(
@@ -259,7 +195,7 @@ fun BottomShowScreen(
                         val loginResponse = (loginObserver as UiState.Success<LoginResponse>).response
 
                         if (loginResponse.success == true) {
-                            callback()
+                            goHomeCallback()
                             signInViewModel.saveUser()
                         } else {
                             Toast.makeText(context, "hata", Toast.LENGTH_LONG).show()
@@ -269,6 +205,19 @@ fun BottomShowScreen(
                     is UiState.Failure -> {}
                 }
             }
+
+        }
+
+
+
+        if (isLoading.value) {
+            CircularProgressIndicator(
+                modifier = Modifier
+                    .size(40.dp)
+                    .fillMaxWidth()
+                    .fillMaxHeight()
+                    .align(alignment = Alignment.CenterHorizontally), strokeWidth = 5.dp
+            )
         }
     }
 }

@@ -86,12 +86,6 @@ class SignInViewModel @Inject constructor(
     }
     // end password saveable state
 
-    var isLoginRequest by savedStateHandle.saveable { mutableStateOf(false) }
-        private set
-
-    fun setIsLoginRequest(isLogin: Boolean) {
-        isLoginRequest = isLogin
-    }
 
     // save user function.
     fun saveUser() {
