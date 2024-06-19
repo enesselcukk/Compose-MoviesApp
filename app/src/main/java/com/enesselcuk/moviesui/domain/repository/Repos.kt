@@ -8,6 +8,7 @@ import com.enesselcuk.moviesui.data.model.response.ActorMoviesResponse
 import com.enesselcuk.moviesui.data.model.response.ActorTvResponse
 import com.enesselcuk.moviesui.data.model.response.DetailResponse
 import com.enesselcuk.moviesui.data.model.authresponse.LoginResponse
+import com.enesselcuk.moviesui.data.model.response.AccountDetailsResponse
 import com.enesselcuk.moviesui.data.model.response.MoviesPeople
 import com.enesselcuk.moviesui.data.model.response.MoviesResponse
 import com.enesselcuk.moviesui.data.model.response.TrendingResponse
@@ -39,6 +40,5 @@ interface Repos {
     suspend fun getTvRecommendations(id: Int,language: String?,page: Int?):Flow<NetworkResult<TvRecommendationsResponse>>
     suspend fun createToken():Flow<NetworkResult<CreateResponseToken>>
     suspend fun loginRequest(loginRequest: LoginRequest):Flow<NetworkResult<LoginResponse>>
-
-
+    suspend fun accountDetails():Flow<NetworkResult<AccountDetailsResponse>>
 }

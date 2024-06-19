@@ -50,7 +50,7 @@ fun SettingsScreen(
     isVisibleBottom.invoke(false)
     isVisibleTopBar.invoke(true)
     isVisibleTopBarBack.invoke(true)
-    screenName.invoke("Settings")
+    screenName.invoke(stringResource(id = R.string.settings_title))
     isActionInTopBar.invoke(true)
     isChooseLiked.invoke(true)
     isVisibleSettings.invoke(true)

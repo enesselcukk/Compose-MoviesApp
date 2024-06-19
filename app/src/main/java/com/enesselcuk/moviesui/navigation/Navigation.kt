@@ -1,16 +1,20 @@
 package com.enesselcuk.moviesui.navigation
 
 
+import android.content.Intent
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.core.content.ContextCompat.startActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.enesselcuk.moviesui.screens.activity.MainActivity
 import com.enesselcuk.moviesui.screens.likedScreen.LikedScreen
 import com.enesselcuk.moviesui.screens.movie.SharedViewModel
 import com.enesselcuk.moviesui.screens.movie.actorDetailScreen.ActorScreen
@@ -39,7 +43,9 @@ import com.enesselcuk.moviesui.util.Screen
 fun NavHostContainer(
     navController: NavHostController,
     paddingValues: PaddingValues,
+    callbackLogin:() -> Unit
 ) {
+    val context = LocalContext.current
     val sharedViewModel = hiltViewModel<SharedViewModel>()
     NavHost(navController = navController,
         startDestination = HOME,
@@ -92,11 +98,7 @@ fun NavHostContainer(
                     isActionInTopBar = { sharedViewModel.isActionInTopBar.value = it },
                     isChooseLiked = { sharedViewModel.isSelect.value = it },
                     isVisibleSetting = { sharedViewModel.isVisibleSetting.value = it },
-                    goToLogin = {
-                        navController.navigate(SIGN_IN) {
-                            launchSingleTop = true
-                        }
-                    },
+                    goToLogin = { callbackLogin() },
                     sharedViewModel = sharedViewModel,
                     goToSettings = { navController.navigate(SETTINGS) { launchSingleTop = true } }
                 )

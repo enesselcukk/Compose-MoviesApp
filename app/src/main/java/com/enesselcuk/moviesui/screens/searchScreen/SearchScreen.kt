@@ -7,6 +7,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -34,7 +35,7 @@ fun SearchScreen(
     isVisibleBottom.invoke(true)
     isVisibleTopBar.invoke(true)
     isVisibleTopBarBack.invoke(false)
-    screenName.invoke("Search")
+    screenName.invoke(stringResource(id = R.string.search_title))
     isActionInTopBar.invoke(false)
 
     Column(

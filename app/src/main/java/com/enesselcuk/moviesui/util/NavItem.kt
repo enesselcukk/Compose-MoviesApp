@@ -14,16 +14,16 @@ import com.enesselcuk.moviesui.util.NavigationItem.TV_ID
 
 
 data class BottomNavItem(
-    val label: String,
+    val label: Int,
     val icon: Int,
     val route: String
 )
 
 val bottomNavItem = listOf(
-    BottomNavItem(label = "Home", icon = R.drawable.home_bottom_bar, HOME),
-    BottomNavItem(label = "Search", icon = R.drawable.search_bottom, SEARCH),
-    BottomNavItem(label = "Liked", R.drawable.bottom_not_favorite, LIKED),
-    BottomNavItem(label = "Profile", R.drawable.person, PROFILE)
+    BottomNavItem(label = R.string.home_title, icon = R.drawable.home_bottom_bar, HOME),
+    BottomNavItem(label = R.string.search, icon = R.drawable.search_bottom, SEARCH),
+    BottomNavItem(label = R.string.likeds_title, R.drawable.bottom_not_favorite, LIKED),
+    BottomNavItem(label = R.string.profile_title, R.drawable.person, PROFILE)
 )
 
 

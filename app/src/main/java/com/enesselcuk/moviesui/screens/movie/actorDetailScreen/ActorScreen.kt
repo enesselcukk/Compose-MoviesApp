@@ -75,7 +75,7 @@ fun ActorScreen(
         isVisibleBottom.invoke(false)
         isVisibleTopBar.invoke(true)
         isVisibleTopBarBack.invoke(true)
-        screenName.invoke("Actors")
+        screenName.invoke(stringResource(id = R.string.actors_title))
 
     }
 

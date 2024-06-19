@@ -1,5 +1,6 @@
 package com.enesselcuk.moviesui.data.remote
 
+import com.enesselcuk.moviesui.BuildConfig
 import com.enesselcuk.moviesui.data.model.authresponse.CreateResponseToken
 import com.enesselcuk.moviesui.data.model.request.LoginRequest
 import com.enesselcuk.moviesui.data.model.response.ActorDetailResponse
@@ -7,6 +8,7 @@ import com.enesselcuk.moviesui.data.model.response.ActorMoviesResponse
 import com.enesselcuk.moviesui.data.model.response.ActorTvResponse
 import com.enesselcuk.moviesui.data.model.response.DetailResponse
 import com.enesselcuk.moviesui.data.model.authresponse.LoginResponse
+import com.enesselcuk.moviesui.data.model.response.AccountDetailsResponse
 import com.enesselcuk.moviesui.data.model.response.MoviesPeople
 import com.enesselcuk.moviesui.data.model.response.MoviesResponse
 import com.enesselcuk.moviesui.data.model.response.TrendingResponse
@@ -88,6 +90,11 @@ interface MoviesService {
 
     @POST("3/authentication/token/validate_with_login")
     suspend fun login(@Body request: LoginRequest): LoginResponse
+
+    @GET("3/account/{id}")
+    suspend fun accountDetail(
+        @Path("id") id: Int = BuildConfig.ACCOUNT_ID
+    ):AccountDetailsResponse
 
 
 }

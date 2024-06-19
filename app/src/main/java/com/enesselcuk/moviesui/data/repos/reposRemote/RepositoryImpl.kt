@@ -10,6 +10,7 @@ import com.enesselcuk.moviesui.data.model.response.ActorMoviesResponse
 import com.enesselcuk.moviesui.data.model.response.ActorTvResponse
 import com.enesselcuk.moviesui.data.model.response.DetailResponse
 import com.enesselcuk.moviesui.data.model.authresponse.LoginResponse
+import com.enesselcuk.moviesui.data.model.response.AccountDetailsResponse
 import com.enesselcuk.moviesui.data.model.response.MoviesPeople
 import com.enesselcuk.moviesui.data.model.response.MoviesResponse
 import com.enesselcuk.moviesui.data.model.response.Result
@@ -165,9 +166,16 @@ class RepositoryImpl @Inject constructor(
         emit(NetworkResult.Success(response))
     }.catch { emit(NetworkResult.Error(it.message)) }.flowOn(Dispatchers.IO)
 
-    override suspend fun loginRequest(loginRequest: LoginRequest): Flow<NetworkResult<LoginResponse>> = flow<NetworkResult<LoginResponse>> {
+    override suspend fun loginRequest(loginRequest: LoginRequest): Flow<NetworkResult<LoginResponse>> =
+        flow {
+            emit(NetworkResult.Loading())
+            val response = remoteDataSource.login(loginRequest)
+            emit(NetworkResult.Success(response))
+        }.catch { emit(NetworkResult.Error(it.message)) }.flowOn(Dispatchers.IO)
+
+    override suspend fun accountDetails(): Flow<NetworkResult<AccountDetailsResponse>> = flow {
         emit(NetworkResult.Loading())
-        val response = remoteDataSource.login(loginRequest)
+        val response = remoteDataSource.accountDetail()
         emit(NetworkResult.Success(response))
     }.catch { emit(NetworkResult.Error(it.message)) }.flowOn(Dispatchers.IO)
 

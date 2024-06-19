@@ -28,6 +28,7 @@ android {
 
 
         buildConfigField "String" ,"BEAR_TOKEN", "\"${properties.getProperty("BEAR_TOKEN")}\""
+        buildConfigField "int" ,"ACCOUNT_ID", "${properties.getProperty("ACCOUNT_ID")}"
     }
 
     buildTypes {

@@ -57,7 +57,7 @@ fun LikedScreen(
     val data = viewModel.getFlowFavorite.collectAsStateWithLifecycle().value
     val dataTv = viewModel.getFlowTvFavorite.collectAsStateWithLifecycle().value
 
-    screenName.invoke("Likeds")
+    screenName.invoke(stringResource(id = R.string.likeds_title))
     isVisibleTopBar.invoke(true)
     isVisibleTopBarBack.invoke(false)
     isVisibleBottom.invoke(true)

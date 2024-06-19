@@ -160,9 +160,7 @@ fun SignInScreen(
 
             LaunchedEffect(createToken) {
                 when (createToken) {
-                    is UiState.Initial -> {
-                        Toast.makeText(context, "null", Toast.LENGTH_SHORT).show()
-                    }
+                    is UiState.Initial -> {}
 
                     is UiState.Success<CreateResponseToken> -> {
                         val response = (createToken as UiState.Success<CreateResponseToken>).response

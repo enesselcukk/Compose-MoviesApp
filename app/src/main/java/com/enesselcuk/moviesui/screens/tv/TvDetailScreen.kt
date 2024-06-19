@@ -48,7 +48,7 @@ fun TvDetailScreen(
     isVisibleBottom.invoke(false)
     isVisibleTopBar.invoke(true)
     isVisibleTopBarBack.invoke(true)
-    screenName.invoke("Tv Detail")
+    screenName.invoke(stringResource(id = R.string.tv_detail_title))
 
     LaunchedEffect(Unit) {
         if (!tvViewModel.isClickRecommended.value) {

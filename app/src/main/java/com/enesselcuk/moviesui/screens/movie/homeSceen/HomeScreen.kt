@@ -90,7 +90,7 @@ fun HomeScreen(
         isVisibleBottom.invoke(true)
         isVisibleTopBar.invoke(true)
         isVisibleTopBarBack.invoke(false)
-        screenName.invoke("Home")
+        screenName.invoke(stringResource(id = R.string.home_title))
         isActionInTopBar.invoke(false)
     }
 }

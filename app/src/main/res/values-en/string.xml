@@ -28,8 +28,15 @@
     <string name="en">"en"</string>
 
     <string name="language_tr">"Türkçe"</string>
-    <string name="language_en">"İngilizce"</string>
+    <string name="language_en">"English"</string>
+    <string name="theme">"Theme"</string>
+    <string name="language">"Language"</string>
 
-    <string name="theme">"Tema"</string>
-    <string name="language">"Dil"</string>
+    <string name="search_title">"Search"</string>
+    <string name="likeds_title">"Likeds"</string>
+    <string name="actors_title">"Actors"</string>
+    <string name="home_title">"Home"</string>
+    <string name="profile_title">"Profile"</string>
+    <string name="settings_title">"Settings"</string>
+    <string name="tv_detail_title">"Tv Detail"</string>
 </resources>
