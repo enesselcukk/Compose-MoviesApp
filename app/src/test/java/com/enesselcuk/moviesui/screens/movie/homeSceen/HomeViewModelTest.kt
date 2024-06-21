@@ -1,6 +1,7 @@
 package com.enesselcuk.moviesui.screens.movie.homeSceen
 
-import android.arch.core.executor.testing.InstantTaskExecutorRule
+
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.enesselcuk.moviesui.TestCoroutineRule
 import com.enesselcuk.moviesui.data.repos.reposRemote.RepositoryImpl
 import com.enesselcuk.moviesui.data.model.response.MoviesResponse

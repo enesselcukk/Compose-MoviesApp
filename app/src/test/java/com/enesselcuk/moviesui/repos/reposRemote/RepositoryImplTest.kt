@@ -1,19 +1,15 @@
 package com.enesselcuk.moviesui.repos.reposRemote
 
-import android.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.enesselcuk.moviesui.TestCoroutineRule
 import com.enesselcuk.moviesui.data.repos.reposRemote.RepositoryImpl
 import com.enesselcuk.moviesui.data.model.response.MoviesResponse
 import com.enesselcuk.moviesui.data.model.response.Result
 import com.enesselcuk.moviesui.data.remote.MoviesService
 import com.enesselcuk.moviesui.util.NetworkResult
-import io.grpc.internal.SharedResourceHolder.Resource
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.mockk
-import io.mockk.slot
-import io.mockk.spyk
-import io.mockk.verify
 import org.junit.Assert.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
