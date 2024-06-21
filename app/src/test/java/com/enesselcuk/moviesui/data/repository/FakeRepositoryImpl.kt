@@ -101,12 +101,12 @@ class FakeRepositoryImpl : Repos {
         TODO("Not yet implemented")
     }
 
-    companion object MoviesList {
-        private val resultFake = arrayListOf(Result(1, false, "", listOf(), "",
+    private companion object MoviesList {
+        val resultFake = arrayListOf(Result(1, false, "", listOf(), "",
         "", "", 1.1, "", "", "",
         false, 1.1, 1))
         val fakeMoviesResponse = MoviesResponse(1, 1, resultFake, 1, 1)
-        
+
     }
 
 }
