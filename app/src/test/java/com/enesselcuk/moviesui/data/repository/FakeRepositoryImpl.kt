@@ -13,6 +13,7 @@ import com.enesselcuk.moviesui.data.model.response.MoviesPeople
 import com.enesselcuk.moviesui.data.model.response.MoviesResponse
 import com.enesselcuk.moviesui.data.model.response.Result
 import com.enesselcuk.moviesui.data.model.response.TrendingResponse
+import com.enesselcuk.moviesui.data.model.response.TrendingResult
 import com.enesselcuk.moviesui.data.model.response.TvDetailResponse
 import com.enesselcuk.moviesui.data.model.response.TvRecommendationsResponse
 import com.enesselcuk.moviesui.domain.repository.Repos
@@ -43,8 +44,8 @@ class FakeRepositoryImpl : Repos {
         TODO("Not yet implemented")
     }
 
-    override suspend fun getMoviesTrending(): Flow<NetworkResult<TrendingResponse>> {
-        TODO("Not yet implemented")
+    override suspend fun getMoviesTrending(): Flow<NetworkResult<TrendingResponse>> = flow{
+        emit(NetworkResult.Success(fakeTrendMovies))
     }
 
     override suspend fun getDetails(
@@ -101,11 +102,20 @@ class FakeRepositoryImpl : Repos {
         TODO("Not yet implemented")
     }
 
-    private companion object MoviesList {
-        val resultFake = arrayListOf(Result(1, false, "", listOf(), "",
+     companion object MoviesList {
+       private val resultFake = arrayListOf(Result(1, false, "", listOf(), "",
         "", "", 1.1, "", "", "",
         false, 1.1, 1))
+
+       private val resultTrend = arrayListOf(TrendingResult(1,false,"","", listOf(),
+            "","", listOf(),"","","","",
+            1.1,"","","",false,1.1,1
+        ))
+
         val fakeMoviesResponse = MoviesResponse(1, 1, resultFake, 1, 1)
+
+
+        val fakeTrendMovies = TrendingResponse(1, 1, resultTrend, 1, 1)
 
     }
 

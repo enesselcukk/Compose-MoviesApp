@@ -2,6 +2,7 @@ package com.enesselcuk.moviesui.domain.useCase.home
 
 import com.enesselcuk.moviesui.data.model.response.MoviesResponse
 import com.enesselcuk.moviesui.data.repository.FakeRepositoryImpl
+import com.enesselcuk.moviesui.data.repository.FakeRepositoryImpl.MoviesList.fakeMoviesResponse
 import com.enesselcuk.moviesui.domain.repository.Repos
 import com.enesselcuk.moviesui.util.NetworkResult
 import io.mockk.mockk
@@ -11,6 +12,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertThat
 import org.junit.Assert.assertTrue
@@ -39,12 +41,16 @@ class HomeUseCaseTest{
     }
 
     @Test
-    fun getHome()= runBlocking{
+    fun getHome()= runTest{
+        // given
         val movies = homeUseCase.invoke("title","tr",1).first()
+        val moviesList = fakeMoviesResponse
 
+        // when
         when(movies){
             is NetworkResult.Success -> {
-                assertTrue(movies.data.id == 1)
+                // then
+               assertEquals(moviesList,movies.data)
             }
 
             is NetworkResult.Error -> TODO()
