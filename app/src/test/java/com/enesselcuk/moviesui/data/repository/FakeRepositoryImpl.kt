@@ -8,6 +8,8 @@ import com.enesselcuk.moviesui.data.model.response.AccountDetailsResponse
 import com.enesselcuk.moviesui.data.model.response.ActorDetailResponse
 import com.enesselcuk.moviesui.data.model.response.ActorMoviesResponse
 import com.enesselcuk.moviesui.data.model.response.ActorTvResponse
+import com.enesselcuk.moviesui.data.model.response.Cast
+import com.enesselcuk.moviesui.data.model.response.CastTv
 import com.enesselcuk.moviesui.data.model.response.DetailResponse
 import com.enesselcuk.moviesui.data.model.response.MoviesPeople
 import com.enesselcuk.moviesui.data.model.response.MoviesResponse
@@ -44,7 +46,7 @@ class FakeRepositoryImpl : Repos {
         TODO("Not yet implemented")
     }
 
-    override suspend fun getMoviesTrending(): Flow<NetworkResult<TrendingResponse>> = flow{
+    override suspend fun getMoviesTrending(): Flow<NetworkResult<TrendingResponse>> = flow {
         emit(NetworkResult.Success(fakeTrendMovies))
     }
 
@@ -62,20 +64,20 @@ class FakeRepositoryImpl : Repos {
 
     override suspend fun getActorDetail(
         id: Int, language: String?
-    ): Flow<NetworkResult<ActorDetailResponse>> {
-        TODO("Not yet implemented")
+    ): Flow<NetworkResult<ActorDetailResponse>> = flow {
+        emit(NetworkResult.Success(fakeActorDetailResponse))
     }
 
     override suspend fun getActorMovies(
         id: Int, language: String?
-    ): Flow<NetworkResult<ActorMoviesResponse>> {
-        TODO("Not yet implemented")
+    ): Flow<NetworkResult<ActorMoviesResponse>> = flow {
+        emit(NetworkResult.Success(fakeActorMoviesResponse))
     }
 
     override suspend fun getActorTv(
         id: Int, language: String?
-    ): Flow<NetworkResult<ActorTvResponse>> {
-        TODO("Not yet implemented")
+    ): Flow<NetworkResult<ActorTvResponse>> = flow{
+       emit(NetworkResult.Success(fakeActorTvResponse))
     }
 
     override suspend fun getTvDetail(
@@ -102,21 +104,49 @@ class FakeRepositoryImpl : Repos {
         TODO("Not yet implemented")
     }
 
-     companion object MoviesList {
-       private val resultFake = arrayListOf(Result(1, false, "", listOf(), "",
-        "", "", 1.1, "", "", "",
-        false, 1.1, 1))
+    companion object MoviesList {
+        private val resultFake = arrayListOf(
+            Result(
+                1, false, "", listOf(), "",
+                "", "", 1.1, "", "", "",
+                false, 1.1, 1
+            )
+        )
 
-       private val resultTrend = arrayListOf(TrendingResult(1,false,"","", listOf(),
-            "","", listOf(),"","","","",
-            1.1,"","","",false,1.1,1
-        ))
+        private val resultTrend = arrayListOf(
+            TrendingResult(
+                1, false, "", "", listOf(),
+                "", "", listOf(), "", "", "", "",
+                1.1, "", "", "", false, 1.1, 1
+            )
+        )
 
         val fakeMoviesResponse = MoviesResponse(1, 1, resultFake, 1, 1)
-
-
         val fakeTrendMovies = TrendingResponse(1, 1, resultTrend, 1, 1)
+        val fakeActorDetailResponse = ActorDetailResponse(
+            false, listOf(), "", "", "", 1,
+            "", 1, "", "", "", "", 1.1, ""
+        )
 
+        private val fakeActorMoviesList = arrayListOf(
+            Cast(
+                false, "", "", "",
+                listOf(), 1, 1, "", "", "", 1.1, "",
+                "", "", false, 1.1, 1
+            )
+        )
+        val fakeActorMoviesResponse = ActorMoviesResponse(fakeActorMoviesList, listOf(), 1)
+
+        private val fakeTvResponseList = arrayListOf(
+            CastTv(
+                false, "", "", "", 1,
+                "", listOf(), 1, "", listOf(), "", "", "",
+                1.1, "", 1.1, 1
+
+            )
+        )
+
+        val fakeActorTvResponse = ActorTvResponse(fakeTvResponseList, listOf(), 1)
     }
 
 }
