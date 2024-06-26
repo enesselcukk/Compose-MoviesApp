@@ -23,7 +23,7 @@ import com.enesselcuk.moviesui.util.NetworkResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-class FakeRepositoryImpl : Repos {
+class FakeRemoteRepositoryImpl : Repos {
     override suspend fun getMovies(
         movies: String?, language: String?, page: Int
     ): Flow<NetworkResult<MoviesResponse>> = flow {

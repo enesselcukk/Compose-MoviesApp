@@ -1,11 +1,10 @@
 package com.enesselcuk.moviesui.domain.useCase.home
 
-import com.enesselcuk.moviesui.data.repository.FakeRepositoryImpl
-import com.enesselcuk.moviesui.data.repository.FakeRepositoryImpl.MoviesList.fakeTrendMovies
+import com.enesselcuk.moviesui.data.repository.FakeRemoteRepositoryImpl
+import com.enesselcuk.moviesui.data.repository.FakeRemoteRepositoryImpl.MoviesList.fakeTrendMovies
 import com.enesselcuk.moviesui.util.NetworkResult
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
 import org.junit.Before
@@ -22,12 +21,12 @@ class HomeTrendUseCaseTest{
     @Mock
     private lateinit var homeTrendUseCase: HomeTrendUseCase
 
-    @Mock lateinit var fakeRepositoryImpl: FakeRepositoryImpl
+    @Mock lateinit var fakeRepositoryImpl: FakeRemoteRepositoryImpl
 
 
     @Before
     fun setUp(){
-        fakeRepositoryImpl = FakeRepositoryImpl()
+        fakeRepositoryImpl = FakeRemoteRepositoryImpl()
         homeTrendUseCase = HomeTrendUseCase(fakeRepositoryImpl)
     }
 

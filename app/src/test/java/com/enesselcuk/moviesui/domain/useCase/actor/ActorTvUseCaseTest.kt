@@ -1,7 +1,6 @@
 package com.enesselcuk.moviesui.domain.useCase.actor
 
-import com.enesselcuk.moviesui.data.model.response.ActorTvResponse
-import com.enesselcuk.moviesui.data.repository.FakeRepositoryImpl
+import com.enesselcuk.moviesui.data.repository.FakeRemoteRepositoryImpl
 import com.enesselcuk.moviesui.util.NetworkResult
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
@@ -17,12 +16,12 @@ import org.mockito.junit.MockitoJUnitRunner
 class ActorTvUseCaseTest {
 
     @Mock private lateinit var actorTvUseCase: ActorTvUseCase
-    @Mock private lateinit var fakeRepositoryImpl: FakeRepositoryImpl
+    @Mock private lateinit var fakeRepositoryImpl: FakeRemoteRepositoryImpl
 
 
     @Before
     fun setUp(){
-        fakeRepositoryImpl = FakeRepositoryImpl()
+        fakeRepositoryImpl = FakeRemoteRepositoryImpl()
         actorTvUseCase = ActorTvUseCase(fakeRepositoryImpl)
     }
     @Test
@@ -34,7 +33,7 @@ class ActorTvUseCaseTest {
         when(fakeResponse){
             is NetworkResult.Success -> {
                 //then
-                assertEquals(FakeRepositoryImpl.fakeActorTvResponse,fakeResponse.data)
+                assertEquals(FakeRemoteRepositoryImpl.fakeActorTvResponse,fakeResponse.data)
             }
             is NetworkResult.Error -> {}
             is NetworkResult.Loading -> {}

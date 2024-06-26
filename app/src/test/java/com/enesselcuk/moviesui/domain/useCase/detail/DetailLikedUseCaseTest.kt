@@ -1,45 +1,46 @@
 package com.enesselcuk.moviesui.domain.useCase.detail
 
+import com.enesselcuk.moviesui.data.model.response.DetailResponse
 import com.enesselcuk.moviesui.data.repository.FakeLocalRepositoryImpl
-import com.enesselcuk.moviesui.data.repository.FakeLocalRepositoryImpl.FakeLocalMoviesList.fakeDetailResponseList
-import com.enesselcuk.moviesui.data.repository.FakeRemoteRepositoryImpl
 import com.enesselcuk.moviesui.util.NetworkResult
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert
+import org.junit.Assert.*
 import org.junit.Before
+
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
 
-
 @RunWith(MockitoJUnitRunner::class)
-class DetailFavoriteUseCaseTest{
+class DetailLikedUseCaseTest {
 
-    @Mock private lateinit var detailFavoriteUseCase:DetailFavoriteUseCase
+    @Mock
+    private lateinit var fakeLocalRepositoryImpl: FakeLocalRepositoryImpl
+    @Mock
+    private lateinit var detailLikedUseCase: DetailLikedUseCase
 
-    @Mock private lateinit var fakeLocalRepositoryImpl: FakeLocalRepositoryImpl
 
     @Before
     fun setUp() {
         fakeLocalRepositoryImpl = FakeLocalRepositoryImpl()
-        detailFavoriteUseCase = DetailFavoriteUseCase(fakeLocalRepositoryImpl)
+        detailLikedUseCase = DetailLikedUseCase(fakeLocalRepositoryImpl)
     }
 
     @Test
-    fun invoke()= runTest {
-        val response = detailFavoriteUseCase.invoke().first()
+    operator fun invoke() = runTest {
+        val fakeResponse = detailLikedUseCase.invoke(DetailResponse()).first()
 
         // when
-        when(response){
+        when(fakeResponse){
             is NetworkResult.Success -> {
                 //then
-                Assert.assertEquals(fakeDetailResponseList, response.data)
+                assertEquals(1, fakeResponse.data)
             }
             is NetworkResult.Error -> {}
             is NetworkResult.Loading -> {}
         }
     }
-
 }
