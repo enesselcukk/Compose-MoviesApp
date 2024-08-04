@@ -37,10 +37,14 @@ class RepositoryImpl @Inject constructor(
         page: Int
     ): Flow<NetworkResult<MoviesResponse>> = flow {
         emit(NetworkResult.Loading())
-        val response = remoteDataSource.getMovies(title = movies, language = language, page = page)
-        emit(NetworkResult.Success(response))
-
-    }.flowOn(Dispatchers.IO).catch { emit(NetworkResult.Error(it.message)) }
+        try {
+            val response =
+                remoteDataSource.getMovies(title = movies, language = language, page = page)
+            emit(NetworkResult.Success(response))
+        } catch (ex: Exception) {
+            emit(NetworkResult.Error(ex))
+        }
+    }.flowOn(Dispatchers.IO)
 
 
     override suspend fun getMovie(
@@ -66,18 +70,28 @@ class RepositoryImpl @Inject constructor(
 
     override suspend fun getMoviesTrending(): Flow<NetworkResult<TrendingResponse>> = flow {
         emit(NetworkResult.Loading())
-        val response = remoteDataSource.getMoviesTrending()
-        emit(NetworkResult.Success(response))
-    }.flowOn(Dispatchers.IO).catch { emit(NetworkResult.Error(it.message)) }
+        try {
+            val response = remoteDataSource.getMoviesTrending()
+            emit(NetworkResult.Success(response))
+        } catch (ex: Exception) {
+            emit(NetworkResult.Error(ex))
+        }
+
+    }.flowOn(Dispatchers.IO)
 
     override suspend fun getDetails(
         movieId: Int?,
         language: String?
     ): Flow<NetworkResult<DetailResponse>> = flow {
         emit(NetworkResult.Loading())
-        val response = remoteDataSource.getDetail(movieId, language)
-        emit(NetworkResult.Success(response))
-    }.flowOn(Dispatchers.IO).catch { emit(NetworkResult.Error(it.message)) }
+        try {
+            val response = remoteDataSource.getDetail(movieId, language)
+            emit(NetworkResult.Success(response))
+        } catch (ex: Exception) {
+            emit(NetworkResult.Error(ex))
+        }
+
+    }.flowOn(Dispatchers.IO)
 
 
     override suspend fun getSearchMovies(
@@ -86,10 +100,15 @@ class RepositoryImpl @Inject constructor(
         query: String?
     ): Flow<NetworkResult<MoviesResponse>> = flow {
         emit(NetworkResult.Loading())
-        val response =
-            remoteDataSource.getSearchMovies(language = language, query = query, page = page)
-        emit(NetworkResult.Success(response))
-    }.flowOn(Dispatchers.IO).catch { emit(NetworkResult.Error(it.message)) }
+        try {
+            val response =
+                remoteDataSource.getSearchMovies(language = language, query = query, page = page)
+            emit(NetworkResult.Success(response))
+        } catch (ex: Exception) {
+            emit(NetworkResult.Error(ex))
+        }
+
+    }.flowOn(Dispatchers.IO)
 
     override suspend fun getSearchPeople(
         language: String?,
@@ -97,10 +116,15 @@ class RepositoryImpl @Inject constructor(
         query: String?
     ): Flow<NetworkResult<MoviesPeople>> = flow {
         emit(NetworkResult.Loading())
-        val response =
-            remoteDataSource.getSearchPeople(language = language, page = page, query = query)
-        emit(NetworkResult.Success(response))
-    }.catch { emit(NetworkResult.Error(it.message)) }.flowOn(Dispatchers.IO)
+        try {
+            val response =
+                remoteDataSource.getSearchPeople(language = language, page = page, query = query)
+            emit(NetworkResult.Success(response))
+        } catch (ex: Exception) {
+            emit(NetworkResult.Error(ex))
+        }
+
+    }.flowOn(Dispatchers.IO)
 
     override suspend fun getRecommended(
         movies: Int?,
@@ -108,46 +132,72 @@ class RepositoryImpl @Inject constructor(
         language: String?
     ): Flow<NetworkResult<MoviesResponse>> = flow {
         emit(NetworkResult.Loading())
-        val response =
-            remoteDataSource.getRecommended(movie_id = movies, page = page, language = language)
-        emit(NetworkResult.Success(response))
-    }.catch { emit(NetworkResult.Error(it.message)) }.flowOn(Dispatchers.IO)
+        try {
+            val response =
+                remoteDataSource.getRecommended(movie_id = movies, page = page, language = language)
+            emit(NetworkResult.Success(response))
+        } catch (ex: Exception) {
+            emit(NetworkResult.Error(ex))
+        }
+
+    }.flowOn(Dispatchers.IO)
 
     override suspend fun getActorDetail(
         id: Int,
         language: String?
     ): Flow<NetworkResult<ActorDetailResponse>> = flow {
         emit(NetworkResult.Loading())
-        val response = remoteDataSource.getActorDetail(actor_id = id, language = language)
-        emit(NetworkResult.Success(response))
-    }.catch { emit(NetworkResult.Error(it.message)) }.flowOn(Dispatchers.IO)
+        try {
+            val response = remoteDataSource.getActorDetail(actor_id = id, language = language)
+            emit(NetworkResult.Success(response))
+        } catch (ex: Exception) {
+            emit(NetworkResult.Error(ex))
+        }
+
+    }.flowOn(Dispatchers.IO)
 
     override suspend fun getActorMovies(
         id: Int,
         language: String?
     ): Flow<NetworkResult<ActorMoviesResponse>> = flow {
         emit(NetworkResult.Loading())
-        val response = remoteDataSource.getActorMoviesDetail(actor_id = id, language = language)
-        emit(NetworkResult.Success(response))
-    }.catch { emit(NetworkResult.Error(it.message)) }.flowOn(Dispatchers.IO)
+
+        try {
+            val response = remoteDataSource.getActorMoviesDetail(actor_id = id, language = language)
+            emit(NetworkResult.Success(response))
+        } catch (ex: Exception) {
+            emit(NetworkResult.Error(ex))
+        }
+
+    }.flowOn(Dispatchers.IO)
 
     override suspend fun getActorTv(
         id: Int,
         language: String?
     ): Flow<NetworkResult<ActorTvResponse>> = flow {
         emit(NetworkResult.Loading())
-        val response = remoteDataSource.getActorTvDetail(actor_id = id, language = language)
-        emit(NetworkResult.Success(response))
-    }.catch { emit(NetworkResult.Error(it.message)) }.flowOn(Dispatchers.IO)
+        try {
+            val response = remoteDataSource.getActorTvDetail(actor_id = id, language = language)
+            emit(NetworkResult.Success(response))
+        } catch (ex: Exception) {
+            emit(NetworkResult.Error(ex))
+        }
+
+    }.flowOn(Dispatchers.IO)
 
     override suspend fun getTvDetail(
         id: Int,
         language: String?
     ): Flow<NetworkResult<TvDetailResponse>> = flow {
         emit(NetworkResult.Loading())
-        val response = remoteDataSource.getTvDetail(id = id, language = language)
-        emit(NetworkResult.Success(response))
-    }.catch { emit(NetworkResult.Error(it.message)) }.flowOn(Dispatchers.IO)
+        try {
+            val response = remoteDataSource.getTvDetail(id = id, language = language)
+            emit(NetworkResult.Success(response))
+        } catch (ex: Exception) {
+            emit(NetworkResult.Error(ex))
+        }
+
+    }.flowOn(Dispatchers.IO)
 
     override suspend fun getTvRecommendations(
         id: Int,
@@ -155,29 +205,49 @@ class RepositoryImpl @Inject constructor(
         page: Int?
     ): Flow<NetworkResult<TvRecommendationsResponse>> = flow {
         emit(NetworkResult.Loading())
-        val response =
-            remoteDataSource.getTvRecommendations(id = id, language = language, page = page)
-        emit(NetworkResult.Success(response))
-    }.catch { emit(NetworkResult.Error(it.message)) }.flowOn(Dispatchers.IO)
+        try {
+            val response =
+                remoteDataSource.getTvRecommendations(id = id, language = language, page = page)
+            emit(NetworkResult.Success(response))
+        } catch (ex: Exception) {
+            emit(NetworkResult.Error(ex))
+        }
+
+    }.flowOn(Dispatchers.IO)
 
     override suspend fun createToken(): Flow<NetworkResult<CreateResponseToken>> = flow {
         emit(NetworkResult.Loading())
-        val response = remoteDataSource.createToken()
-        emit(NetworkResult.Success(response))
-    }.catch { emit(NetworkResult.Error(it.message)) }.flowOn(Dispatchers.IO)
+        try {
+            val response = remoteDataSource.createToken()
+            emit(NetworkResult.Success(response))
+        } catch (ex: Exception) {
+            emit(NetworkResult.Error(ex))
+        }
+
+    }.flowOn(Dispatchers.IO)
 
     override suspend fun loginRequest(loginRequest: LoginRequest): Flow<NetworkResult<LoginResponse>> =
         flow {
             emit(NetworkResult.Loading())
-            val response = remoteDataSource.login(loginRequest)
-            emit(NetworkResult.Success(response))
-        }.catch { emit(NetworkResult.Error(it.message)) }.flowOn(Dispatchers.IO)
+            try {
+                val response = remoteDataSource.login(loginRequest)
+                emit(NetworkResult.Success(response))
+            } catch (ex: Exception) {
+                emit(NetworkResult.Error(ex))
+            }
+
+        }.flowOn(Dispatchers.IO)
 
     override suspend fun accountDetails(): Flow<NetworkResult<AccountDetailsResponse>> = flow {
         emit(NetworkResult.Loading())
-        val response = remoteDataSource.accountDetail()
-        emit(NetworkResult.Success(response))
-    }.catch { emit(NetworkResult.Error(it.message)) }.flowOn(Dispatchers.IO)
+        try {
+            val response = remoteDataSource.accountDetail()
+            emit(NetworkResult.Success(response))
+        } catch (ex: Exception) {
+            emit(NetworkResult.Error(ex))
+        }
+
+    }.flowOn(Dispatchers.IO)
 
     companion object {
         const val NETWORK_PAGE_SIZE = 20

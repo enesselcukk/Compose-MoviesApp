@@ -38,7 +38,7 @@ class SearchViewModel @Inject constructor(private val searchMoviesUseCase: Searc
            searchMoviesUseCase.invoke(language, page, query).collectLatest {
                 when (it) {
                     is NetworkResult.Error -> {
-                        _getToastMessage.value = it.message
+                        _getToastMessage.value = it.message.toString()
                         delay(1000)
                         isVisible.value = false
                     }
@@ -62,7 +62,7 @@ class SearchViewModel @Inject constructor(private val searchMoviesUseCase: Searc
            searchPeopleUseCase.invoke(language, page, query).collectLatest {
                 when (it) {
                     is NetworkResult.Error -> {
-                        _getToastMessage.value = it.message
+                        _getToastMessage.value = it.message.toString()
                         delay(1000)
                         isVisible.value = false
                     }

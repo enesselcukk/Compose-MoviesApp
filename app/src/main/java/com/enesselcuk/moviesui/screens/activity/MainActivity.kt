@@ -44,7 +44,7 @@ class MainActivity : ComponentActivity() {
         ChuckerHelper.create(baseContext)
 
         setContent {
-            val mainViewModel = hiltViewModel<ViewModel>()
+            val mainViewModel = hiltViewModel<ActivityViewModel>()
 
             MoviesUiTheme(darkTheme = mainViewModel.getTheme()) {
                 Surface(color = Color.Black) {

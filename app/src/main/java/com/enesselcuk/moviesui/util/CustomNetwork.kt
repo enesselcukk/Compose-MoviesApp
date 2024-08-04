@@ -24,7 +24,7 @@ abstract class CustomNetwork {
                 val response = call.invoke()
                 emit(NetworkResult.Success(response))
             } catch (e: Exception) {
-                emit(NetworkResult.Error(e.message))
+                emit(NetworkResult.Error(e))
             }
         }
 

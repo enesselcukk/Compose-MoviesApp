@@ -51,7 +51,7 @@ class HomeViewModel @Inject constructor(private val homeUseCase: HomeUseCase,
                         isVisible.value = true
                     }
                     is NetworkResult.Error -> {
-                        _getToastMessage.value = moviesResponse.message
+                        _getToastMessage.value = moviesResponse.message.toString()
                         isVisible.value = false
                     }
                 }
@@ -72,7 +72,7 @@ class HomeViewModel @Inject constructor(private val homeUseCase: HomeUseCase,
                         isVisible.value = true
                     }
                     is NetworkResult.Error -> {
-                        _getToastMessage.value = moviesResponse.message
+                        _getToastMessage.value = moviesResponse.message.toString()
                         isVisible.value = false
                     }
                 }
@@ -95,7 +95,7 @@ class HomeViewModel @Inject constructor(private val homeUseCase: HomeUseCase,
                         isVisible.value = true
                     }
                     is NetworkResult.Error -> {
-                        _getToastMessage.value = moviesResponse.message
+                        _getToastMessage.value = moviesResponse.message.toString()
                         isVisible.value = false
                     }
                 }

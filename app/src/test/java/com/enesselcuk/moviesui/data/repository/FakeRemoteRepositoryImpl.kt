@@ -58,8 +58,8 @@ class FakeRemoteRepositoryImpl : Repos {
 
     override suspend fun getRecommended(
         movies: Int?, page: Int?, language: String?
-    ): Flow<NetworkResult<MoviesResponse>> {
-        TODO("Not yet implemented")
+    ): Flow<NetworkResult<MoviesResponse>> = flow {
+        emit(NetworkResult.Success(fakeMoviesResponse))
     }
 
     override suspend fun getActorDetail(
@@ -147,6 +147,7 @@ class FakeRemoteRepositoryImpl : Repos {
         )
 
         val fakeActorTvResponse = ActorTvResponse(fakeTvResponseList, listOf(), 1)
+
     }
 
 }

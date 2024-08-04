@@ -15,7 +15,7 @@ class LoginActivity : ComponentActivity(){
         super.onCreate(savedInstanceState)
 
         setContent {
-            val mainViewModel = hiltViewModel<ViewModel>()
+            val mainViewModel = hiltViewModel<ActivityViewModel>()
             MoviesUiTheme(darkTheme = mainViewModel.getTheme()) {
                 SignInScreen(
                     goHomeCallback = {

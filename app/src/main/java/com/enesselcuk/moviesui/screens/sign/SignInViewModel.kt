@@ -48,7 +48,6 @@ class SignInViewModel @Inject constructor(
     private var saveToken by savedStateHandle.saveable { mutableStateOf("") }
 
     fun setResponseToken(updateToken: String) {
-        saveToken = ""
         saveToken = updateToken
     }
 
@@ -56,6 +55,7 @@ class SignInViewModel @Inject constructor(
     // end token state
 
     // start bottomSheet state screen
+
     var showSignWebView by savedStateHandle.saveable { mutableStateOf(false) }
         private set
 
@@ -107,17 +107,14 @@ class SignInViewModel @Inject constructor(
                 when (response) {
                     is NetworkResult.Loading -> {
                         _tokenStateFlow.value = UiState.Loading(response.isLoading)
-                        // _tokenStateFlow.value = UiState.Loading(response.isLoading)
                     }
 
                     is NetworkResult.Success -> {
                         _tokenStateFlow.value = UiState.Success<CreateResponseToken>(response.data)
-                        //  _tokenStateFlow.update { UiState.Success(response.data) }
                     }
 
                     is NetworkResult.Error -> {
-                        _tokenStateFlow.value = UiState.Failure(response.message)
-                        //  _tokenStateFlow.update { UiState.Failure(response.message) }
+                        _tokenStateFlow.value = UiState.Failure(response.message.toString())
                     }
                 }
             }
@@ -138,7 +135,7 @@ class SignInViewModel @Inject constructor(
                     }
 
                     is NetworkResult.Error -> {
-                        _loginStateFlow.value = UiState.Failure(it.message)
+                        _loginStateFlow.value = UiState.Failure(it.message.toString())
                     }
                 }
             }

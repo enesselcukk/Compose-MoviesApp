@@ -18,7 +18,7 @@ class RepositoryLocalImpl @Inject constructor(val dataStore: MoviesDatabase) : R
             val getLiked = dataStore.moviesDao().allMovies()
             emit(NetworkResult.Success(getLiked))
         } catch (ex: Exception) {
-            emit(NetworkResult.Error(ex.message.toString()))
+            emit(NetworkResult.Error(ex))
         }
     }.flowOn(Dispatchers.IO)
 
@@ -29,7 +29,7 @@ class RepositoryLocalImpl @Inject constructor(val dataStore: MoviesDatabase) : R
                 val insert = dataStore.moviesDao().insertMovies(detailResponse)
                 emit(NetworkResult.Success(insert))
             } catch (ex: Exception) {
-                emit(NetworkResult.Error(ex.message.toString()))
+                emit(NetworkResult.Error(ex))
             }
         }.flowOn(Dispatchers.IO)
 
@@ -43,7 +43,7 @@ class RepositoryLocalImpl @Inject constructor(val dataStore: MoviesDatabase) : R
             val getLiked = dataStore.tvDao().allTv()
             emit(NetworkResult.Success(getLiked))
         } catch (ex: Exception) {
-            emit(NetworkResult.Error(ex.message.toString()))
+            emit(NetworkResult.Error(ex))
         }
     }.flowOn(Dispatchers.IO)
 
@@ -53,7 +53,7 @@ class RepositoryLocalImpl @Inject constructor(val dataStore: MoviesDatabase) : R
                 val insert = dataStore.tvDao().insertTv(tvResponse)
                 emit(NetworkResult.Success(insert))
             } catch (ex: Exception) {
-                emit(NetworkResult.Error(ex.message.toString()))
+                emit(NetworkResult.Error(ex))
             }
         }.flowOn(Dispatchers.IO)
 

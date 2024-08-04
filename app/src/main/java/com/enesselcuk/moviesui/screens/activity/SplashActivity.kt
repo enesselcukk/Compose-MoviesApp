@@ -1,6 +1,5 @@
 package com.enesselcuk.moviesui.screens.activity
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -17,7 +16,7 @@ class SplashActivity : ComponentActivity(){
         super.onCreate(savedInstanceState)
 
         setContent {
-            val mainViewModel = hiltViewModel<ViewModel>()
+            val mainViewModel = hiltViewModel<ActivityViewModel>()
             MoviesUiTheme(darkTheme = mainViewModel.getTheme()) {
                 SplashScreen(
                     goHome = {

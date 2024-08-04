@@ -43,7 +43,7 @@ class ProfileViewModel @Inject constructor(
                     }
 
                     is NetworkResult.Error -> {
-                        _getUserFlow.value = UiState.Failure(response.message)
+                        _getUserFlow.value = UiState.Failure(response.message.toString())
                     }
                 }
             }

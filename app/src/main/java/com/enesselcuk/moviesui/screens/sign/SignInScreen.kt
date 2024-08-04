@@ -13,9 +13,11 @@ import androidx.compose.material3.ButtonDefaults.buttonColors
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -34,17 +36,16 @@ import com.enesselcuk.moviesui.util.Constant
 import com.enesselcuk.moviesui.util.UiState
 
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun SignInScreen(
     goHomeCallback: () -> Unit,
 ) {
     val passwordVisible = rememberSaveable { mutableStateOf(false) }
-
     val isLoading = rememberSaveable { mutableStateOf(false) }
-
     val signInViewModel = hiltViewModel<SignInViewModel>()
-
     val context = LocalContext.current
+    val kc = LocalSoftwareKeyboardController.current
 
     Column(
         verticalArrangement = Arrangement.SpaceAround,
@@ -125,12 +126,14 @@ fun SignInScreen(
             )
         }
 
+
         OutlinedButton(
             onClick = {
                 if (signInViewModel.usernameValue.text.isEmpty()
                         .not() && signInViewModel.passwordValue.text.isEmpty().not()
                 ) {
                     signInViewModel.setShowWebView(true)
+                    kc?.hide()
                 } else {
                     Toast.makeText(context, R.string.emailpasswordfailer, Toast.LENGTH_LONG).show()
                 }
@@ -150,7 +153,6 @@ fun SignInScreen(
             )
         }
 
-
         if (signInViewModel.showSignWebView) {
             LaunchedEffect(Unit) {
                 signInViewModel.getToken()
@@ -166,21 +168,18 @@ fun SignInScreen(
                         val response = (createToken as UiState.Success<CreateResponseToken>).response
                         signInViewModel.setResponseToken(response.requestToken.orEmpty())
 
+                        signInViewModel.login(
+                            LoginRequest(
+                                signInViewModel.usernameValue.text.trim(),
+                                signInViewModel.passwordValue.text.trim(),
+                                response.requestToken
+                            )
+                        )
                     }
 
                     is UiState.Failure -> {}
                     is UiState.Loading -> {}
                 }
-            }
-
-            LaunchedEffect(Unit) {
-                signInViewModel.login(
-                    LoginRequest(
-                        signInViewModel.usernameValue.text,
-                        signInViewModel.passwordValue.text,
-                        signInViewModel.updateToken()
-                    )
-                )
             }
 
             val loginObserver by signInViewModel.loginStateFlow.collectAsStateWithLifecycle(UiState.Initial)
@@ -195,18 +194,18 @@ fun SignInScreen(
                         if (loginResponse.success == true) {
                             goHomeCallback()
                             signInViewModel.saveUser()
+                            signInViewModel.setShowWebView(false)
                         } else {
                             Toast.makeText(context, "hata", Toast.LENGTH_LONG).show()
                         }
                     }
 
-                    is UiState.Failure -> {}
+                    is UiState.Failure -> {
+                        signInViewModel.setShowWebView(false)
+                    }
                 }
             }
-
         }
-
-
 
         if (isLoading.value) {
             CircularProgressIndicator(

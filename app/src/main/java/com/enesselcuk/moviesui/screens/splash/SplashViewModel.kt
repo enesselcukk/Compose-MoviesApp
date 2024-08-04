@@ -57,7 +57,7 @@ class SplashViewModel @Inject constructor(
 
                     }
                     is NetworkResult.Error -> {
-                       _loginStateFlow.emit(UiState.Failure(it.message))
+                       _loginStateFlow.emit(UiState.Failure(it.message.toString()))
                     }
                 }
             }
