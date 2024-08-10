@@ -38,8 +38,7 @@ class RepositoryImpl @Inject constructor(
     ): Flow<NetworkResult<MoviesResponse>> = flow {
         emit(NetworkResult.Loading())
         try {
-            val response =
-                remoteDataSource.getMovies(title = movies, language = language, page = page)
+            val response = remoteDataSource.getMovies(title = movies, language = language, page = page)
             emit(NetworkResult.Success(response))
         } catch (ex: Exception) {
             emit(NetworkResult.Error(ex))

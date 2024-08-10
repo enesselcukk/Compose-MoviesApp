@@ -10,7 +10,9 @@ import com.enesselcuk.moviesui.domain.useCase.home.HomeTrendUseCase
 import com.enesselcuk.moviesui.domain.useCase.home.HomeUseCase
 import com.enesselcuk.moviesui.data.model.response.MoviesResponse
 import com.enesselcuk.moviesui.data.model.response.TrendingResponse
+import com.enesselcuk.moviesui.domain.base.BaseUiSateUseCase
 import com.enesselcuk.moviesui.util.NetworkResult
+import com.enesselcuk.moviesui.util.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -24,7 +26,8 @@ class HomeViewModel @Inject constructor(
     private val homeTrendUseCase: HomeTrendUseCase
 ) : ViewModel() {
 
-    private val _getMoviesFlow = MutableStateFlow<MoviesResponse?>(null)
+    private val _getMoviesFlow =
+        MutableStateFlow<MoviesResponse?>(null)
     val getMoviesFlow = _getMoviesFlow.asStateFlow()
 
     private val _getUpComingFlow = MutableStateFlow<MoviesResponse?>(null)
@@ -41,7 +44,21 @@ class HomeViewModel @Inject constructor(
 
     fun getMovies(title: String, language: String, page: Int) {
         viewModelScope.launch {
-            _getMoviesFlow.emit(homeUseCase.execute(HomeUseCase.InputParams(title, language, page)))
+            val status = homeUseCase.execute(HomeUseCase.InputParams(title, language, page))
+            when (status) {
+                is BaseUiSateUseCase.Initial -> {
+
+                }
+                is BaseUiSateUseCase.Loading -> {
+                    val e = status.isLoading
+                }
+                is BaseUiSateUseCase.Success -> {
+                    _getMoviesFlow.value = status.response
+                }
+                is BaseUiSateUseCase.Failure -> {
+                    val b = status.errorMessage
+                }
+            }
         }
     }
 
