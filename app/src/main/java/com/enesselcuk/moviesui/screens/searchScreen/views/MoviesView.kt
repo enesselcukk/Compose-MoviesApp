@@ -146,16 +146,20 @@ fun MoviesViewRow(
             modifier = Modifier.padding(horizontal = 5.dp)
         ) {
             items(data.value?.results ?: emptyList()) {
-                ViewMovies(
-                    modifier,
-                    it.poster_path,
-                    onCLick = { navController.navigate("detail/${it.id}") },
-                    vote = it.vote_average,
-                    name = it.title.let { movieName ->
+                it.vote_average?.let { it1 ->
+                    it.title?.let { movieName ->
                         if (movieName.count() >= 12) movieName.substring(0, 12).plus("...")
                         else movieName
+                    }?.let { it2 ->
+                        ViewMovies(
+                            modifier,
+                            it.poster_path,
+                            onCLick = { navController.navigate("detail/${it.id}") },
+                            vote = it1,
+                            name = it2
+                        )
                     }
-                )
+                }
             }
         }
     }

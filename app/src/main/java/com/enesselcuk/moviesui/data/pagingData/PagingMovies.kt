@@ -24,11 +24,11 @@ class PagingMovies(
         return try {
             val responseCategory = remoteApi.getMovies(title = categoryName, language = language, page = position)
             val repos = responseCategory.results
-            val nextKey = if (repos.isEmpty()) null
+            val nextKey = if (repos?.isEmpty() == true) null
                           else position + 1
 
             LoadResult.Page(
-                data = responseCategory.results,
+                data = responseCategory.results ?: emptyList(),
                 prevKey = if (position == STARTING_PAGE_INDEX) null else position.minus(1),
                 nextKey = nextKey
             )

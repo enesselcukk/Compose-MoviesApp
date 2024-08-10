@@ -49,7 +49,7 @@ fun HomeScreen(
 
     LaunchedEffect(Unit) {
         viewModel.getMovies(title = titlePopular, language = language, page = page)
-        viewModel.getMoviesUpComing(title = uoComingTitle, language = language, page = page)
+      //  viewModel.getMoviesUpComing(title = uoComingTitle, language = language, page = page)
     }
 
     val popularMovie by viewModel.getMoviesFlow.collectAsStateWithLifecycle()

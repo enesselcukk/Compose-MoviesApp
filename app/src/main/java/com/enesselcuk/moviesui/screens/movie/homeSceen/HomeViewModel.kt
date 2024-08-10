@@ -19,8 +19,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(private val homeUseCase: HomeUseCase,
-                                        private val homeTrendUseCase: HomeTrendUseCase
+class HomeViewModel @Inject constructor(
+    private val homeUseCase: HomeUseCase,
+    private val homeTrendUseCase: HomeTrendUseCase
 ) : ViewModel() {
 
     private val _getMoviesFlow = MutableStateFlow<MoviesResponse?>(null)
@@ -40,16 +41,25 @@ class HomeViewModel @Inject constructor(private val homeUseCase: HomeUseCase,
 
     fun getMovies(title: String, language: String, page: Int) {
         viewModelScope.launch {
+            _getMoviesFlow.emit(homeUseCase.execute(HomeUseCase.InputParams(title, language, page)))
+        }
+    }
+
+    /*
+    fun getMoviesUpComing(title: String, language: String, page: Int) {
+        viewModelScope.launch {
             homeUseCase.invoke(title, language, page).collectLatest { moviesResponse ->
                 when (moviesResponse) {
                     is NetworkResult.Loading -> {
                         _loading.value = true
                     }
+
                     is NetworkResult.Success -> {
-                        _getMoviesFlow.emit(moviesResponse.data)
+                        _getUpComingFlow.emit(moviesResponse.data)
                         _loading.value = false
                         isVisible.value = true
                     }
+
                     is NetworkResult.Error -> {
                         _getToastMessage.value = moviesResponse.message.toString()
                         isVisible.value = false
@@ -59,26 +69,7 @@ class HomeViewModel @Inject constructor(private val homeUseCase: HomeUseCase,
         }
     }
 
-    fun getMoviesUpComing(title: String, language: String, page: Int) {
-        viewModelScope.launch {
-            homeUseCase.invoke(title, language, page).collectLatest { moviesResponse ->
-                when (moviesResponse) {
-                    is NetworkResult.Loading -> {
-                        _loading.value = true
-                    }
-                    is NetworkResult.Success -> {
-                        _getUpComingFlow.emit(moviesResponse.data)
-                        _loading.value = false
-                        isVisible.value = true
-                    }
-                    is NetworkResult.Error -> {
-                        _getToastMessage.value = moviesResponse.message.toString()
-                        isVisible.value = false
-                    }
-                }
-            }
-        }
-    }
+     */
 
     private val _getMoviesTrendingFlow = MutableStateFlow<TrendingResponse?>(null)
     val getMoviesTrendingFlow = _getMoviesTrendingFlow.asStateFlow()
@@ -89,11 +80,13 @@ class HomeViewModel @Inject constructor(private val homeUseCase: HomeUseCase,
                     is NetworkResult.Loading -> {
                         _loading.value = true
                     }
+
                     is NetworkResult.Success -> {
                         _getMoviesTrendingFlow.emit(moviesResponse.data)
                         _loading.value = false
                         isVisible.value = true
                     }
+
                     is NetworkResult.Error -> {
                         _getToastMessage.value = moviesResponse.message.toString()
                         isVisible.value = false

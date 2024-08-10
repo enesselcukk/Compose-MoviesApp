@@ -17,6 +17,8 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import javax.inject.Singleton
 
 
@@ -27,11 +29,12 @@ object ReposModule {
     fun provideRepository(api: MoviesService) = RepositoryImpl(api)
 
     @Singleton
-     fun provideRepositoryLocal(database: MoviesDatabase) = RepositoryLocalImpl(database)
+    fun provideRepositoryLocal(database: MoviesDatabase) = RepositoryLocalImpl(database)
 
     @Provides
     @Singleton
-     fun preferencesDataStore(@ApplicationContext context: Context) = PreferencesDataStoreImpl(context)
+    fun preferencesDataStore(@ApplicationContext context: Context) =
+        PreferencesDataStoreImpl(context)
 
 }
 

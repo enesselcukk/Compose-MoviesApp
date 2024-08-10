@@ -92,14 +92,18 @@ fun PopularMoviesItems(items: MoviesResponse?, click: (id: Int) -> Unit) {
     ) {
         items(items?.results ?: emptyList()) { recommended ->
             AnimatedVisibility(visible = true) {
-                PopularMovies(
-                    recommended.poster_path,
-                    recommended.title.let {
-                        if (it.count() >= 13) it.substring(0, 13).plus("...")
-                        else it
-                    },
-                    recommended.vote_average,
-                    onClick = { click.invoke(recommended.id) })
+                recommended.title?.let {
+                    if (it.count() >= 13) it.substring(0, 13).plus("...")
+                    else it
+                }?.let {
+                    recommended.vote_average?.let { it1 ->
+                        PopularMovies(
+                            recommended.poster_path.orEmpty(),
+                            it,
+                            it1,
+                            onClick = { recommended.id?.let { it2 -> click.invoke(it2) } })
+                    }
+                }
             }
         }
     }

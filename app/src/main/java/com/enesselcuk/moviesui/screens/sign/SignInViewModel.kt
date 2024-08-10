@@ -116,6 +116,8 @@ class SignInViewModel @Inject constructor(
                     is NetworkResult.Error -> {
                         _tokenStateFlow.value = UiState.Failure(response.message.toString())
                     }
+
+                    else -> {}
                 }
             }
         }
@@ -137,6 +139,8 @@ class SignInViewModel @Inject constructor(
                     is NetworkResult.Error -> {
                         _loginStateFlow.value = UiState.Failure(it.message.toString())
                     }
+
+                    else -> {}
                 }
             }
         }

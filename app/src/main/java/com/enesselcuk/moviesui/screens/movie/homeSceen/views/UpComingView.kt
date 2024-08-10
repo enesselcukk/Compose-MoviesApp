@@ -87,16 +87,22 @@ fun UpComingItems(items: MoviesResponse?, click: (id:Int) -> Unit
         contentPadding = PaddingValues(horizontal = 5.dp)
     ) {
         items(items?.results ?: emptyList()) { item ->
-            UpComingView(
-                movieImage = item.poster_path,
-                movieName = item.title.let {
-                    if (it.count() >= 13) it.substring(0, 13).plus("...")
+            item.poster_path?.let {
+                item.title.let {
+                    if (it?.count()!! >= 13) it.substring(0, 13).plus("...")
                     else it
-                },
-                movieVoteAverage = item.vote_average,
-                onClick = {
-                    click.invoke(item.id)
-                })
+                }.let { it1 ->
+                    item.vote_average?.let { it2 ->
+                        UpComingView(
+                            movieImage = it,
+                            movieName = it1,
+                            movieVoteAverage = it2,
+                            onClick = {
+                                item.id?.let { it3 -> click.invoke(it3) }
+                            })
+                    }
+                }
+            }
         }
     }
 }

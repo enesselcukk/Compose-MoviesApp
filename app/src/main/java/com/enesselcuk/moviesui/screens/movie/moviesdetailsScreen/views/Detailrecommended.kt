@@ -93,15 +93,21 @@ fun DetailRecommendedRow(item: MoviesResponse? = null, onClick: (id:Int) -> Unit
         horizontalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         items(item?.results ?: emptyList()) { items ->
-            DetailRecommendedView(
-                image = items.poster_path,
-                movieName = items.title.let {
+            items.poster_path?.let {
+                items.title?.let {
                     if (it.count() >= 13) it.substring(0, 13).plus("...")
                     else it
-                },
-                vote = items.vote_average,
-                onClick = {onClick.invoke(items.id)}
-            )
+                }?.let { it1 ->
+                    items.vote_average?.let { it2 ->
+                        DetailRecommendedView(
+                            image = it,
+                            movieName = it1,
+                            vote = it2,
+                            onClick = { items.id?.let { it3 -> onClick.invoke(it3) } }
+                        )
+                    }
+                }
+            }
         }
     }
 }

@@ -167,7 +167,6 @@ fun SignInScreen(
                     is UiState.Success<CreateResponseToken> -> {
                         val response = (createToken as UiState.Success<CreateResponseToken>).response
                         signInViewModel.setResponseToken(response.requestToken.orEmpty())
-
                         signInViewModel.login(
                             LoginRequest(
                                 signInViewModel.usernameValue.text.trim(),
@@ -194,15 +193,11 @@ fun SignInScreen(
                         if (loginResponse.success == true) {
                             goHomeCallback()
                             signInViewModel.saveUser()
-                            signInViewModel.setShowWebView(false)
                         } else {
                             Toast.makeText(context, "hata", Toast.LENGTH_LONG).show()
                         }
                     }
-
-                    is UiState.Failure -> {
-                        signInViewModel.setShowWebView(false)
-                    }
+                    is UiState.Failure -> {}
                 }
             }
         }
