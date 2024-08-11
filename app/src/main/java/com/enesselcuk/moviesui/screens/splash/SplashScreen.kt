@@ -22,7 +22,6 @@ fun SplashScreen(
 ) {
 
     val viewModel = hiltViewModel<SplashViewModel>()
-    val isSuccessState = rememberSaveable { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         viewModel.getUser()
@@ -30,9 +29,6 @@ fun SplashScreen(
 
     val getUser = viewModel.loginStateFlow.collectAsStateWithLifecycle()
 
-    handleUiState(getUser.value, callback = {
-        isSuccessState.value = it
-    })
 
     val preloaderLottieComposition by rememberLottieComposition(
         LottieCompositionSpec.RawRes(R.raw.movie)
@@ -45,11 +41,11 @@ fun SplashScreen(
 
     LaunchedEffect(preloaderProgress) {
         when {
-            preloaderProgress >= 1F && isSuccessState.value -> {
+            preloaderProgress >= 1F && getUser.value == true -> {
                 goHome.invoke()
             }
 
-            preloaderProgress >= 1F &&  isSuccessState.value.not() -> {
+            preloaderProgress >= 1F && getUser.value?.not() == true -> {
                 goLogin.invoke()
             }
 
@@ -60,16 +56,4 @@ fun SplashScreen(
         composition = preloaderLottieComposition,
         progress = preloaderProgress,
     )
-}
-
-private fun handleUiState(uiState: UiState<Boolean>, callback: (loginResponse: Boolean) -> Unit) {
-    when (uiState) {
-        is UiState.Initial -> {}
-        is UiState.Loading -> {}
-        is UiState.Success<Boolean> -> {
-            callback(uiState.response)
-        }
-
-        is UiState.Failure -> {}
-    }
 }

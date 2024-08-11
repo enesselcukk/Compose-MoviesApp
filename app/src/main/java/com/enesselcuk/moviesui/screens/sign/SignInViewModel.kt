@@ -13,6 +13,7 @@ import androidx.lifecycle.viewmodel.compose.saveable
 import com.enesselcuk.moviesui.data.model.authresponse.CreateResponseToken
 import com.enesselcuk.moviesui.data.model.request.LoginRequest
 import com.enesselcuk.moviesui.data.model.authresponse.LoginResponse
+import com.enesselcuk.moviesui.domain.base.BaseUiSate
 import com.enesselcuk.moviesui.domain.useCase.datastore.DataStoreUseCase
 import com.enesselcuk.moviesui.domain.useCase.login.LoginUseCase
 import com.enesselcuk.moviesui.domain.useCase.token.CreateTokenUseCase
@@ -34,10 +35,10 @@ class SignInViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val _loginStateFlow = MutableStateFlow<UiState<LoginResponse>>(UiState.Initial)
+    private val _loginStateFlow = MutableStateFlow<LoginResponse?>(null)
     val loginStateFlow = _loginStateFlow.asStateFlow()
 
-    private val _tokenStateFlow = MutableStateFlow<UiState<CreateResponseToken>>(UiState.Initial)
+    private val _tokenStateFlow = MutableStateFlow<CreateResponseToken?>(null)
     val tokenStateFlow = _tokenStateFlow.asStateFlow()
 
     //  save checkBox username and password
@@ -103,45 +104,32 @@ class SignInViewModel @Inject constructor(
     // get token
     fun getToken() {
         viewModelScope.launch {
-            createTokenUseCase.invoke().collect { response ->
-                when (response) {
-                    is NetworkResult.Loading -> {
-                        _tokenStateFlow.value = UiState.Loading(response.isLoading)
-                    }
-
-                    is NetworkResult.Success -> {
-                        _tokenStateFlow.value = UiState.Success<CreateResponseToken>(response.data)
-                    }
-
-                    is NetworkResult.Error -> {
-                        _tokenStateFlow.value = UiState.Failure(response.message.toString())
-                    }
-
-                    else -> {}
+            val uiState = createTokenUseCase.execute()
+            when(uiState){
+                is BaseUiSate.Initial -> {}
+                is BaseUiSate.Success -> {
+                    _tokenStateFlow.value = uiState.response
                 }
+                is BaseUiSate.Loading -> {}
+                is BaseUiSate.Failure -> {}
             }
+
         }
     }
 
     // get token
     fun login(loginRequest: LoginRequest) {
         viewModelScope.launch {
-            loginUseCase.invoke(loginRequest).collect {
-                when (it) {
-                    is NetworkResult.Loading -> {
-                        _loginStateFlow.value = UiState.Loading(it.isLoading)
-                    }
+            val uiState = loginUseCase.execute(LoginUseCase.InputParams(loginRequest))
+            when (uiState) {
+                is BaseUiSate.Initial -> {
 
-                    is NetworkResult.Success -> {
-                        _loginStateFlow.value = UiState.Success(it.data)
-                    }
-
-                    is NetworkResult.Error -> {
-                        _loginStateFlow.value = UiState.Failure(it.message.toString())
-                    }
-
-                    else -> {}
                 }
+                is BaseUiSate.Success -> {
+                    _loginStateFlow.value = uiState.response
+                }
+                is BaseUiSate.Loading -> {}
+                is BaseUiSate.Failure -> {}
             }
         }
     }

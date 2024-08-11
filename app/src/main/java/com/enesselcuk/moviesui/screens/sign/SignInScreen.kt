@@ -34,6 +34,7 @@ import com.enesselcuk.moviesui.data.model.authresponse.LoginResponse
 import com.enesselcuk.moviesui.data.model.request.LoginRequest
 import com.enesselcuk.moviesui.util.Constant
 import com.enesselcuk.moviesui.util.UiState
+import kotlinx.coroutines.flow.collectLatest
 
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -154,50 +155,31 @@ fun SignInScreen(
         }
 
         if (signInViewModel.showSignWebView) {
-            LaunchedEffect(Unit) {
+            LaunchedEffect(signInViewModel) {
                 signInViewModel.getToken()
             }
 
             val createToken by signInViewModel.tokenStateFlow.collectAsStateWithLifecycle()
 
             LaunchedEffect(createToken) {
-                when (createToken) {
-                    is UiState.Initial -> {}
-
-                    is UiState.Success<CreateResponseToken> -> {
-                        val response = (createToken as UiState.Success<CreateResponseToken>).response
-                        signInViewModel.setResponseToken(response.requestToken.orEmpty())
-                        signInViewModel.login(
-                            LoginRequest(
-                                signInViewModel.usernameValue.text.trim(),
-                                signInViewModel.passwordValue.text.trim(),
-                                response.requestToken
-                            )
+                if (createToken?.success == true) {
+                    signInViewModel.setResponseToken(createToken?.requestToken.orEmpty())
+                    signInViewModel.login(
+                        LoginRequest(
+                            signInViewModel.usernameValue.text.trim(),
+                            signInViewModel.passwordValue.text.trim(),
+                            createToken?.requestToken
                         )
-                    }
-
-                    is UiState.Failure -> {}
-                    is UiState.Loading -> {}
+                    )
                 }
             }
 
-            val loginObserver by signInViewModel.loginStateFlow.collectAsStateWithLifecycle(UiState.Initial)
+            val loginObserver by signInViewModel.loginStateFlow.collectAsStateWithLifecycle()
 
             LaunchedEffect(loginObserver) {
-                when (loginObserver) {
-                    is UiState.Initial -> {}
-                    is UiState.Loading -> {}
-                    is UiState.Success<LoginResponse> -> {
-                        val loginResponse = (loginObserver as UiState.Success<LoginResponse>).response
-
-                        if (loginResponse.success == true) {
-                            goHomeCallback()
-                            signInViewModel.saveUser()
-                        } else {
-                            Toast.makeText(context, "hata", Toast.LENGTH_LONG).show()
-                        }
-                    }
-                    is UiState.Failure -> {}
+                if (loginObserver?.success == true) {
+                    goHomeCallback()
+                    signInViewModel.saveUser()
                 }
             }
         }

@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.enesselcuk.moviesui.data.model.request.LoginRequest
 import com.enesselcuk.moviesui.data.model.authresponse.LoginResponse
+import com.enesselcuk.moviesui.domain.base.BaseUiSate
 import com.enesselcuk.moviesui.domain.useCase.datastore.DataStoreUseCase
 import com.enesselcuk.moviesui.domain.useCase.login.LoginUseCase
 import com.enesselcuk.moviesui.util.Constant
@@ -24,18 +25,18 @@ class SplashViewModel @Inject constructor(
     private val localDataStoreUseCase: DataStoreUseCase
 ) : ViewModel() {
 
-    private val _loginStateFlow = MutableStateFlow<UiState<Boolean>>(UiState.Initial)
+    private val _loginStateFlow = MutableStateFlow<Boolean?>(false)
     val loginStateFlow = _loginStateFlow.asStateFlow()
 
     private var setUsers = mutableStateOf(LoginRequest())
 
 
-    fun getUser()  {
+    fun getUser() {
         viewModelScope.launch {
             localDataStoreUseCase.getUser(Constant.USERS_KEY)?.toList().let {
-                if (it.isNullOrEmpty()){
-                    _loginStateFlow.emit(UiState.Success(false))
-                }else {
+                if (it.isNullOrEmpty()) {
+                    _loginStateFlow.value = false
+                } else {
                     setUsers.value = LoginRequest(it[0], it[1], it[2])
                     login()
                 }
@@ -45,21 +46,16 @@ class SplashViewModel @Inject constructor(
 
     fun login() {
         viewModelScope.launch {
-            loginUseCase.invoke(setUsers.value).collectLatest {
-                when (it) {
-                    is NetworkResult.Loading -> {
-                        _loginStateFlow.emit(UiState.Loading(it.isLoading))
-                    }
-                    is NetworkResult.Success -> {
-                        it.data.success?.let {isSuccess ->
-                            _loginStateFlow.emit(UiState.Success(isSuccess))
-                        }
+            val loginUiState = loginUseCase.execute(LoginUseCase.InputParams(setUsers.value))
 
-                    }
-                    is NetworkResult.Error -> {
-                       _loginStateFlow.emit(UiState.Failure(it.message.toString()))
-                    }
+            when (loginUiState) {
+                is BaseUiSate.Initial -> {}
+                is BaseUiSate.Success -> {
+                    _loginStateFlow.value = loginUiState.response.success
                 }
+                is BaseUiSate.Loading -> {}
+                is BaseUiSate.Failure -> {}
+
             }
         }
     }

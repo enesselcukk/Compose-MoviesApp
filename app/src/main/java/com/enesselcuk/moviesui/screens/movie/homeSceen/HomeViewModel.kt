@@ -10,9 +10,8 @@ import com.enesselcuk.moviesui.domain.useCase.home.HomeTrendUseCase
 import com.enesselcuk.moviesui.domain.useCase.home.HomeUseCase
 import com.enesselcuk.moviesui.data.model.response.MoviesResponse
 import com.enesselcuk.moviesui.data.model.response.TrendingResponse
-import com.enesselcuk.moviesui.domain.base.BaseUiSateUseCase
+import com.enesselcuk.moviesui.domain.base.BaseUiSate
 import com.enesselcuk.moviesui.util.NetworkResult
-import com.enesselcuk.moviesui.util.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -46,16 +45,16 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             val status = homeUseCase.execute(HomeUseCase.InputParams(title, language, page))
             when (status) {
-                is BaseUiSateUseCase.Initial -> {
+                is BaseUiSate.Initial -> {
 
                 }
-                is BaseUiSateUseCase.Loading -> {
+                is BaseUiSate.Loading -> {
                     val e = status.isLoading
                 }
-                is BaseUiSateUseCase.Success -> {
+                is BaseUiSate.Success -> {
                     _getMoviesFlow.value = status.response
                 }
-                is BaseUiSateUseCase.Failure -> {
+                is BaseUiSate.Failure -> {
                     val b = status.errorMessage
                 }
             }
