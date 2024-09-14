@@ -2,6 +2,7 @@ package com.enesselcuk.moviesui.screens.activity
 
 import com.enesselcuk.moviesui.datastore.LocalDataStore
 import com.enesselcuk.moviesui.domain.useCase.datastore.DataStoreUseCase
+import com.enesselcuk.moviesui.ui.screen.activity.ActivityViewModel
 import org.junit.Assert.*
 import org.junit.Before
 

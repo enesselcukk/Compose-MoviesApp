@@ -54,8 +54,8 @@ class ApiServiceTest {
 
         // Then
         assertThat(response,instanceOf(MoviesResponse::class.java))
-        assertThat(response.results[0].title, `is`("Meg 2: The Trench"))
-        assertThat(response.results.size, `is`(20))
+        assertThat(response.results?.get(0)?.title, `is`("Meg 2: The Trench"))
+        assertThat(response.results?.size, `is`(20))
         assertThat(request.path,`is`("/3/movie/popular?api_key=7d779c1e7a202d2aa4e20eb90a67548e&language=en-US&page=1"))
         assertThat(request.method,`is`("GET"))
 

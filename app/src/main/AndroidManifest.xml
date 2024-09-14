@@ -17,10 +17,7 @@
         android:theme="@style/Theme.MoviesUi"
         tools:targetApi="31">
         <activity
-            android:name=".screens.activity.WebViewSign"
-            android:exported="false" />
-        <activity
-            android:name=".screens.activity.SplashActivity"
+            android:name=".ui.screen.activity.SplashActivity"
             android:exported="true"
             android:theme="@style/Theme.MoviesUi">
             <intent-filter>
@@ -30,10 +27,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".screens.activity.MainActivity"
+            android:name=".ui.screen.activity.MainActivity"
             android:exported="false" />
         <activity
-            android:name=".screens.activity.LoginActivity"
+            android:name=".ui.screen.activity.LoginActivity"
             android:exported="false" />
     </application>
 

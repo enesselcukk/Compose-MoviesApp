@@ -14,17 +14,17 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.enesselcuk.moviesui.screens.activity.MainActivity
-import com.enesselcuk.moviesui.screens.likedScreen.LikedScreen
-import com.enesselcuk.moviesui.screens.movie.SharedViewModel
-import com.enesselcuk.moviesui.screens.movie.actorDetailScreen.ActorScreen
-import com.enesselcuk.moviesui.screens.movie.allSee.AllSeeScreenHome
-import com.enesselcuk.moviesui.screens.movie.homeSceen.HomeScreen
-import com.enesselcuk.moviesui.screens.movie.moviesdetailsScreen.DetailsScreen
-import com.enesselcuk.moviesui.screens.profile.ProfileScreen
-import com.enesselcuk.moviesui.screens.searchScreen.SearchScreen
-import com.enesselcuk.moviesui.screens.settings.SettingsScreen
-import com.enesselcuk.moviesui.screens.tv.TvDetailScreen
+import com.enesselcuk.moviesui.ui.screen.activity.MainActivity
+import com.enesselcuk.moviesui.ui.screen.likedScreen.LikedScreen
+import com.enesselcuk.moviesui.ui.screen.movie.SharedViewModel
+import com.enesselcuk.moviesui.ui.screen.movie.actorDetailScreen.ActorScreen
+import com.enesselcuk.moviesui.ui.screen.movie.allSee.AllSeeScreenHome
+import com.enesselcuk.moviesui.ui.screen.movie.homeSceen.HomeScreen
+import com.enesselcuk.moviesui.ui.screen.movie.moviesdetailsScreen.DetailsScreen
+import com.enesselcuk.moviesui.ui.screen.profile.ProfileScreen
+import com.enesselcuk.moviesui.ui.screen.searchScreen.SearchScreen
+import com.enesselcuk.moviesui.ui.screen.settings.SettingsScreen
+import com.enesselcuk.moviesui.ui.screen.tv.TvDetailScreen
 import com.enesselcuk.moviesui.util.NavigationItem.HOME
 import com.enesselcuk.moviesui.util.NavigationItem.LIKED
 import com.enesselcuk.moviesui.util.NavigationItem.MOVIES_NAME
@@ -34,7 +34,6 @@ import com.enesselcuk.moviesui.util.NavigationItem.PLAYER_ID
 import com.enesselcuk.moviesui.util.NavigationItem.PROFILE
 import com.enesselcuk.moviesui.util.NavigationItem.SEARCH
 import com.enesselcuk.moviesui.util.NavigationItem.SETTINGS
-import com.enesselcuk.moviesui.util.NavigationItem.SIGN_IN
 import com.enesselcuk.moviesui.util.NavigationItem.TV_ID
 import com.enesselcuk.moviesui.util.Screen
 

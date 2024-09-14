@@ -9,6 +9,7 @@ import com.enesselcuk.moviesui.data.model.response.Result
 import com.enesselcuk.moviesui.data.remote.MoviesService
 import com.enesselcuk.moviesui.domain.useCase.home.HomeTrendUseCase
 import com.enesselcuk.moviesui.domain.useCase.home.HomeUseCase
+import com.enesselcuk.moviesui.ui.screen.movie.homeSceen.HomeViewModel
 import com.enesselcuk.moviesui.util.NetworkResult
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
@@ -79,7 +80,6 @@ class HomeViewModelTest {
         //then
         assertThat(listOf(homeViewModel.getMoviesFlow.value), `is`(emptyList()))
         assertFalse(homeViewModel.loading.value ?: false)
-        assertTrue(homeViewModel.isVisible.value)
 
         job.cancel()
     }

@@ -9,6 +9,7 @@ import com.enesselcuk.moviesui.data.local.MoviesDao
 import com.enesselcuk.moviesui.data.local.MoviesDatabase
 import com.enesselcuk.moviesui.data.repository.FakeLocalRepositoryImpl
 import com.enesselcuk.moviesui.data.repository.FakeLocalRepositoryImpl.FakeLocalMoviesList.fakeDetailResponseList
+import com.enesselcuk.moviesui.ui.screen.likedScreen.LikedViewModel
 import com.enesselcuk.moviesui.util.NetworkResult
 import io.mockk.coEvery
 import kotlinx.coroutines.flow.flow
