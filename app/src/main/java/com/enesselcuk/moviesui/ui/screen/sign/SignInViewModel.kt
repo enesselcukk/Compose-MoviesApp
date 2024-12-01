@@ -36,7 +36,7 @@ class SignInViewModel @Inject constructor(
 ) : BaseViewModel() {
 
     private val _loginStateFlow = MutableStateFlow<LoginResponse?>(null)
-    val loginStateFlow = _loginStateFlow.asStateFlow()
+    val loginStateFlow = _loginStateFlow
 
     private val _tokenStateFlow = MutableStateFlow<CreateResponseToken?>(null)
     val tokenStateFlow = _tokenStateFlow.asStateFlow()
@@ -105,13 +105,14 @@ class SignInViewModel @Inject constructor(
     fun getToken() {
         viewModelScope.launch {
             val useCase = createTokenUseCase.invoke()
-            collectFlow(useCase, onSuccess = {
-                _tokenStateFlow.value = it
-            }, error = {
+            collectFlow(useCase,
+                onSuccess = {
+                    _tokenStateFlow.value = it
+                }, error = {
 
-            }, loading = {
+                }, loading = {
 
-            })
+                })
         }
     }
 

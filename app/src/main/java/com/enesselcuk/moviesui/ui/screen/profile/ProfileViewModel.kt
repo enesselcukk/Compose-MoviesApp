@@ -9,9 +9,6 @@ import com.enesselcuk.moviesui.domain.useCase.datastore.DataStoreUseCase
 import com.enesselcuk.moviesui.util.Constant
 import com.enesselcuk.moviesui.util.NetworkResult
 import com.enesselcuk.moviesui.util.UiState
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

@@ -93,7 +93,7 @@ interface MoviesService {
 
     @GET("3/account/{id}")
     suspend fun accountDetail(
-        @Path("id") id: Int = BuildConfig.ACCOUNT_ID
+        @Path("id") id: Int = BuildConfig.ACCOUNT_ID.toInt()
     ):AccountDetailsResponse
 
 

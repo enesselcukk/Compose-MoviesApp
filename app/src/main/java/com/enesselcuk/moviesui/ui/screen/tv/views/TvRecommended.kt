@@ -1,5 +1,6 @@
 package com.enesselcuk.moviesui.ui.screen.tv.views
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -73,6 +74,7 @@ fun TvRecommendedView(image: String, vote: Double, name: String, onClick: () -> 
         )
     }
 }
+
 
 @Composable
 fun TvRecommendedItems(
