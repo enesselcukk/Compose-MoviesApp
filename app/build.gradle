@@ -65,115 +65,103 @@ android {
 
 dependencies {
 
-    implementation "androidx.core:core-ktx:1.15.0"
-    implementation 'androidx.activity:activity-compose:1.9.3'
-    implementation "androidx.compose.ui:ui:1.7.5"
+    // Core
+    implementation(DependenciesWithVersions.CORE_KTX)
+    implementation(DependenciesWithVersions.ACTIVITY_COMPOSE)
+    implementation(DependenciesWithVersions.ACTIVITY_KTX)
+    implementation(DependenciesWithVersions.APPCOMPAT)
+    implementation(DependenciesWithVersions.MATERIAL)
 
-    implementation "androidx.compose.ui:ui-tooling-preview:$compose_ui_version"
-    implementation "androidx.compose.ui:ui-util:$compose_ui_version"
-    implementation 'androidx.test.ext:junit-ktx:1.2.1'
-    implementation 'androidx.appcompat:appcompat:1.7.0'
-    implementation 'com.google.android.material:material:1.12.0'
-    implementation 'androidx.activity:activity-ktx:1.9.3'
-    testImplementation 'junit:junit:4.13.2'
+    // Jetpack Compose
+    implementation(DependenciesWithVersions.COMPOSE_UI)
+    implementation(DependenciesWithVersions.COMPOSE_TOOLING_PREVIEW)
+    implementation(DependenciesWithVersions.COMPOSE_UTIL)
+    implementation(DependenciesWithVersions.COMPOSE_RUNTIME_LIVEDATA)
+    implementation(DependenciesWithVersions.COMPOSE_MATERIAL3)
+    implementation(DependenciesWithVersions.COMPOSE_MATERIAL3_WINDOW)
 
+    // ConstraintLayout
+    implementation(DependenciesWithVersions.CONSTRAINT_LAYOUT)
 
-    implementation "androidx.compose.material3:material3:1.3.1"
-    implementation "androidx.compose.material3:material3-window-size-class:1.3.1"
+    // ViewModel
+    implementation(DependenciesWithVersions.VIEWMODEL_COMPOSE)
+    implementation(DependenciesWithVersions.LIFECYCLE_RUNTIME_COMPOSE)
 
-    // constraintlayout
-    implementation("androidx.constraintlayout:constraintlayout-compose:1.1.0")
+    // Navigation
+    implementation(DependenciesWithVersions.NAVIGATION_COMPOSE)
 
-    //Viewmodel
-    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7"
+    // Accompanist
+    implementation(DependenciesWithVersions.ACCOMPANIST_INSETS)
+    implementation(DependenciesWithVersions.ACCOMPANIST_NAV_ANIMATION)
+    implementation(DependenciesWithVersions.ACCOMPANIST_PAGER)
 
-    // navigation
-    implementation "androidx.navigation:navigation-compose:2.8.4"
-    implementation "com.google.accompanist:accompanist-insets:0.23.1"
-    implementation "com.google.accompanist:accompanist-navigation-animation:0.24.10-beta"
-
-    // coroutines
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4"
+    // Coroutines
+    implementation(DependenciesWithVersions.COROUTINES_ANDROID)
+    implementation(DependenciesWithVersions.COROUTINES_CORE)
 
     // Room
-    implementation "androidx.room:room-runtime:2.6.1"
-    implementation "androidx.room:room-paging:2.6.1"
-    implementation "androidx.room:room-ktx:2.6.1"
-    kapt "androidx.room:room-compiler:2.6.1"
+    implementation(DependenciesWithVersions.ROOM_RUNTIME)
+    implementation(DependenciesWithVersions.ROOM_PAGING)
+    implementation(DependenciesWithVersions.ROOM_KTX)
+    kapt(DependenciesWithVersions.ROOM_COMPILER)
 
     // Hilt
-    implementation "com.google.dagger:hilt-android:2.49"
-    kapt "com.google.dagger:hilt-compiler:2.49"
-    implementation "androidx.hilt:hilt-navigation-compose:1.2.0"
+    implementation(DependenciesWithVersions.HILT_ANDROID)
+    kapt(DependenciesWithVersions.HILT_COMPILER)
+    implementation(DependenciesWithVersions.HILT_NAVIGATION_COMPOSE)
 
-    //Retrofit
-    implementation "com.squareup.retrofit2:retrofit:2.9.0"
-    implementation "com.squareup.retrofit2:converter-gson:2.9.0"
-    implementation 'com.squareup.retrofit2:retrofit-mock:2.9.0'
-    implementation "com.squareup.retrofit2:converter-moshi:2.9.0"
-    implementation("com.squareup.moshi:moshi-kotlin:1.14.0")
+    // Retrofit & Moshi
+    implementation(DependenciesWithVersions.RETROFIT)
+    implementation(DependenciesWithVersions.RETROFIT_GSON)
+    implementation(DependenciesWithVersions.RETROFIT_MOCK)
+    implementation(DependenciesWithVersions.RETROFIT_MOSHI)
+    implementation(DependenciesWithVersions.MOSHI_KOTLIN)
 
-    // Okhtp
-    implementation "com.squareup.okhttp3:okhttp:4.11.0"
-    implementation "com.squareup.okhttp3:logging-interceptor:4.11.0"
-    implementation "com.squareup.okhttp3:mockwebserver:4.11.0"
+    // OkHttp
+    implementation(DependenciesWithVersions.OKHTTP)
+    implementation(DependenciesWithVersions.OKHTTP_LOGGING)
+    implementation(DependenciesWithVersions.OKHTTP_MOCK_WEB_SERVER)
 
-    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.7")
-    implementation("androidx.compose.runtime:runtime-livedata:1.7.5")
-    // pager
-    implementation "com.google.accompanist:accompanist-pager:0.23.1"
+    // Coil
+    implementation(DependenciesWithVersions.COIL)
 
-    // coil
-    implementation("io.coil-kt:coil-compose:2.2.2")
+    // Paging
+    implementation(DependenciesWithVersions.PAGING_COMPOSE)
+    implementation(DependenciesWithVersions.PAGING_RUNTIME)
 
-    //Paging
-    implementation "androidx.paging:paging-compose:3.3.4"
-    implementation 'androidx.paging:paging-runtime-ktx:3.3.4'
+    // DataStore
+    implementation(DependenciesWithVersions.DATASTORE)
+    implementation(DependenciesWithVersions.DATASTORE_CORE)
+    implementation(DependenciesWithVersions.DATASTORE_PREFERENCES)
 
-    implementation "androidx.datastore:datastore:1.1.1"
-    implementation "androidx.datastore:datastore-core:1.1.1"
-    implementation "androidx.datastore:datastore-preferences:1.1.1"
+    // Protobuf
+    implementation(DependenciesWithVersions.PROTOBUF)
 
-    // protobuf
-    implementation "com.google.protobuf:protobuf-javalite:3.21.7"
+    // Lottie
+    implementation(DependenciesWithVersions.LOTTIE)
 
-    // lottie
-    implementation "com.airbnb.android:lottie-compose:6.0.0"
+    // Media Playback (ExoPlayer)
+    implementation(DependenciesWithVersions.MEDIA3_EXOPLAYER)
+    implementation(DependenciesWithVersions.MEDIA3_UI)
 
-    // For media playback using ExoPlayer
-    implementation 'androidx.media3:media3-exoplayer:1.5.0'
-    implementation "androidx.media3:media3-ui:1.5.0"
+    // Chucker
+    implementation(DependenciesWithVersions.CHUCKER)
 
-    implementation "com.github.chuckerteam.chucker:library:4.0.0"
+    // WorkManager
+    implementation(DependenciesWithVersions.WORK_RUNTIME)
 
-
-    implementation 'androidx.work:work-runtime-ktx:2.10.0'
-
-    // Test
-    androidTestImplementation 'androidx.test.ext:junit:1.2.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
-
-    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_ui_version"
-    debugImplementation "androidx.compose.ui:ui-tooling:$compose_ui_version"
-    debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_ui_version"
-    androidTestImplementation "androidx.arch.core:core-testing:2.2.0"
-    androidTestImplementation "org.mockito:mockito-android:3.4.6"
-    androidTestImplementation 'androidx.test:core:1.6.1'
-
-    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4"
-    testImplementation "org.hamcrest:hamcrest-all:1.3"
-    testImplementation "android.arch.core:core-testing:1.1.1"
-    testImplementation "org.mockito:mockito-core:3.9.0"
-    testImplementation "io.mockk:mockk:1.13.2"
-    testImplementation 'app.cash.turbine:turbine:1.0.0'
-
-    testImplementation("org.mockito:mockito-inline:3.9.0")
-
-    testImplementation 'androidx.test:core:1.6.1'
-
-
-
+    // Testing
+    testImplementation(DependenciesWithVersions.JUNIT)
+    androidTestImplementation(DependenciesWithVersions.ANDROID_JUNIT)
+    androidTestImplementation(DependenciesWithVersions.ESPRESSO)
+    androidTestImplementation(DependenciesWithVersions.MOCKITO_ANDROID)
+    androidTestImplementation(DependenciesWithVersions.ARCH_CORE_TESTING)
+    androidTestImplementation(DependenciesWithVersions.TURBINE)
+    testImplementation(DependenciesWithVersions.MOCKITO_CORE)
+    testImplementation(DependenciesWithVersions.MOCKITO_INLINE)
+    testImplementation(DependenciesWithVersions.MOCKK)
+    testImplementation(DependenciesWithVersions.HAMCREST)
+    testImplementation(DependenciesWithVersions.COROUTINE_TEST)
 
 }
 kapt {
